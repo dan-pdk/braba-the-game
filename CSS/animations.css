@@ -1,0 +1,29 @@
+@keyframes animateScorePopup {
+    0% { transform: translateY(0px); opacity: 1;}
+    100% {transform: translateY(-15px); opacity: 0px;}
+}
+
+@keyframes guiButtonPopup {
+    0% { transform: translateX(100px);}
+    100% { transform: translateX(0px);}
+}
+
+@keyframes shopGuiOpen {
+    0% { transform: translateY(calc(100vh + 90px));}
+    100% { transform: translateY(0px);}
+}
+
+.hide {
+    display: none;
+}
+
+.score-popup {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    user-select: none;
+
+    font-size: larger;
+
+    animation: animateScorePopup 1s forwards;
+
+    position: absolute;
+}
