@@ -1,4 +1,4 @@
-import { addScoreObserver } from './currency.js';
+import { addScoreObserver, buyItem } from './currency.js';
 import getPlayer, { player } from './data.js';
 
 export function createScorePopup() {
@@ -24,8 +24,8 @@ export function createScorePopup() {
 }
 
 const unlockableButtons = [
-  {name: "shop", element: document.getElementById('shop-button'), minScore: 40},
-  {name: "settings", element: document.getElementById('settings-button'), minScore: 10}
+  { name: "shop", element: document.getElementById('shop-button'), minScore: 40 },
+  { name: "settings", element: document.getElementById('settings-button'), minScore: 10 }
 ]
 
 export function unlockGuiButtons() {
@@ -50,7 +50,7 @@ unlockableButtons[0].element.addEventListener('click', () => {
       if (isShopOpen == false) {
         shopGui.classList.toggle('hide')
       }
-    }, {once: true})
+    }, { once: true })
   } else {
     shopGui.style.animation = 'shopGuiOpen 1.5s forwards'
     isShopOpen = true;
@@ -61,7 +61,7 @@ unlockableButtons[0].element.addEventListener('click', () => {
 
 const shopItems = [];
 
-export function createShopItem(name, cost, description, image, effect) {
+export function createShopItem(name, cost, description, image, tier, effect) {
   const item = {
     name: name,
     cost: cost,
@@ -75,21 +75,66 @@ export function createShopItem(name, cost, description, image, effect) {
 
 export function appendShopItem(item) {
   const createdItem = document.createElement('div');
-  const shopElement = document.querySelector('#shop-main-gui');
+  const shopElement = document.querySelector('.shop-main-gui');
 
   shopElement.appendChild(createdItem);
+  createdItem.classList.add('item');
+  createdItem.id = `${item.name}-div`
 
   const itemName = document.createElement('h1');
-  itemName.innerHTML = `${description}`;
+  itemName.innerHTML = `${item.name}`;
   itemName.classList.add('item-title');
+  createdItem.appendChild(itemName)
+
+  const itemDescription = document.createElement('p');
+  itemDescription.innerHTML = `${item.description}`;
+  itemDescription.classList.add('item-description');
+  createdItem.appendChild(itemDescription)
 
   const itemImage = document.createElement('img');
   itemImage.src = item.image;
   itemImage.classList.add('item-image');
+  createdItem.appendChild(itemImage);
+  switch (item.tier) {
+    case 1:
+      itemImage.style.background = "linear-gradient(270deg,rgba(186, 186, 186, 1) 0%, rgba(235, 235, 235, 1) 100%)"
+      break;
+    case 2:
+      itemImage.style.background = "linear-gradient(270deg,rgba(0, 255, 102, 1) 0%, rgba(168, 255, 168, 1) 100%);"
+      break;
+    case 3:
+      itemImage.style.background = "linear-gradient(270deg,rgba(94, 207, 255, 1) 0%, rgba(5, 255, 230, 1) 100%);";
+      break;
+    case 4:
+      itemImage.style.background = "linear-gradient(270deg,rgba(132, 74, 199, 1) 0%, rgba(65, 32, 176, 1) 100%);";
+      break;
+    case 5:
+      itemImage.style.background = "linear-gradient(270deg,rgba(251, 255, 0, 1) 0%, rgba(232, 172, 42, 1) 100%);";
+      break;
+    default:
+      itemImage.style.background = "linear-gradient(270deg,rgba(217, 217, 217, 1) 0%, rgba(247, 247, 247, 1) 100%);"
+      break;
+  }
+  if (item.tier > 6) {
+    throw new Error(`tier for ${item.name} is invalid: ${item.tier}`);
+  }
+
+  const itemCost = document.createElement('span');
+  itemCost.innerHTML = `B$ ${item.cost}`;
+  itemCost.classList.add('item-cost');
+  createdItem.appendChild(itemCost);
 
   const itemBuyButton = document.createElement('div');
   itemBuyButton.textContent = "Comprar";
   itemBuyButton.classList.add('item-buy-button');
+  createdItem.appendChild(itemBuyButton);
+
 
   itemBuyButton.addEventListener('click', buyItem(item, getPlayer()));
 }
+
+appendShopItem(
+  createShopItem('Inspiração', 55, 'Apertar a braba deve ser bom. Um dia, você vai se tornar o maior apertador de brabas do mundo, e eles vão ver...', 'assets/img/item/insipracao.png', 0, () => {
+    console.log('item comprado.');
+  })
+)
