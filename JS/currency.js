@@ -1,4 +1,4 @@
-import { player } from './data.js';
+import { player, effects } from './data.js';
 
 const scoreObservers = [];
 
@@ -17,6 +17,8 @@ export function changeScore(operation, amount) {
     case 'multiply':
       player.score *= amount;
       break;
+    case 'set':
+      player.score = amount;
   }
 
   scoreObservers.forEach(fn => {
@@ -24,6 +26,18 @@ export function changeScore(operation, amount) {
   });
 }
 
+export function canBuy(item, player) {
+  return !item.bought && player.score >= item.cost;
+}
+
 export function buyItem(item, player) {
-  
+  if (canBuy(item, player)) {
+    changeScore('remove', item.cost);
+
+    item.bought = true;
+    item.buttonElement.textContent = "✅";
+    item.buttonElement.classList.add('bought');
+
+    item.effect(player);
+  }
 }

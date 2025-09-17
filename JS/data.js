@@ -8,3 +8,9 @@ export let player = {
 export default function getPlayer() {
     return player;
 }
+
+export const effects = {
+    inspiracaoEffect: (player) => {
+        player.scorePerClick += 1;
+    }
+}

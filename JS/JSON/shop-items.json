@@ -1,0 +1,11 @@
+[
+    {
+        "name": "Inspiração",
+        "cost": "55",
+        "minScore": "40",
+        "tier": 0,
+        "description": "Você não vai chegar a lugar algum sem um pouco disso. <br> <span>+1 B$ por clique</span>",
+        "image": "./assets/img/item/insipracao.png",
+        "effect": "inspiracaoEffect"
+    }
+]

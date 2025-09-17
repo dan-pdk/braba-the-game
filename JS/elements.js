@@ -1,5 +1,5 @@
 import { addScoreObserver, buyItem } from './currency.js';
-import getPlayer, { player } from './data.js';
+import getPlayer, { player, effects } from './data.js';
 
 export function createScorePopup() {
   const wrapper = document.querySelector('.popup-wrapper');
@@ -56,22 +56,25 @@ unlockableButtons[0].element.addEventListener('click', () => {
     isShopOpen = true;
     shopGui.classList.toggle('hide');
   }
-  console.log(`Shop open? ${isShopOpen}. Animation: ${shopGui.style.animation}`)
 })
 
 const shopItems = [];
 
-export function createShopItem(name, cost, description, image, tier, effect) {
+export function createShopItem(name, cost, minScore, description, image, tier, effect) {
   const item = {
     name: name,
     cost: cost,
+    minScore: minScore,
     description: description,
     image: image,
+    tier: tier,
     effect: effect
   }
   shopItems.push(item);
   return item
 }
+
+
 
 export function appendShopItem(item) {
   const createdItem = document.createElement('div');
@@ -95,31 +98,14 @@ export function appendShopItem(item) {
   itemImage.src = item.image;
   itemImage.classList.add('item-image');
   createdItem.appendChild(itemImage);
-  switch (item.tier) {
-    case 1:
-      itemImage.style.background = "linear-gradient(270deg,rgba(186, 186, 186, 1) 0%, rgba(235, 235, 235, 1) 100%)"
-      break;
-    case 2:
-      itemImage.style.background = "linear-gradient(270deg,rgba(0, 255, 102, 1) 0%, rgba(168, 255, 168, 1) 100%);"
-      break;
-    case 3:
-      itemImage.style.background = "linear-gradient(270deg,rgba(94, 207, 255, 1) 0%, rgba(5, 255, 230, 1) 100%);";
-      break;
-    case 4:
-      itemImage.style.background = "linear-gradient(270deg,rgba(132, 74, 199, 1) 0%, rgba(65, 32, 176, 1) 100%);";
-      break;
-    case 5:
-      itemImage.style.background = "linear-gradient(270deg,rgba(251, 255, 0, 1) 0%, rgba(232, 172, 42, 1) 100%);";
-      break;
-    default:
-      itemImage.style.background = "linear-gradient(270deg,rgba(217, 217, 217, 1) 0%, rgba(247, 247, 247, 1) 100%);"
-      break;
-  }
-  if (item.tier > 6) {
-    throw new Error(`tier for ${item.name} is invalid: ${item.tier}`);
+  if (item.tier >= 0 && item.tier < 6) {
+    itemImage.classList.add(`tier-${item.tier}`);
+  } else {
+    // throw new Error(`${item.name}'s tier is not in range (${item.tier})`);
+    console.log(item.tier)
   }
 
-  const itemCost = document.createElement('span');
+  const itemCost = document.createElement('div');
   itemCost.innerHTML = `B$ ${item.cost}`;
   itemCost.classList.add('item-cost');
   createdItem.appendChild(itemCost);
@@ -129,12 +115,39 @@ export function appendShopItem(item) {
   itemBuyButton.classList.add('item-buy-button');
   createdItem.appendChild(itemBuyButton);
 
+  item.element = createdItem;
+  item.buttonElement = itemBuyButton;
+  item.bought = false;
 
-  itemBuyButton.addEventListener('click', buyItem(item, getPlayer()));
+
+  itemBuyButton.addEventListener('click', () => {
+    if (!item.bought){
+      buyItem(item, getPlayer());
+      }
+    }
+  )
+};
+
+function updateShopButtonColor(score) {
+  shopItems.forEach(item => {
+    if (item.bought) return;
+    if (score >= item.cost) {
+      const buyButton = item.buttonElement;
+      buyButton.classList.remove('unbuyable');
+      buyButton.innerHTML = "Comprar";
+    } else {
+      const buyButton = item.buttonElement;
+      buyButton.classList.add('unbuyable');
+      buyButton.innerHTML = `❌ ${item.cost}`;
+    }
+  })
 }
+addScoreObserver(updateShopButtonColor);
+
 
 appendShopItem(
-  createShopItem('Inspiração', 55, 'Apertar a braba deve ser bom. Um dia, você vai se tornar o maior apertador de brabas do mundo, e eles vão ver...', 'assets/img/item/insipracao.png', 0, () => {
-    console.log('item comprado.');
+  createShopItem('Inspiração', 55, 45, 'Você não vai chegar a lugar nenhum sem um pouco disso. <br> +1 B$ por clique', 'assets/img/item/insipracao.png', 0, (player) => {
+    console.log('item comprado. +1 braba por clique');
+    player.scorePerClick += 1;
   })
 )
