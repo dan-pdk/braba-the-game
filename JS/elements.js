@@ -74,14 +74,12 @@ export function createShopItem(name, cost, minScore, description, image, tier, e
   return item
 }
 
-
-
 export function appendShopItem(item) {
   const createdItem = document.createElement('div');
   const shopElement = document.querySelector('.shop-main-gui');
 
   shopElement.appendChild(createdItem);
-  createdItem.classList.add('item');
+  createdItem.classList.add('item', 'hide');
   createdItem.id = `${item.name}-div`
 
   const itemName = document.createElement('h1');
@@ -102,7 +100,6 @@ export function appendShopItem(item) {
     itemImage.classList.add(`tier-${item.tier}`);
   } else {
     // throw new Error(`${item.name}'s tier is not in range (${item.tier})`);
-    console.log(item.tier)
   }
 
   const itemCost = document.createElement('div');
@@ -119,7 +116,6 @@ export function appendShopItem(item) {
   item.buttonElement = itemBuyButton;
   item.bought = false;
 
-
   itemBuyButton.addEventListener('click', () => {
     if (!item.bought){
       buyItem(item, getPlayer());
@@ -127,6 +123,14 @@ export function appendShopItem(item) {
     }
   )
 };
+
+function revealItemsWithMinScore(score) {
+  shopItems.forEach(item => {
+    if (score >= item.minScore && item.element.classList.contains('hide')) {
+      item.element.classList.remove('hide');
+    }
+  })
+}
 
 function updateShopButtonColor(score) {
   shopItems.forEach(item => {
@@ -142,12 +146,5 @@ function updateShopButtonColor(score) {
     }
   })
 }
+addScoreObserver(revealItemsWithMinScore);
 addScoreObserver(updateShopButtonColor);
-
-
-appendShopItem(
-  createShopItem('Inspiração', 55, 45, 'Você não vai chegar a lugar nenhum sem um pouco disso. <br> +1 B$ por clique', 'assets/img/item/insipracao.png', 0, (player) => {
-    console.log('item comprado. +1 braba por clique');
-    player.scorePerClick += 1;
-  })
-)

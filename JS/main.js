@@ -22,8 +22,8 @@ button.addEventListener('click', onClick);
 // chamar função append com objeto convertido do JSON. eu odeio isso
 fetch("JS/JSON/shop-items.json")
 .then(response => response.json())
-.then(data => {
-  data.forEach(rawItem => {
+.then(rawItems => {
+  rawItems.forEach(rawItem => {
     const processedItem = createShopItem(
       rawItem.name,
       rawItem.cost,

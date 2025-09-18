@@ -37,6 +37,7 @@ export function buyItem(item, player) {
     item.bought = true;
     item.buttonElement.textContent = "✅";
     item.buttonElement.classList.add('bought');
+    item.buttonElement.classList.remove('unbuyable')
 
     item.effect(player);
   }

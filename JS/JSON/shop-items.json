@@ -2,10 +2,46 @@
     {
         "name": "Inspiração",
         "cost": "55",
-        "minScore": "40",
+        "minScore": "45",
         "tier": 0,
         "description": "Você não vai chegar a lugar algum sem um pouco disso. <br> <span>+1 B$ por clique</span>",
-        "image": "./assets/img/item/insipracao.png",
+        "image": "assets/img/item/insipracao.png",
         "effect": "inspiracaoEffect"
+    },
+    {
+        "name": "Borracha",
+        "cost": "150",
+        "minScore": "80",
+        "tier": 0,
+        "description": "Por quê usar uma borracha, me pergunto? Dizem que seca a boca, pra apertar mais brabas. <br> <span>+1 B$ por clique por 1 minuto. Renovável.</span>",
+        "image": "assets/img/item/borracha.png",
+        "effect": "borrachaEffect"
+    },
+    {
+        "name": "Borracha",
+        "cost": "150",
+        "minScore": "80",
+        "tier": 0,
+        "description": "Por quê usar uma borracha, me pergunto? Dizem que seca a boca, pra apertar mais brabas. <br> <span>+1 B$ por clique por 1 minuto. Renovável.</span>",
+        "image": "assets/img/item/borracha.png",
+        "effect": "borrachaEffect"
+    },
+    {
+        "name": "Borracha",
+        "cost": "150",
+        "minScore": "80",
+        "tier": 0,
+        "description": "Por quê usar uma borracha, me pergunto? Dizem que seca a boca, pra apertar mais brabas. <br> <span>+1 B$ por clique por 1 minuto. Renovável.</span>",
+        "image": "assets/img/item/borracha.png",
+        "effect": "borrachaEffect"
+    },
+    {
+        "name": "Borracha",
+        "cost": "150",
+        "minScore": "80",
+        "tier": 0,
+        "description": "Por quê usar uma borracha, me pergunto? Dizem que seca a boca, pra apertar mais brabas. <br> <span>+1 B$ por clique por 1 minuto. Renovável.</span>",
+        "image": "assets/img/item/borracha.png",
+        "effect": "borrachaEffect"
     }
 ]
