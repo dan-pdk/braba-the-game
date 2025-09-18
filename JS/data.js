@@ -14,6 +14,6 @@ export const effects = {
     player.scorePerClick += 1;
   },
   borrachaEffect: (player) => {
-    
+    //tba
   },
 };

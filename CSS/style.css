@@ -107,6 +107,7 @@ body {
 .shop-main-gui{
     min-width: 75%;
     max-height: 500px;
+    min-height: 500px;
 
     overflow-y: auto;
 
@@ -224,7 +225,7 @@ body {
 }
 
 .item-buy-button {
-    height: 20px;
+    height: 40px;
     width: 80px;
 
     position: absolute;
@@ -261,10 +262,31 @@ body {
     border: 3px solid rgb(105, 0, 0);
 
     cursor: default !important;
+    text-align: center;
 }
 
 .unbuyable:hover {
     transform: scale(1) !important;
     background-color: rgb(161, 0, 0) !important;
     border: 3px solid rgb(105, 0, 0) !important;
+}
+
+.shop-main-gui::-webkit-scrollbar {
+    width: 6px;
+    z-index: -1;
+}
+
+.shop-main-gui::-webkit-scrollbar-track {
+    background-color: #bdbdbd;
+    border-radius: 5px;
+}
+
+.shop-main-gui::-webkit-scrollbar-thumb {
+    background-color: #8f8f8f;
+    border-radius: 5px;
+    transition: 0.2s ease-out;
+}
+
+.shop-main-gui::-webkit-scrollbar-thumb:hover {
+    background-color: #6d6d6d;
 }
