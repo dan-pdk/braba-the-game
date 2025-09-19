@@ -6,9 +6,14 @@ changeScore("add", 0);
 const button = document.getElementById('main-button');
 const scoreDisplay = document.getElementById('score-display');
 
-function updateScoreDisplay(score) {
-  scoreDisplay.textContent = `${score} brabas`;
-  document.querySelector('title').textContent = `${score} brabas - Braba Simulator`
+function updateScoreDisplay(player) {
+  scoreDisplay.textContent = `${player.score} brabas`;
+  document.querySelector('title').textContent = `${player.score} brabas - Braba Simulator`;
+
+  if (player.scorePerSecond > 0) {
+    const scorePerSecondDisplay = document.getElementById('score-ps-display');
+    scorePerSecondDisplay.textContent = `${player.scorePerSecond} por segundo`
+  }
 };
 addScoreObserver(updateScoreDisplay);
 
@@ -39,9 +44,14 @@ fetch("JS/JSON/shop-items.json")
 
 let devMode = true;
 if (devMode) {
+  const info = document.getElementById('dev-mode-info');
+  info.innerHTML = "Dev Mode on<br>O: +1 braba/s<br>P: +100 brabas";
+
   document.body.addEventListener('keypress', (event) =>{
     if (event.key === "p") {
       changeScore("add", 100);
+    } else if (event.key === "o") {
+      player.scorePerSecond += 1;
     }
   })
 }

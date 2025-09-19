@@ -13,35 +13,17 @@
         "cost": "150",
         "minScore": "80",
         "tier": 0,
-        "description": "Uma borracha escolar simples. Dizem que seca a boca, pra apertar mais brabas. <br> <span>+1 B$ por clique por 1 minuto. Renovável.</span>",
+        "description": "Uma borracha escolar simples. Dizem que seca a boca, pra apertar mais brabas. <br> <span>+1 B$ por clique por 30 segundos. Renovável</span>",
         "image": "assets/img/item/borracha.png",
         "effect": "borrachaEffect"
     },
     {
         "name": "Gravador",
-        "cost": "350",
+        "cost": "400",
         "minScore": "200",
         "tier": 0,
-        "description": "Um microfone mais velho que você. Pelo menos, ele pode gravar você apertando a braba, e você pode tocá-las depois. <br> <span>+1 B$ por segundo</span>",
+        "description": "Um microfone velho e enferrujado. Definitivamente não dá pro gasto, mas é o que tem pra agora. <br> <span>+1 B$ por segundo</span>",
         "image": "assets/img/item/gravador.png",
         "effect": "gravadorEffect"
-    },
-    {
-        "name": "Borracha",
-        "cost": "150",
-        "minScore": "80",
-        "tier": 0,
-        "description": "Por quê usar uma borracha, me pergunto? Dizem que seca a boca, pra apertar mais brabas. <br> <span>+1 B$ por clique por 1 minuto. Renovável.</span>",
-        "image": "assets/img/item/borracha.png",
-        "effect": "borrachaEffect"
-    },
-    {
-        "name": "Borracha",
-        "cost": "150",
-        "minScore": "80",
-        "tier": 0,
-        "description": "Por quê usar uma borracha, me pergunto? Dizem que seca a boca, pra apertar mais brabas. <br> <span>+1 B$ por clique por 1 minuto. Renovável.</span>",
-        "image": "assets/img/item/borracha.png",
-        "effect": "borrachaEffect"
     }
 ]

@@ -19,6 +19,13 @@ body {
     background-color: rgb(209, 209, 209);
 }
 
+#dev-mode-info {
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
 
 #main-button {
     border: 5px solid rgb(24, 134, 24);
@@ -82,6 +89,16 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
+}
+
+#score-ps-display {
+    color: #6d6d6d;
+    font-style: italic;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    
+    position: absolute;
+    top: 80px;
+
 }
 
 #shop-button {

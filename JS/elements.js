@@ -124,18 +124,18 @@ export function appendShopItem(item) {
   )
 };
 
-function revealItemsWithMinScore(score) {
+function revealItemsWithMinScore(player) {
   shopItems.forEach(item => {
-    if (score >= item.minScore && item.element.classList.contains('hide')) {
+    if (player.score >= item.minScore && item.element.classList.contains('hide')) {
       item.element.classList.remove('hide');
     }
   })
 }
 
-function updateShopButtonColor(score) {
+function updateShopButtonColor(player) {
   shopItems.forEach(item => {
     if (item.bought) return;
-    if (score >= item.cost) {
+    if (player.score >= item.cost) {
       const buyButton = item.buttonElement;
       buyButton.classList.remove('unbuyable');
       buyButton.innerHTML = "Comprar";

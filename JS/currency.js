@@ -22,7 +22,7 @@ export function changeScore(operation, amount) {
   }
 
   scoreObservers.forEach(fn => {
-    fn(player.score);
+    fn(player);
   });
 }
 
@@ -42,3 +42,14 @@ export function buyItem(item, player) {
     item.effect(player);
   }
 }
+
+let decimalTracker = 0;
+setInterval(() => {
+  if (player.scorePerSecond > 0) {
+    decimalTracker += player.scorePerSecond / 10;
+    while (decimalTracker >= 1) {
+      changeScore("add", 1);
+      decimalTracker =- 1;
+    }
+  }
+}, 100);

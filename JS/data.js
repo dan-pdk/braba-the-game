@@ -1,3 +1,5 @@
+import { changeScore } from "./currency.js";
+
 export let player = {
   score: 0,
   level: 0,
@@ -14,6 +16,10 @@ export const effects = {
     player.scorePerClick += 1;
   },
   borrachaEffect: (player) => {
-    //tba
+    
   },
+  gravadorEffect: (player) => {
+    player.scorePerSecond += 1;
+    changeScore("add", 0);
+  }
 };
