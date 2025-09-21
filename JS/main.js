@@ -1,6 +1,6 @@
 import { player, effects } from './data.js';
 import { appendShopItem, createScorePopup, createShopItem } from './elements.js';
-import { changeScore, addScoreObserver } from './currency.js';
+import { changeScore, addScoreObserver, addStatusEffect } from './currency.js';
 
 changeScore("add", 0);
 const button = document.getElementById('main-button');
@@ -24,7 +24,6 @@ function onClick() {
 
 button.addEventListener('click', onClick);
 
-// chamar função append com objeto convertido do JSON. eu odeio isso
 fetch("JS/JSON/shop-items.json")
 .then(response => response.json())
 .then(rawItems => {
@@ -45,13 +44,29 @@ fetch("JS/JSON/shop-items.json")
 let devMode = true;
 if (devMode) {
   const info = document.getElementById('dev-mode-info');
-  info.innerHTML = "Dev Mode on<br>O: +1 braba/s<br>P: +100 brabas";
+  info.innerHTML = "Dev Mode on<br>O: +1 braba/s<br>P: +100 brabas <br> L: Reset brabas<br> [: Teste de Status Effect";
 
   document.body.addEventListener('keypress', (event) =>{
     if (event.key === "p") {
       changeScore("add", 100);
     } else if (event.key === "o") {
       player.scorePerSecond += 1;
+    } else if (event.key === "l") {
+      changeScore("remove", player.score);
+    } else if (event.key === "[") {
+      addStatusEffect(player, {}, {
+        name: "Macaco",
+        image: "assets/img/item/test.png",
+        description: "tem um macaco na minha tela<br><span>+macaco na tela</span>",
+        duration: 100000,
+
+        onStart: (player, item) => {
+         console.log("oi");
+        },
+        onEnd: (player, item) => {
+        console.log("macaco sumiu kakapa");
+        },
+      })
     }
   })
 }

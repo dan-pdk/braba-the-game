@@ -1,5 +1,5 @@
-import { addScoreObserver, buyItem } from './currency.js';
-import getPlayer, { player, effects } from './data.js';
+import { addScoreObserver, buyItem, timeInMinutesAndSeconds } from './currency.js';
+import getPlayer, { player, effects, scoreObservers } from './data.js';
 
 export function createScorePopup() {
   const wrapper = document.querySelector('.popup-wrapper');
@@ -36,15 +36,15 @@ export function unlockGuiButtons() {
     }
   })
 }
-addScoreObserver(unlockGuiButtons);
 
 let isShopOpen = false;
 unlockableButtons[0].element.addEventListener('click', () => {
   const shopGui = document.querySelector('.shop-main-gui')
-  document.body.appendChild(shopGui);
 
   if (isShopOpen) {
-    shopGui.style.animation = 'shopGuiOpen 1.5s reverse';
+    shopGui.style.animation = "none";
+    shopGui.offsetHeight;
+    shopGui.style.animation = 'shopGuiOpen 1s reverse';
     isShopOpen = false;
     shopGui.addEventListener('animationend', () => {
       if (isShopOpen == false) {
@@ -52,7 +52,9 @@ unlockableButtons[0].element.addEventListener('click', () => {
       }
     }, { once: true })
   } else {
-    shopGui.style.animation = 'shopGuiOpen 1.5s forwards'
+    shopGui.style.animation = "none";
+    shopGui.offsetHeight;
+    shopGui.style.animation = 'shopGuiOpen 1s forwards'
     isShopOpen = true;
     shopGui.classList.toggle('hide');
   }
@@ -132,7 +134,7 @@ function revealItemsWithMinScore(player) {
   })
 }
 
-function updateShopButtonColor(player) {
+function updateBuyButtonColor(player) {
   shopItems.forEach(item => {
     if (item.bought) return;
     if (player.score >= item.cost) {
@@ -146,5 +148,58 @@ function updateShopButtonColor(player) {
     }
   })
 }
-addScoreObserver(revealItemsWithMinScore);
-addScoreObserver(updateShopButtonColor);
+
+const tooltip = document.createElement('div');
+document.body.appendChild(tooltip);
+tooltip.classList.add('tooltip', 'hide');
+
+const tooltipComponentsWrapper = document.createElement('div');
+tooltipComponentsWrapper.classList.add('tooltip-wrapper')
+tooltip.appendChild(tooltipComponentsWrapper)
+
+const tooltipTitle = document.createElement('h1');
+const tooltipDescription = document.createElement('p');
+const tooltipTime = document.createElement('div');
+
+tooltipComponentsWrapper.appendChild(tooltipTitle);
+tooltipComponentsWrapper.appendChild(tooltipDescription);
+tooltipComponentsWrapper.appendChild(tooltipTime);
+
+export function addHoverTooltip(element, title, description, effectEndTime) {
+  let intervalID;
+  element.addEventListener('mouseenter', () => {
+    tooltip.classList.remove('hide');
+    tooltipTitle.innerHTML = title;
+    tooltipDescription.innerHTML = description;
+
+    intervalID = setInterval(() => {
+      const timeLeft = effectEndTime - Date.now();
+      tooltipTime.innerHTML = `⏳ ${timeInMinutesAndSeconds(timeLeft)
+    }`;
+    if (timeLeft <= 0) {
+      tooltip.classList.add('hide');
+      clearInterval(intervalID);
+    }
+  }, 50)
+  });
+
+  element.addEventListener('mousemove', (event) => {
+    tooltip.style.left = `${event.clientX + 15}px`;
+    tooltip.style.top = `${(event.clientY - tooltip.clientHeight) -10}px`;
+  });
+
+  element.addEventListener('mouseleave', () => {
+    tooltip.classList.add('hide');
+    tooltipTitle.innerHTML = '';
+    tooltipDescription.innerHTML = '';
+    clearInterval(intervalID);
+  })
+}
+
+// preguiça, mas adiciona os score observers após scoreObservers[] ser inicializado.
+
+setTimeout(() => {
+  addScoreObserver(revealItemsWithMinScore);
+  addScoreObserver(updateBuyButtonColor);
+  addScoreObserver(unlockGuiButtons);
+}, 1);

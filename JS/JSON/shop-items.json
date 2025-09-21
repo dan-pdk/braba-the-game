@@ -13,13 +13,13 @@
         "cost": "150",
         "minScore": "80",
         "tier": 0,
-        "description": "Uma borracha escolar simples. Dizem que seca a boca, pra apertar mais brabas. <br> <span>+1 B$ por clique por 30 segundos. Renovável</span>",
+        "description": "Uma borracha escolar simples. Bom, ela definitivamente não é simples nas mãos certas. <br> <span>+1 B$ por clique por 30 segundos<br> Pode ser comprado novamente</span>",
         "image": "assets/img/item/borracha.png",
         "effect": "borrachaEffect"
     },
     {
-        "name": "Gravador",
-        "cost": "400",
+        "name": "Microfone",
+        "cost": "450",
         "minScore": "200",
         "tier": 0,
         "description": "Um microfone velho e enferrujado. Definitivamente não dá pro gasto, mas é o que tem pra agora. <br> <span>+1 B$ por segundo</span>",

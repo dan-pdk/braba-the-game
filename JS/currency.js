@@ -1,9 +1,9 @@
-import { player, effects } from './data.js';
+import { player, effects, scoreObservers } from './data.js';
+import { addHoverTooltip } from "./elements.js";
 
-const scoreObservers = [];
 
 export function addScoreObserver(fn) {
-    scoreObservers.push(fn);
+  scoreObservers.push(fn);
 }
 
 export function changeScore(operation, amount) {
@@ -37,10 +37,44 @@ export function buyItem(item, player) {
     item.bought = true;
     item.buttonElement.textContent = "✅";
     item.buttonElement.classList.add('bought');
-    item.buttonElement.classList.remove('unbuyable')
+    item.buttonElement.classList.remove('unbuyable');
 
-    item.effect(player);
+    item.effect(player, item);
   }
+}
+
+export function timeInMinutesAndSeconds(timeInMs) {
+  const timeInSeconds = Math.floor(timeInMs / 1000);
+
+  const minutes = String(Math.floor(timeInSeconds / 60))
+  .padStart(2, '0');
+  const seconds = String(timeInSeconds % 60)
+  .padStart(2, '0');
+
+  return `${minutes}:${seconds}`;
+}
+
+export function addStatusEffect(player, item, statusEffect) {
+  const wrapper = document.getElementById('status-effects');
+
+  const effectElement = document.createElement('img');
+  wrapper.appendChild(effectElement);
+
+  effectElement.src = statusEffect.image;
+  effectElement.classList.add('status-effect-icon');
+
+  const effectEndTime = Date.now() + statusEffect.duration;
+
+  addHoverTooltip(effectElement, statusEffect.name, statusEffect.description, effectEndTime);
+
+  statusEffect.onStart(player, item);
+  setTimeout(() => {
+    statusEffect.onEnd(player, item);
+    effectElement.style.animation = "shrinkAndDissapear 1s forwards";
+    effectElement.addEventListener('animationend', () => {
+      effectElement.remove();
+    })
+  }, statusEffect.duration);
 }
 
 let decimalTracker = 0;
@@ -49,7 +83,7 @@ setInterval(() => {
     decimalTracker += player.scorePerSecond / 10;
     while (decimalTracker >= 1) {
       changeScore("add", 1);
-      decimalTracker =- 1;
+      decimalTracker -= 1;
     }
   }
 }, 100);

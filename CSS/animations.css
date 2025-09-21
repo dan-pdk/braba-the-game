@@ -13,6 +13,11 @@
     100% { transform: translateY(0px);}
 }
 
+@keyframes shrinkAndDissapear {
+    0% {transform: scale(1);}
+    100% {transform: scale(0);}
+}
+
 .hide {
     display: none;
 }
@@ -23,7 +28,7 @@
 
     font-size: larger;
 
-    animation: animateScorePopup 1s forwards;
+    animation: animateScorePopup 1s forwards ;
 
     position: absolute;
 }
