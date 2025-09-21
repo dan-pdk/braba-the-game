@@ -106,9 +106,21 @@ body {
     top: calc(100vh / 4);
     right: 25px;
 
+    transition: 0.75s ease-out;
+
     padding: 5px;
 
     user-select: none;
+
+    border: 1px solid #8f8f8f;
+    border-radius: 3px;
+
+    cursor: pointer;
+}
+
+.selected-gui-button {
+    background-color: hsl(118, 59%, 68%);
+    border: 1px hsl(129, 23%, 41%);
 }
 
 #settings-button {
@@ -116,14 +128,21 @@ body {
     top: calc((100vh / 2) - 40px);
     right: 25px;
 
+    transition: 0.75s ease-in-out;
+
     padding: 5px 5px 4px 5px;
 
     user-select: none;
+
+    border: 1px solid #8f8f8f;
+    border-radius: 3px;
+
+    cursor: pointer;
 }
 
 .shop-main-gui{
     min-width: 75%;
-    max-height: 500px;
+    max-height: 540px;
     min-height: 500px;
 
     overflow-y: auto;
@@ -140,6 +159,15 @@ body {
     gap: 20px;
 
     padding: 5px;
+
+    z-index: 9;
+}
+
+.gui-title {
+    padding: 5px 5px 0px 5px;
+
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-weight: bold;
 }
 
 .item {
@@ -151,6 +179,8 @@ body {
     border: 5px solid #bdbdbd;
     padding: 5px;
     border-radius: 15px;
+
+    z-index: 10;
 }
 
 .bought {
@@ -377,3 +407,30 @@ body {
     color: blue;
     font-weight: bold;
 }
+
+.settings-main-gui {
+    width: 350px;
+    min-height: 400px;
+    max-height: 75%;
+    background-color: #6d6d6d;
+
+    position: absolute;
+    left: 30px;
+
+    transition: 0.75s;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    min-height: 75%;
+
+    background-color: whitesmoke;
+
+    border-radius: 15px;
+    border: 3px solid gray;
+
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+

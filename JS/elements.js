@@ -1,4 +1,4 @@
-import { addScoreObserver, buyItem, timeInMinutesAndSeconds } from './currency.js';
+import { addScoreObserver, buyItem, formatTime } from './currency.js';
 import getPlayer, { player, effects, scoreObservers } from './data.js';
 
 export function createScorePopup() {
@@ -37,6 +37,34 @@ export function unlockGuiButtons() {
   })
 }
 
+let isSettingsOpen = false;
+unlockableButtons[1].element.addEventListener('click', () => {
+  const settingsGui = document.querySelector('.settings-main-gui');
+  const button = unlockableButtons[1].element;
+
+  if (isSettingsOpen) {
+    settingsGui.style.animation = "none";
+    settingsGui.offsetHeight;// force reflow
+    settingsGui.style.animation = "settingsGuiOpen 1s reverse";
+    button.classList.remove('selected-gui-button');
+
+    settingsGui.addEventListener('animationend', () => {
+      settingsGui.classList.add('hide');
+    }, { once: true });
+
+    isSettingsOpen = false;
+
+  } else {
+    settingsGui.classList.remove('hide');
+    settingsGui.style.animation = "none";
+    settingsGui.offsetHeight;// force reflow
+    settingsGui.style.animation = "settingsGuiOpen 1s forwards";
+
+    button.classList.add('selected-gui-button');
+    isSettingsOpen = true;
+  }
+});
+
 let isShopOpen = false;
 unlockableButtons[0].element.addEventListener('click', () => {
   const shopGui = document.querySelector('.shop-main-gui')
@@ -45,6 +73,7 @@ unlockableButtons[0].element.addEventListener('click', () => {
     shopGui.style.animation = "none";
     shopGui.offsetHeight;
     shopGui.style.animation = 'shopGuiOpen 1s reverse';
+    unlockableButtons[0].element.classList.remove('selected-gui-button');
     isShopOpen = false;
     shopGui.addEventListener('animationend', () => {
       if (isShopOpen == false) {
@@ -54,7 +83,8 @@ unlockableButtons[0].element.addEventListener('click', () => {
   } else {
     shopGui.style.animation = "none";
     shopGui.offsetHeight;
-    shopGui.style.animation = 'shopGuiOpen 1s forwards'
+    shopGui.style.animation = 'shopGuiOpen 1s forwards';
+    unlockableButtons[0].element.classList.add('selected-gui-button');
     isShopOpen = true;
     shopGui.classList.toggle('hide');
   }
@@ -101,7 +131,7 @@ export function appendShopItem(item) {
   if (item.tier >= 0 && item.tier < 6) {
     itemImage.classList.add(`tier-${item.tier}`);
   } else {
-    // throw new Error(`${item.name}'s tier is not in range (${item.tier})`);
+    throw new Error(`${item.name}'s tier is not in range (${item.tier})`);
   }
 
   const itemCost = document.createElement('div');
@@ -174,7 +204,7 @@ export function addHoverTooltip(element, title, description, effectEndTime) {
 
     intervalID = setInterval(() => {
       const timeLeft = effectEndTime - Date.now();
-      tooltipTime.innerHTML = `⏳ ${timeInMinutesAndSeconds(timeLeft)
+      tooltipTime.innerHTML = `⏳ ${formatTime(timeLeft)
     }`;
     if (timeLeft <= 0) {
       tooltip.classList.add('hide');

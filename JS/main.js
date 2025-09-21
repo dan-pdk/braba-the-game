@@ -1,18 +1,18 @@
 import { player, effects } from './data.js';
 import { appendShopItem, createScorePopup, createShopItem } from './elements.js';
-import { changeScore, addScoreObserver, addStatusEffect } from './currency.js';
+import { changeScore, addScoreObserver, addStatusEffect, abbreviateNumber } from './currency.js';
 
 changeScore("add", 0);
 const button = document.getElementById('main-button');
 const scoreDisplay = document.getElementById('score-display');
 
 function updateScoreDisplay(player) {
-  scoreDisplay.textContent = `${player.score} brabas`;
-  document.querySelector('title').textContent = `${player.score} brabas - Braba Simulator`;
+  scoreDisplay.textContent = `${abbreviateNumber(player.score)} brabas`;
+  document.querySelector('title').textContent = `${abbreviateNumber(player.score)} brabas - Braba Simulator`;
 
   if (player.scorePerSecond > 0) {
     const scorePerSecondDisplay = document.getElementById('score-ps-display');
-    scorePerSecondDisplay.textContent = `${player.scorePerSecond} por segundo`
+    scorePerSecondDisplay.textContent = `${abbreviateNumber(player.scorePerSecond)} por segundo`
   }
 };
 addScoreObserver(updateScoreDisplay);

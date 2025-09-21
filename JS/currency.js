@@ -43,7 +43,7 @@ export function buyItem(item, player) {
   }
 }
 
-export function timeInMinutesAndSeconds(timeInMs) {
+export function formatTime(timeInMs) {
   const timeInSeconds = Math.floor(timeInMs / 1000);
 
   const minutes = String(Math.floor(timeInSeconds / 60))
@@ -53,6 +53,22 @@ export function timeInMinutesAndSeconds(timeInMs) {
 
   return `${minutes}:${seconds}`;
 }
+
+export function abbreviateNumber(number) {
+  if (number < 1000) { return number.toString(); }
+
+  const suffixes = ['', "k", "M", "B", "T", "Q", "Qui", "Sx"];
+  let numberScale = Math.floor(Math.log10(number) / 3);
+  const suffix = suffixes[numberScale] || "";
+
+  let power = number / Math.pow(1000, numberScale);
+
+  const treatedNumber = parseFloat(power.toFixed(2)).toString();
+
+  return treatedNumber + suffix;
+}
+
+console.log(abbreviateNumber(432321))
 
 export function addStatusEffect(player, item, statusEffect) {
   const wrapper = document.getElementById('status-effects');
