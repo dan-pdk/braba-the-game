@@ -1,4 +1,4 @@
-import { addScoreObserver, buyItem, formatTime } from './currency.js';
+import { abbreviateNumber, addScoreObserver, buyItem, formatTime } from './currency.js';
 import getPlayer, { player, effects, scoreObservers } from './data.js';
 
 export function createScorePopup() {
@@ -135,7 +135,7 @@ export function appendShopItem(item) {
   }
 
   const itemCost = document.createElement('div');
-  itemCost.innerHTML = `B$ ${item.cost}`;
+  itemCost.innerHTML = `B$ ${abbreviateNumber(item.cost)}`;
   itemCost.classList.add('item-cost');
   createdItem.appendChild(itemCost);
 
