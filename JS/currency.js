@@ -1,5 +1,6 @@
-import { player, effects, scoreObservers } from './data.js';
+import { effects, scoreObservers } from './data.js';
 import { addHoverTooltip } from "./elements.js";
+import { player } from "./player.js";
 
 
 export function addScoreObserver(fn) {

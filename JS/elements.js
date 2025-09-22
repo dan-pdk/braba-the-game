@@ -1,5 +1,6 @@
 import { abbreviateNumber, addScoreObserver, buyItem, formatTime } from './currency.js';
-import getPlayer, { player, effects, scoreObservers } from './data.js';
+import { effects, scoreObservers } from './data.js';
+import { player } from "./player.js";
 
 export function createScorePopup() {
   const wrapper = document.querySelector('.popup-wrapper');
@@ -225,6 +226,108 @@ export function addHoverTooltip(element, title, description, effectEndTime) {
     clearInterval(intervalID);
   })
 }
+
+export const settings = [];
+
+export function createSetting(name, title, type, defaultValue, minValue, maxValue, description) {
+  const setting = {
+    name: name,
+    title: title,
+    type: type,
+    defaultValue: defaultValue,
+    minValue: minValue,
+    maxValue: maxValue,
+    description: description
+  }
+
+  settings.push(setting);
+  return setting;
+}
+
+export function appendSetting(setting) {
+
+  const settingsGui = document.querySelector('.settings-main-gui');
+
+  
+  const createdSetting = document.createElement('div');
+  settingsGui.appendChild(createdSetting);
+  createdSetting.classList.add('setting-div');
+  setting.element = createdSetting;
+
+  const settingTitle = document.createElement('h1');
+  createdSetting.appendChild(settingTitle);
+  settingTitle.innerHTML = setting.title;
+
+  const settingDescription = document.createElement('p');
+  createdSetting.appendChild(settingDescription);
+  settingDescription.innerHTML = setting.description;
+
+  if (setting.type == "number") {
+    const slider = document.createElement('input');
+    slider.classList.add('settings-slider');
+
+    const valueDisplay = document.createElement('label');
+
+    const wrapper = document.createElement('div');
+    wrapper.appendChild(valueDisplay);
+    wrapper.appendChild(slider);
+
+
+    slider.type = "range";
+    slider.min = setting.minValue;
+    slider.max = setting.maxValue;
+    slider.value = setting.defaultValue;
+    slider.step = 1;
+    player.settings[setting.name] = setting.defaultValue;
+    valueDisplay.textContent = setting.defaultValue;
+
+    slider.addEventListener('input', () => {
+      player.settings[setting.name] = slider.value;
+      valueDisplay.textContent = `${slider.value}`;
+      console.log(player.settings[setting.name]);
+    })
+  } 
+  else if (setting.type == "checkbox") {
+    const checkbox = document.createElement('input');
+    checkbox.classList.add('settings-checkbox');
+    createdSetting.appendChild(checkbox)
+    checkbox.type = "checkbox";
+    checkbox.checked = setting.defaultValue;
+    player.settings[setting.name] = setting.defaultValue;
+
+    checkbox.addEventListener('change', () => {
+      player.settings[setting.name] = checkbox.checked;
+      console.log(player.settings[setting.name]);
+    })
+  } else if (setting.type == "input") {
+    const inputField = document.createElement('input');
+    createdSetting.appendChild(inputField);
+    inputField.classList.add('settings-inputfield');
+    inputField.type = "text";
+
+    player.settings[setting.name] = setting.defaultValue;
+    inputField.value = setting.defaultValue;
+
+    inputField.addEventListener('input', () => {
+      player.settings[setting.name] = inputField.value;
+      console.log(player.settings[setting.name]);
+    })
+  } 
+  else {
+    throw new Error(`${setting.name} tem um type inválido (${setting.type})`);
+  }
+}
+// settings (não fiz um JSON pra isso porque... não? bom, depois eu resolvo isso)
+
+appendSetting(
+  createSetting("clickSfx", "Brabas SFX", 'checkbox', true, '', '', "Cliques no botão fazem barulho.")
+);
+appendSetting(
+  createSetting("buttonScale", "Tamanho do Botão", 'number', 10, 1, 20, "Tamanho que o botão central deve ter.",)
+);
+appendSetting(
+  createSetting("buttonText", "Texto do Botão", 'input', "braba", '', '', "O texto que deve ficar no centro do botão central")
+);
 
 // preguiça, mas adiciona os score observers após scoreObservers[] ser inicializado.
 

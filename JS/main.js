@@ -1,4 +1,5 @@
-import { player, effects } from './data.js';
+import { effects } from './data.js';
+import { player } from "./player.js";
 import { appendShopItem, createScorePopup, createShopItem } from './elements.js';
 import { changeScore, addScoreObserver, addStatusEffect, abbreviateNumber } from './currency.js';
 

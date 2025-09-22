@@ -1,11 +1,5 @@
 import { changeScore, addStatusEffect} from "./currency.js";
-
-export let player = {
-  score: 0,
-  level: 0,
-  scorePerClick: 1,
-  scorePerSecond: 0,
-};
+import { player } from "./player.js";
 
 export let scoreObservers = [];
 
