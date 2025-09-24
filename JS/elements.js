@@ -73,7 +73,7 @@ unlockableButtons[0].element.addEventListener('click', () => {
   if (isShopOpen) {
     shopGui.style.animation = "none";
     shopGui.offsetHeight;
-    shopGui.style.animation = 'shopGuiOpen 1s reverse';
+    shopGui.style.animation = 'shopGuiOpen 0.75s reverse';
     unlockableButtons[0].element.classList.remove('selected-gui-button');
     isShopOpen = false;
     shopGui.addEventListener('animationend', () => {
@@ -84,7 +84,7 @@ unlockableButtons[0].element.addEventListener('click', () => {
   } else {
     shopGui.style.animation = "none";
     shopGui.offsetHeight;
-    shopGui.style.animation = 'shopGuiOpen 1s forwards';
+    shopGui.style.animation = 'shopGuiOpen 0.75s forwards';
     unlockableButtons[0].element.classList.add('selected-gui-button');
     isShopOpen = true;
     shopGui.classList.toggle('hide');
@@ -151,7 +151,7 @@ export function appendShopItem(item) {
 
   itemBuyButton.addEventListener('click', () => {
     if (!item.bought){
-      buyItem(item, getPlayer());
+      buyItem(item, player);
       }
     }
   )
@@ -245,10 +245,8 @@ export function createSetting(name, title, type, defaultValue, minValue, maxValu
 }
 
 export function appendSetting(setting) {
-
   const settingsGui = document.querySelector('.settings-main-gui');
 
-  
   const createdSetting = document.createElement('div');
   settingsGui.appendChild(createdSetting);
   createdSetting.classList.add('setting-div');
@@ -285,7 +283,6 @@ export function appendSetting(setting) {
     slider.addEventListener('input', () => {
       player.settings[setting.name] = slider.value;
       valueDisplay.textContent = `${slider.value}`;
-      console.log(player.settings[setting.name]);
     })
   } 
   else if (setting.type == "checkbox") {
