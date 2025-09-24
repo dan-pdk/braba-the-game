@@ -32,5 +32,8 @@ export const effects = {
   gravadorEffect: (player, item) => {
     player.scorePerSecond += 1;
     changeScore("add", 0);
+  },
+  luizEffect: (player, item) => {
+    player.scorePerSecond += 3;
   }
 };

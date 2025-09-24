@@ -25,5 +25,14 @@
         "description": "Um microfone velho e enferrujado. Definitivamente não dá pro gasto, mas é o que tem pra agora. <br> <span>+1 B$ por segundo</span>",
         "image": "assets/img/item/gravador.png",
         "effect": "gravadorEffect"
+    },
+    {
+        "name": "Luiz",
+        "cost": 500,
+        "minScore": "300",
+        "tier": 1,
+        "description": "Chamado de Luizão, não vai aceitar um suborno menor que 500 brabas. <span>+3 B$ por segundo",
+        "image": "assets/img/item/luiz.png",
+        "effect": "luizEffect"
     }
 ]
