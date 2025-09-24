@@ -269,8 +269,9 @@ export function appendSetting(setting) {
     const valueDisplay = document.createElement('label');
 
     const wrapper = document.createElement('div');
-    wrapper.appendChild(valueDisplay);
     wrapper.appendChild(slider);
+    wrapper.appendChild(valueDisplay);
+    setting.element.appendChild(wrapper)
 
 
     slider.type = "range";

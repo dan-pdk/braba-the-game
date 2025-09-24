@@ -71,3 +71,7 @@ if (devMode) {
     }
   })
 }
+
+// indev 0.0.5:
+// adicionado sistema de configs, ainda não fazem nada
+// planos para itens infinitos

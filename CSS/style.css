@@ -409,7 +409,7 @@ body {
 }
 
 .settings-main-gui {
-    width: 350px;
+    width: 500px;
     min-height: 400px;
     max-height: 75%;
     background-color: #6d6d6d;
@@ -418,6 +418,8 @@ body {
     left: 30px;
 
     transition: 0.75s;
+
+    padding: 5px;
 
     overflow-y: auto;
     overflow-x: hidden;
@@ -434,3 +436,30 @@ body {
     gap: 20px;
 }
 
+.setting-div {
+    min-width: 90%;
+    min-height: 60px;
+    
+    position: relative;
+
+    background-color: #e0e0e0;
+
+    border: 3px solid #c0c0c0;
+    border-radius: 10px;
+    padding: 15px;
+}
+
+.settings-checkbox {
+    width: 40px;
+    height: 40px;
+
+    transition: 0.5s;
+
+    position: absolute;
+    right: 20px;
+    top: 24.5px;
+}
+
+.settings-checkbox:hover {
+    transform: translateY(-3px);
+}
