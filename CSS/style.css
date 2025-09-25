@@ -140,6 +140,17 @@ body {
     cursor: pointer;
 }
 
+#changelog-button {
+    position: absolute;
+    right: 4px;
+    bottom: 4px;
+
+    background: none;
+    border: none;
+
+    cursor: pointer;
+}
+
 .shop-main-gui{
     min-width: 75%;
     max-height: 540px;
@@ -317,25 +328,24 @@ body {
     background-color: rgb(161, 0, 0) !important;
     border: 3px solid rgb(105, 0, 0) !important;
 }
-
-.shop-main-gui::-webkit-scrollbar {
+::-webkit-scrollbar {
     width: 6px;
     z-index: -1;
     scrollbar-gutter: stable;
 }
 
-.shop-main-gui::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
     background-color: #bdbdbd;
     border-radius: 5px;
 }
 
-.shop-main-gui::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
     background-color: #8f8f8f;
     border-radius: 5px;
     transition: 0.2s ease-out;
 }
 
-.shop-main-gui::-webkit-scrollbar-thumb:hover {
+::-webkit-scrollbar-thumb:hover {
     background-color: #6d6d6d;
 }
 
@@ -438,7 +448,7 @@ body {
 
 .setting-div {
     min-width: 90%;
-    min-height: 60px;
+    min-height: 90px;
     
     position: relative;
 
@@ -446,7 +456,31 @@ body {
 
     border: 3px solid #c0c0c0;
     border-radius: 10px;
-    padding: 15px;
+    padding: 10px;
+
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.setting-div > h1 {
+    position: absolute;
+    top: 2px;
+    left: 5px;
+}
+
+.setting-div > p{
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+
+    max-width: 70%;
+}
+
+.setting-div > div {
+    position: absolute;
+    right: 3px;
+    top: 35px;
+    display: flex;
+    flex-direction: column;
 }
 
 .settings-checkbox {
@@ -458,8 +492,16 @@ body {
     position: absolute;
     right: 20px;
     top: 24.5px;
+
+    cursor: pointer;
 }
 
 .settings-checkbox:hover {
     transform: translateY(-3px);
+}
+
+.settings-inputfield {
+    position: absolute;
+    right: 3px;
+    top: 32.5px;
 }

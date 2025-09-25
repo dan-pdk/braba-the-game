@@ -3,6 +3,8 @@ export let player = {
   level: 0,
   scorePerClick: 1,
   scorePerSecond: 0,
-  settings: {},
+  settings: {
+    abbreviateNumbers: true,
+  },
   aura: 0
 };

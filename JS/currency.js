@@ -56,6 +56,10 @@ export function formatTime(timeInMs) {
 }
 
 export function abbreviateNumber(number) {
+  if(!player.settings.abbreviateNumbers) {
+    return number.toString();
+  } 
+
   if (number < 1000) { return number.toString(); }
 
   const suffixes = ['', "k", "M", "B", "T", "Q", "Qui", "Sx"];

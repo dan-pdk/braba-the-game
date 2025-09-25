@@ -1,5 +1,5 @@
 import { abbreviateNumber, addScoreObserver, buyItem, formatTime } from './currency.js';
-import { effects, scoreObservers } from './data.js';
+import { effects, scoreObservers, settingEffects} from './data.js';
 import { player } from "./player.js";
 
 export function createScorePopup() {
@@ -26,7 +26,8 @@ export function createScorePopup() {
 
 const unlockableButtons = [
   { name: "shop", element: document.getElementById('shop-button'), minScore: 40 },
-  { name: "settings", element: document.getElementById('settings-button'), minScore: 10 }
+  { name: "settings", element: document.getElementById('settings-button'), minScore: 10 },
+  
 ]
 
 export function unlockGuiButtons() {
@@ -244,89 +245,81 @@ export function createSetting(name, title, type, defaultValue, minValue, maxValu
   return setting;
 }
 
+export function updateSetting(settingName, value) {
+  player.settings[settingName] = value;
+  if (settingEffects[settingName]) {
+    settingEffects[settingName](value);
+  } 
+};
+
 export function appendSetting(setting) {
   const settingsGui = document.querySelector('.settings-main-gui');
-
   const createdSetting = document.createElement('div');
-  settingsGui.appendChild(createdSetting);
   createdSetting.classList.add('setting-div');
+  createdSetting.id = setting.name;
+  settingsGui.appendChild(createdSetting);
   setting.element = createdSetting;
 
   const settingTitle = document.createElement('h1');
+  settingTitle.textContent = setting.title;
   createdSetting.appendChild(settingTitle);
-  settingTitle.innerHTML = setting.title;
 
   const settingDescription = document.createElement('p');
-  createdSetting.appendChild(settingDescription);
   settingDescription.innerHTML = setting.description;
+  createdSetting.appendChild(settingDescription);
 
-  if (setting.type == "number") {
+  if (setting.type === "number") {
     const slider = document.createElement('input');
+    slider.type = "range";
     slider.classList.add('settings-slider');
+    slider.min = setting.minValue;
+    slider.max = setting.maxValue;
+    slider.step = 1;
+    slider.value = setting.defaultValue;
 
     const valueDisplay = document.createElement('label');
+    valueDisplay.textContent = setting.defaultValue;
 
     const wrapper = document.createElement('div');
     wrapper.appendChild(slider);
     wrapper.appendChild(valueDisplay);
-    setting.element.appendChild(wrapper)
+    createdSetting.appendChild(wrapper);
 
-
-    slider.type = "range";
-    slider.min = setting.minValue;
-    slider.max = setting.maxValue;
-    slider.value = setting.defaultValue;
-    slider.step = 1;
-    player.settings[setting.name] = setting.defaultValue;
-    valueDisplay.textContent = setting.defaultValue;
+    updateSetting(setting.defaultValue);
 
     slider.addEventListener('input', () => {
-      player.settings[setting.name] = slider.value;
-      valueDisplay.textContent = `${slider.value}`;
-    })
-  } 
-  else if (setting.type == "checkbox") {
+      valueDisplay.textContent = slider.value;
+      updateSetting(setting.name, slider.value);
+    });
+
+  } else if (setting.type === "checkbox") {
     const checkbox = document.createElement('input');
-    checkbox.classList.add('settings-checkbox');
-    createdSetting.appendChild(checkbox)
     checkbox.type = "checkbox";
-    checkbox.checked = setting.defaultValue;
-    player.settings[setting.name] = setting.defaultValue;
+    checkbox.classList.add('settings-checkbox');
+    checkbox.checked = setting.defaultValue === "true" || setting.defaultValue === true;
+    createdSetting.appendChild(checkbox);
+
+    updateSetting(setting.name,checkbox.checked);
 
     checkbox.addEventListener('change', () => {
-      player.settings[setting.name] = checkbox.checked;
-      console.log(player.settings[setting.name]);
-    })
-  } else if (setting.type == "input") {
-    const inputField = document.createElement('input');
-    createdSetting.appendChild(inputField);
-    inputField.classList.add('settings-inputfield');
-    inputField.type = "text";
+      updateSetting(setting.name,checkbox.checked)
+    });
 
-    player.settings[setting.name] = setting.defaultValue;
+  } else if (setting.type === "input") {
+    const inputField = document.createElement('input');
+    inputField.type = "text";
+    inputField.classList.add('settings-inputfield');
     inputField.value = setting.defaultValue;
+    createdSetting.appendChild(inputField);
 
     inputField.addEventListener('input', () => {
-      player.settings[setting.name] = inputField.value;
-      console.log(player.settings[setting.name]);
-    })
-  } 
-  else {
+      updateSetting(setting.name, inputField.value)
+    });
+
+  } else {
     throw new Error(`${setting.name} tem um type inválido (${setting.type})`);
   }
 }
-// settings (não fiz um JSON pra isso porque... não? bom, depois eu resolvo isso)
-
-appendSetting(
-  createSetting("clickSfx", "Brabas SFX", 'checkbox', true, '', '', "Cliques no botão fazem barulho.")
-);
-appendSetting(
-  createSetting("buttonScale", "Tamanho do Botão", 'number', 10, 1, 20, "Tamanho que o botão central deve ter.",)
-);
-appendSetting(
-  createSetting("buttonText", "Texto do Botão", 'input', "braba", '', '', "O texto que deve ficar no centro do botão central")
-);
-
 // preguiça, mas adiciona os score observers após scoreObservers[] ser inicializado.
 
 setTimeout(() => {

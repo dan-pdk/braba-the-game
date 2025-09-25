@@ -37,3 +37,25 @@ export const effects = {
     player.scorePerSecond += 3;
   }
 };
+
+export const settingEffects = {
+  buttonScale: (value) => {
+    const button = document.getElementById('main-button');
+    button.style.transform = `scale(${value/10})`;
+  },
+  buttonText: (value) => {
+    const button = document.getElementById('main-button');
+    button.textContent = value;
+  },
+  currencyName: (value) => {
+    changeScore('add', 0)
+  },
+  showChangelog: (value) => {
+    const changelogButton = document.getElementById('changelog-button');
+    if (value == true) {
+      changelogButton.classList.remove('hide');
+    } else {
+      changelogButton.classList.add('hide');
+    }
+  }
+}

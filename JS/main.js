@@ -1,6 +1,6 @@
 import { effects } from './data.js';
 import { player } from "./player.js";
-import { appendShopItem, createScorePopup, createShopItem } from './elements.js';
+import { appendSetting, appendShopItem, createScorePopup, createSetting, createShopItem } from './elements.js';
 import { changeScore, addScoreObserver, addStatusEffect, abbreviateNumber } from './currency.js';
 
 changeScore("add", 0);
@@ -8,7 +8,7 @@ const button = document.getElementById('main-button');
 const scoreDisplay = document.getElementById('score-display');
 
 function updateScoreDisplay(player) {
-  scoreDisplay.textContent = `${abbreviateNumber(player.score)} brabas`;
+  scoreDisplay.textContent = `${abbreviateNumber(player.score)} ${player.settings.currencyName || "brabas"}`;
   document.querySelector('title').textContent = `${abbreviateNumber(player.score)} brabas - Braba Simulator`;
 
   if (player.scorePerSecond > 0) {
@@ -24,6 +24,11 @@ function onClick() {
 }
 
 button.addEventListener('click', onClick);
+button.addEventListener('keypress', () => {
+  if (event.key === "Enter") {
+    event.preventDefault()
+  }
+})
 
 fetch("JS/JSON/shop-items.json")
 .then(response => response.json())
@@ -40,6 +45,23 @@ fetch("JS/JSON/shop-items.json")
     );
     appendShopItem(processedItem);
   });
+})
+
+fetch("JS/JSON/settings.json")
+.then(response => response.json())
+.then(rawSettings => {
+  rawSettings.forEach(rawSetting => {
+    const processedSetting = createSetting(
+      rawSetting.name,
+      rawSetting.title,
+      rawSetting.type,
+      rawSetting.defaultValue,
+      rawSetting.minValue,
+      rawSetting.maxValue,
+      rawSetting.description
+    )
+    appendSetting(processedSetting);
+  })
 })
 
 let devMode = true;
