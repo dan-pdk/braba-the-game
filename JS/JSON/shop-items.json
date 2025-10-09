@@ -1,0 +1,32 @@
+[
+    {
+        "name": "Inspiração",
+        "cost": "50",
+        "costFactor": "1.1",
+        "minScore": "40",
+        "tier": 0,
+        "description": "Você não vai chegar a lugar algum sem um pouco disso. <br> <span>+0.5 B$ por segundo</span>",
+        "image": "assets/img/item/insipracao.png",
+        "effect": "inspiracaoEffect"
+    },
+    {
+        "name": "Diagnóstico",
+        "cost": "150",
+        "costFactor": "1.28",
+        "minScore": "80",
+        "tier": 0,
+        "description": "Uma receita do seu médico favorito para um remédio contra esquizofrenia. Mal sabe ele, isso só faz parte do seu plano. <br> <span></span>",
+        "image": "assets/img/item/borracha.png",
+        "effect": "borrachaEffect"
+    },
+    {
+        "name": "Microfone",
+        "cost": "450",
+        "costFactor": "1.25",
+        "minScore": "200",
+        "tier": 0,
+        "description": "Um microfone velho e enferrujado. Definitivamente não dá pro gasto, mas é o que tem pra agora. <br> <span>+1 B$ por segundo</span>",
+        "image": "assets/img/item/gravador.png",
+        "effect": "gravadorEffect"
+    }
+]

@@ -1,0 +1,572 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+body {
+    width: 100vw;
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    overflow-x: hidden;
+    overflow-y: hidden;
+    
+    background-color: rgb(209, 209, 209);
+}
+
+#dev-mode-info {
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+#main-button {
+    border: 5px solid rgb(24, 134, 24);
+    background-color: rgb(109, 255, 109);
+
+    /* box-shadow: 0px 5px 5px 5px rgba(0, 0, 0, 0.55); */
+
+    cursor: pointer;
+
+    width: 100px;
+    height: 100px;
+
+    border-radius: 50px;
+
+    transition: 0.1s ease-out;
+    user-select: none;
+    
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#main-button:hover {
+    transform: translate(-50%, -50%) scale(1.1);
+    transition: 0.1s ease-out;
+}
+
+#main-button:active {
+    transform: translate(-50%, -50%) scale(0.95);
+    transition: 0.05s ease;
+}
+
+.popup-wrapper {
+    display: hidden;
+
+    position: relative;
+    width: 60%;
+    height: 400px;
+
+    pointer-events: none;
+
+}
+
+#score-display {
+    position: absolute;
+    top: 25px;
+
+    width: fit-content;
+    height: 50px;
+
+    text-align: center;
+
+    font-family: 'Trebuchet MS', sans-serif;
+    
+    background-color: rgb(41, 41, 41);
+    color: white;
+    border-radius: 10px;
+
+    padding: 5px 10px 5px 10px;
+
+    z-index: 99;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#score-ps-display {
+    color: #6d6d6d;
+    font-style: italic;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    
+    position: absolute;
+    top: 80px;
+
+    z-index: 99;
+}
+
+#shop-button {
+    position: absolute;
+    top: calc(100vh / 4);
+    right: 25px;
+
+    transition: 0.75s ease-out;
+
+    padding: 5px;
+
+    user-select: none;
+
+    border: 1px solid #8f8f8f;
+    border-radius: 3px;
+
+    cursor: pointer;
+}
+
+.selected-gui-button {
+    background-color: hsl(118, 59%, 68%);
+    border: 1px hsl(129, 23%, 41%);
+}
+
+#settings-button {
+    position: absolute;
+    top: calc((100vh / 2) - 40px);
+    right: 25px;
+
+    transition: 0.75s ease-in-out;
+
+    padding: 5px 5px 4px 5px;
+
+    user-select: none;
+
+    border: 1px solid #8f8f8f;
+    border-radius: 3px;
+
+    cursor: pointer;
+}
+
+#changelog-button {
+    position: absolute;
+    right: 4px;
+    bottom: 4px;
+
+    background: none;
+    border: none;
+
+    cursor: pointer;
+}
+
+.shop-main-gui{
+    min-width: 75%;
+    max-height: 540px;
+    min-height: 500px;
+
+    overflow-y: auto;
+
+    position: absolute;
+
+    background-color: whitesmoke;
+
+    border-radius: 15px;
+    border: 3px solid gray;
+
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    padding: 5px;
+
+    z-index: 9;
+}
+
+.gui-title {
+    padding: 5px 5px 0px 5px;
+
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-weight: bold;
+}
+
+.item {
+    width: 100%;
+    min-height: 175px;
+
+    position: relative;
+
+    border: 5px solid #bdbdbd;
+    padding: 5px;
+    border-radius: 15px;
+
+    z-index: 10;
+}
+
+.item-title {
+    position: absolute;
+
+    top: 5px;
+    left: 5px;
+
+    user-select: none;
+
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+
+    display: flex;
+    align-items: center;
+}
+
+.item-title span {
+    margin-left: 15px;
+    margin-top: 1px;
+
+    font-size: medium;
+}
+
+.item-image {
+    width: 100px;
+    height: 100px;
+
+    position: absolute;
+    top: 50px;
+    left: 5px;
+}
+
+.tier-0 {
+    background: linear-gradient(270deg,rgba(186, 186, 186, 1) 0%, rgba(235, 235, 235, 1) 100%);
+    border-radius: 5px;
+    padding: 6px;
+}
+
+.tier-1 {
+    background: linear-gradient(270deg,rgba(0, 255, 102, 1) 0%, rgba(168, 255, 168, 1) 100%);
+    border-radius: 5px;
+    padding: 6px;
+}
+
+.tier-2 {
+    background: linear-gradient(270deg,rgba(94, 207, 255, 1) 0%, rgba(5, 255, 230, 1) 100%);
+    border-radius: 5px;
+    padding: 6px;
+}
+
+.tier-3 {
+    background: linear-gradient(270deg,rgba(132, 74, 199, 1) 0%, rgba(65, 32, 176, 1) 100%);
+    border-radius: 5px;
+    padding: 6px;
+}
+
+.tier-4 {
+    background: linear-gradient(270deg,rgba(251, 255, 0, 1) 0%, rgba(232, 172, 42, 1) 100%);
+    border-radius: 5px;
+    padding: 6px;
+}
+
+.item-description {
+    position: absolute;
+    bottom: 15px;
+    left: 120px;
+
+    width: 70%;
+    height: 60px;
+
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-style: italic;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.item-description span {
+    color: blue;
+    font-style: normal;
+}
+
+.item-cost {
+    position: absolute;
+    height: 15px;
+
+    right: 10px;
+
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 35px;
+    font-weight: 300;
+}
+
+.item-buy-button {
+    height: 40px;
+    width: 80px;
+
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    
+    cursor: pointer;
+    user-select: none;
+
+    padding: 25px 50px 25px 50px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: rgb(0, 56, 88);
+    color: white;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+
+    border-radius: 20px;
+    border: 3px solid rgb(0, 36, 88);
+
+    transition: 0.2s ease-out;
+}
+
+.item-buy-button:hover {
+    transform: scale(1.05);
+    background-color: rgb(1, 71, 112);
+    border: 3px solid rgb(1, 42, 100);
+}
+
+.unbuyable {
+    background-color: rgb(161, 0, 0);
+    border: 3px solid rgb(105, 0, 0);
+
+    cursor: default !important;
+    text-align: center;
+}
+
+.unbuyable:hover {
+    transform: scale(1) !important;
+    background-color: rgb(161, 0, 0) !important;
+    border: 3px solid rgb(105, 0, 0) !important;
+}
+::-webkit-scrollbar {
+    width: 6px;
+    z-index: -1;
+    scrollbar-gutter: stable;
+}
+
+::-webkit-scrollbar-track {
+    background-color: #bdbdbd;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #8f8f8f;
+    border-radius: 5px;
+    transition: 0.2s ease-out;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #6d6d6d;
+}
+
+#status-effects {
+    position: absolute;
+    bottom: 30px;
+
+    width: 50%;
+    min-height: 70px;
+
+    display: flex;
+    justify-content: center;
+
+    gap: 15px;
+}
+
+.status-effect-icon {
+    width: 50px;
+    height: 50px;
+}
+
+.tooltip {
+    max-width: 500px;
+    min-width: 300px;
+    height: 120px;
+
+    position: fixed;
+
+    background-color: #c0c0c0;
+
+    box-shadow: 3px 3px 4px 1px rgba(0, 0, 0, 0.39);
+
+    border: 3px solid #8f8f8f;
+    border-radius: 10px;
+
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    
+    padding: 5px;
+}
+
+.tooltip-wrapper > h1 {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+}
+
+.tooltip-wrapper > p {
+    position: absolute;
+    left: 2px;
+    bottom: 2px;
+}
+
+.tooltip-wrapper > div {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+
+    font-size: large;
+}
+
+.tooltip-wrapper {
+    position: relative;
+
+    width: 100%;
+    height: 100%;
+}
+
+.tooltip span {
+    color: blue;
+    font-weight: bold;
+}
+
+.settings-main-gui {
+    width: 500px;
+    min-height: 400px;
+    max-height: 75%;
+    background-color: #6d6d6d;
+
+    position: absolute;
+    left: 30px;
+
+    transition: 0.75s;
+
+    padding: 5px;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    min-height: 75%;
+
+    background-color: whitesmoke;
+
+    border-radius: 15px;
+    border: 3px solid gray;
+
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.setting-div {
+    min-width: 90%;
+    min-height: 90px;
+    
+    position: relative;
+
+    background-color: #e0e0e0;
+
+    border: 3px solid #c0c0c0;
+    border-radius: 10px;
+    padding: 10px;
+
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.setting-div > h1 {
+    position: absolute;
+    top: 2px;
+    left: 5px;
+}
+
+.setting-div > p{
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+
+    max-width: 70%;
+}
+
+.setting-div > div {
+    position: absolute;
+    right: 3px;
+    top: 35px;
+    display: flex;
+    flex-direction: column;
+}
+
+.settings-checkbox {
+    width: 40px;
+    height: 40px;
+
+    transition: 0.5s;
+
+    position: absolute;
+    right: 20px;
+    top: 24.5px;
+
+    cursor: pointer;
+}
+
+.settings-checkbox:hover {
+    transform: translateY(-3px);
+}
+
+.settings-inputfield {
+    position: absolute;
+    right: 3px;
+    top: 32.5px;
+}
+
+#changelog {
+    width: 30%;
+    min-height: 65%;
+    max-height: 80%;
+
+    overflow-y: scroll;
+
+    position: absolute;
+
+    background-color: #bdbdbd;
+
+    border: #8f8f8f solid 3px;
+    border-radius: 10px;
+
+    padding: 5px;
+
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.new-badge {
+    background-color: hsl(110, 96%, 54%);
+    color: white;
+
+    padding: 2px 5px;
+    border-radius: 5px;
+
+    margin-right: 10px;
+
+    font-weight: bold;
+
+    animation: pulse 1s infinite alternate;
+}
+
+.changelog-article {
+    min-width: 100%;
+    border-image: linear-gradient(to right, #252525, #444444) 1;
+
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+.changelog-article ul {
+    list-style-type: circle;
+    list-style-position: inside;
+}
+
+.changelog-article p {
+    text-align: center;
+
+    font-weight: bold;
+}

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>0 Brabas - Braba Simulator</title>
+    <link rel="shortcut icon" href="assets/img/cursor_icon.png" type="image/x-icon">
+    
+    <link rel="stylesheet" href="CSS/style.css">
+    <link rel="stylesheet" href="CSS/animations.css">
+    
+    <script src="JS/main.js" type="module"></script>
+    <script src="JS/currency.js" type="module"></script>
+    <script src="JS/elements.js" type="module"></script>
+</head>
+<body class="dark-mode-affected">
+    <h2 id="score-display">0 brabas</h2>
+    <h5 id="score-ps-display"></h5>
+    <button id="main-button" tabindex="-1">braba</button>
+    <div id="status-effects"></div>
+    <div class="popup-wrapper"></div>
+    <button id="shop-button" class="hide"><img src="assets/img/shopping-icon.png" alt="Shop" width="40px" height="40px" ></button>
+    <button id="settings-button" class="hide"><img src="assets/img/settings-icon.png" alt="Settings" width="40px" height="40px" ></button>
+    <div class="shop-main-gui hide dark-mode-affected"><p class="gui-title">Loja</p></div>
+    <div class="settings-main-gui hide dark-mode-affected"><p class="gui-title">Configurações</p></div>
+
+    <p id="dev-mode-info" class="dark-mode-affected"></p>
+
+    <button id="changelog-button">
+        <img src="assets/img/information.png" width="30px">
+    </button>
+
+    <div id="changelog" class="hide">
+        <h1>Changelog</h1>
+        <div class="changelog-article">
+            <h2>Indev 0.0.4</h2>
+            <p>ITENS INFINITOS!!!</p>
+            <ul>
+                <li>Agora, itens podem ser comprados quantas vezes seu coraçãozinho desejar</li>
+                <li>Toda vez que um item é comprado, seu preço aumenta de acordo com sua raridade</li>
+                <li>Resolvido alguns problemas no carregamento de configurações</li>
+                <li>Todas as configurações agora têm seu devido efeito (exceto Brabas SFX)</li>
+                <li>Os itens serão balanceados em breve para acatar suas mudanças</li>
+                <li>Algumas animações foram adicionadas na compra de itens</li>
+                <li>Texto NOVO! dinâmico ao lado da versão mais recente do Changelog</li>
+            </ul>
+        </div>
+        <div class="changelog-article">
+            <h2>Indev 0.0.3</h2>
+            <p>Prosseguir com o sistema de configs</p>
+            <ul>
+                <li>Botões importantes agora brilham verde quando clicados</li>
+                <li>Algumas das configs já estão funcionando</li>
+                <li>Planos para adição de itens infinitamente compráveis, provavelmente <br>acompanhado de uma reescrita total deles</li>
+                <li>Dev Mode agora é uma configuração separada</li>
+            </ul>
+        </div>
+        <div class="changelog-article">
+            <h2>Indev 0.0.2</h2>
+            <p>Introduzido sistema de configurações</p>
+            <ul>
+                <li>Desbloqueada com 10 B$</li>
+                <li>Permite mudar vários aspectos do jogo</li>
+                <li>Definitivamente não está pronta, mas pode ser adicionado dinamicamente</li>
+                <li>Ajustes em preços de itens</li>
+            </ul>
+        </div>
+        <div class="changelog-article">
+            <h2>Indev 0.0.1</h2>
+            <p>Criação do Changelog</p>
+            <ul>
+                <li>Poderá ser escondido no futuro</li>
+                <li>Registra todas as mudanças significativas</li>
+                <li>Não considere coisas antes dessa versão</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
