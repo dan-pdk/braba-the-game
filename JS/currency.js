@@ -36,7 +36,7 @@ export function adjustPrice(item) {
 
   const countDisplay = item.countDisplay;
   countDisplay.textContent = `Lvl ${abbreviateNumber(
-    player.items[item.name]
+    player.items[item.id]
   )}`
 }
 
@@ -45,22 +45,28 @@ export function canBuy(item, player) {
 }
 
 export function buyItem(item, player) {
-  if (!player.items[item.name]) {
-    player.items[item.name] = 0;
+  if (!player.items[item.id]) {
+    player.items[item.id] = 0;
   }
   if (!canBuy(item, player)) return;
 
   item.element.classList.remove('item-bought-animation');
   item.element.offsetWidth;
-  item.element.classList.add('item-bought-animation');  
+  item.element.classList.add('item-bought-animation');
 
   item.element.addEventListener('animationend', () => {
-  item.element.classList.remove('scaleUp');
+    item.element.classList.remove('scaleUp');
   }, { once: true });
 
   changeScore('remove', item.cost);
-  item.effect(player, item);
-  player.items[item.name] += 1;
+
+  const effectFn = effects[item.id + "Effect"];
+  if (typeof effectFn === "function") {
+    effectFn(player, item);
+  } else {
+    console.log(`Efeito ${item.id}Effect não encontrado em effects`);
+  }
+  player.items[item.id] += 1;
 
   adjustPrice(item);
 }
@@ -70,15 +76,15 @@ export function formatTime(timeInMs) {
   const timeInSeconds = Math.floor(timeInMs / 1000);
 
   const minutes = String(Math.floor(timeInSeconds / 60))
-  .padStart(2, '0');
+    .padStart(2, '0');
   const seconds = String(timeInSeconds % 60)
-  .padStart(2, '0');
+    .padStart(2, '0');
 
   return `${minutes}:${seconds}`;
 }
 
 export function abbreviateNumber(number) {
-  if(!player.settings.abbreviateNumbers) { return number.toString(); } 
+  if (!player.settings.abbreviateNumbers) { return number.toString(); }
   if (number < 1000) { return number.toString(); }
 
   const suffixes = ['', "k", "M", "B", "T", "Q", "Qui", "Sx"];

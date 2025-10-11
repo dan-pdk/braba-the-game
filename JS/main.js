@@ -51,14 +51,14 @@ async function loadGameData() {
 
     rawItems.forEach(rawItem => {
       const processedItem = createShopItem(
+        rawItem.id,
         rawItem.name,
         rawItem.cost,
         rawItem.costFactor,
         rawItem.minScore,
         rawItem.description,
         rawItem.image,
-        rawItem.tier,
-        effects[rawItem.effect]
+        rawItem.tier
       );
       appendShopItem(processedItem);
     });

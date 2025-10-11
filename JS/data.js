@@ -1,4 +1,5 @@
-import { changeScore, addStatusEffect} from "./currency.js";
+import { openDataDeletionScreen } from "./elements.js";
+import { changeScore, addStatusEffect, } from "./currency.js";
 import { toggleDarkMode, toggleDevMode } from "./main.js";
 import { player } from "./player.js";
 
@@ -42,14 +43,14 @@ export const effects = {
 export const settingEffects = {
   buttonScale: (value) => {
     const button = document.getElementById('main-button');
-    button.style.transform = `scale(${value/10})`;
+    button.style.transform = `scale(${value / 10})`;
   },
   buttonText: (value) => {
     const button = document.getElementById('main-button');
     button.textContent = value;
   },
   currencyName: (value) => {
-    changeScore('add', 0)
+    changeScore('add', 0);
   },
   darkMode: (value) => {
     toggleDarkMode();
@@ -65,4 +66,7 @@ export const settingEffects = {
   devMode: (value) => {
     toggleDevMode();
   },
+  resetData: (value) => {
+    openDataDeletionScreen();
+  }
 }

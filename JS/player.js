@@ -7,8 +7,6 @@ export let player = {
     abbreviateNumbers: true,
     devMode: false
   },
-  items: {
-    inspiracao: 1,
-  },
+  items: {},
   aura: 0
 };

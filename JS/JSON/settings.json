@@ -70,5 +70,14 @@
         "minValue": "",
         "maxValue": "",
         "description": "Liga o modo desenvolvedor. Use com cuidado"
+    },
+    {
+        "name": "resetData",
+        "title": "Apagar Dados",
+        "type": "button",
+        "defaultValue": "<span style='color: red;'>Apagar</span>",
+        "minValue": "",
+        "maxValue": "",
+        "description": "Redefine todos os seus dados de jogo, incluindo compras e pontuação"
     }
 ]

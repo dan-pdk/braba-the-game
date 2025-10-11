@@ -106,8 +106,9 @@ changelogButton.addEventListener('click', () => {
 
 const shopItems = [];
 
-export function createShopItem(name, cost, costFactor, minScore, description, image, tier, effect) {
+export function createShopItem(id, name, cost, costFactor, minScore, description, image, tier) {
   const item = {
+    id: id,
     name: name,
     cost: cost,
     costFactor: costFactor,
@@ -115,7 +116,6 @@ export function createShopItem(name, cost, costFactor, minScore, description, im
     description: description,
     image: image,
     tier: tier,
-    effect: effect
   }
   shopItems.push(item);
   return item
@@ -328,17 +328,49 @@ export function appendSetting(setting) {
     createdSetting.appendChild(inputField);
 
     inputField.addEventListener('input', () => {
-      updateSetting(setting.name, inputField.value)
+      updateSetting(setting.name, inputField.value);
     });
+
+  } else if (setting.type === "button") {
+    const button = document.createElement('button');
+    button.classList.add('settings-button-setting');
+    button.innerHTML = setting.defaultValue; // importante
+    createdSetting.appendChild(button);
+
+    button.addEventListener('click', () => {
+      updateSetting(setting.name, 1);
+    })
 
   } else {
     throw new Error(`${setting.name} tem um type inválido (${setting.type})`);
   }
 }
-// preguiça, mas adiciona os score observers após scoreObservers[] ser inicializado.
+
+export function openDataDeletionScreen() {
+  const screen = document.getElementById('confirm-data-delete-wrapper');
+
+  if (screen.classList.contains('hide')) {
+    screen.classList.remove('hide');
+  }
+
+  const yesButton = document.getElementById('delete-yes');
+  const noButton = document.getElementById('delete-no');
+
+  yesButton.addEventListener('click', () => {
+    // delete data
+    window.location.reload();
+  }, {once:true})
+
+  noButton.addEventListener('click', () => {
+    screen.classList.add('hide');
+  }, {once:true});
+}
+
+
+// preguiça, mas adiciona os score observers após scoreObservers[] ser inicializado
 
 setTimeout(() => {
   addScoreObserver(revealItemsWithMinScore);
   addScoreObserver(updateBuyButtonColor);
   addScoreObserver(unlockGuiButtons);
-}, 1);
+}, 5);
