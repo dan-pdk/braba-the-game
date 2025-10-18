@@ -1,6 +1,7 @@
 import { abbreviateNumber, addScoreObserver, buyItem, formatTime } from './currency.js';
 import { effects, scoreObservers, settingEffects} from './data.js';
 import { player } from "./player.js";
+import { resetPlayerData } from './storage.js';
 
 export function createScorePopup() {
   if (player.settings.showPopups == false) return;
@@ -104,15 +105,15 @@ changelogButton.addEventListener('click', () => {
   isChangelogOpen = !isChangelogOpen;
 })
 
-const shopItems = [];
+export const shopItems = [];
 
 export function createShopItem(id, name, cost, costFactor, minScore, description, image, tier) {
   const item = {
     id: id,
     name: name,
-    cost: cost,
-    costFactor: costFactor,
-    minScore: minScore,
+    cost: Number(cost),
+    costFactor: Number(costFactor),
+    minScore: Number(minScore),
     description: description,
     image: image,
     tier: tier,
@@ -164,6 +165,7 @@ export function appendShopItem(item) {
   itemName.appendChild(itemCountDisplay)
 
   item.element = createdItem;
+  item.baseCost = item.cost;
   item.buttonElement = itemBuyButton;
   item.costDisplay = itemCost;
   item.countDisplay = itemCountDisplay;
@@ -357,8 +359,7 @@ export function openDataDeletionScreen() {
   const noButton = document.getElementById('delete-no');
 
   yesButton.addEventListener('click', () => {
-    // delete data
-    window.location.reload();
+    resetPlayerData();
   }, {once:true})
 
   noButton.addEventListener('click', () => {

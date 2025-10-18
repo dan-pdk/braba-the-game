@@ -1,7 +1,15 @@
 import { effects } from './data.js';
 import { player } from "./player.js";
-import { appendSetting, appendShopItem, createScorePopup, createSetting, createShopItem } from './elements.js';
+import { appendSetting, appendShopItem, createScorePopup, createSetting, createShopItem, unlockGuiButtons } from './elements.js';
 import { changeScore, addScoreObserver, addStatusEffect, abbreviateNumber } from './currency.js';
+import { applyPlayerData, loadPlayerData, savePlayerData } from './storage.js';
+
+window.addEventListener('beforeunload', () => {
+  savePlayerData();
+})
+setInterval(() => {
+  savePlayerData();
+}, 15000);
 
 changeScore("add", 0);
 const button = document.getElementById('main-button');
@@ -147,7 +155,11 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-document.addEventListener('DOMContentLoaded', () => {
-  loadGameData();
+document.addEventListener('DOMContentLoaded', async () => {
+  await loadGameData();
+  loadPlayerData();
+  applyPlayerData();
+  changeScore('add', 0);
+  unlockGuiButtons();
 });
 

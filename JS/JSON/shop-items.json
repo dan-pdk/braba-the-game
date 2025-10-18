@@ -2,8 +2,8 @@
     {
         "id": "inspiracao",
         "name": "Inspiração",
-        "cost": "50",
-        "costFactor": "1.1",
+        "cost": 50,
+        "costFactor": 1.1,
         "minScore": "40",
         "tier": 0,
         "description": "Você não vai chegar a lugar algum sem um pouco disso. <br> <span>+0.5 B$ por segundo</span>",
@@ -12,8 +12,8 @@
     {
         "id": "borracha",
         "name": "Diagnóstico",
-        "cost": "150",
-        "costFactor": "1.28",
+        "cost": 150,
+        "costFactor": 1.28,
         "minScore": "80",
         "tier": 0,
         "description": "Uma receita do seu médico favorito para um remédio contra esquizofrenia. Mal sabe ele, isso só faz parte do seu plano. <br> <span></span>",
