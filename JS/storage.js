@@ -33,15 +33,6 @@ export function applyPlayerData() {
     const itemEffect = effects[itemObject.id + "Effect"];
     if (typeof itemEffect !== 'function') continue;
 
-    itemObject.appliedCount = itemObject.appliedCount || 0;
-
-    const toApply = itemCount - itemObject.appliedCount;
-    for (let i = 0; i < toApply; i++) {
-      itemEffect(player, itemObject);
-    }
-    
-    itemObject.appliedCount = itemCount;
-
     itemObject.cost = Math.floor(parseFloat(
         (itemObject.baseCost * Math.pow(itemObject.costFactor, itemCount)).toFixed(1)
     ));
