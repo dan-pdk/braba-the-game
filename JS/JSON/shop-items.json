@@ -3,21 +3,23 @@
         "id": "inspiracao",
         "name": "Inspiração",
         "cost": 50,
-        "costFactor": 1.1,
-        "minScore": 40,
+        "costFactor": 1.14,
+        "minScore": 0,
         "tier": 0,
         "description": "Você não vai chegar a lugar algum sem um pouco disso. <br> <span>+0.5 B$ por segundo</span>",
-        "image": "assets/img/item/insipracao.png"
+        "image": "assets/img/item/insipracao.png",
+        "appliesOnlyStats": "true"
     },
     {
         "id": "borracha",
-        "name": "Diagnóstico",
-        "cost": 150,
-        "costFactor": 1.28,
-        "minScore": 80,
+        "name": "Borracha",
+        "cost": 90,
+        "costFactor": 1.1,
+        "minScore": 65,
         "tier": 0,
-        "description": "Uma receita do seu médico favorito para um remédio contra esquizofrenia. Mal sabe ele, isso só faz parte do seu plano. <br> <span></span>",
-        "image": "assets/img/item/borracha.png"
+        "description": "'Olha, eu não acho que esse é o melhor jeito de usar uma borracha, mas...' <span>A cada 10 cliques, ganhe +2 <marker>(+2 por nível)</marker> B$.</span>",
+        "image": "assets/img/item/borracha.png",
+        "appliesOnlyStats": "false"
     },
     {
         "id": "gravador",
@@ -27,6 +29,7 @@
         "minScore": 200,
         "tier": 0,
         "description": "Um microfone velho e enferrujado. Definitivamente não dá pro gasto, mas é o que tem pra agora. <br> <span>+1 B$ por segundo</span>",
-        "image": "assets/img/item/gravador.png"
+        "image": "assets/img/item/gravador.png",
+        "appliesOnlyStats": "true"
     }
 ]

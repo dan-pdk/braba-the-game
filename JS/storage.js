@@ -30,7 +30,7 @@ export function applyPlayerData() {
     if (!itemObject) continue;
 
     const itemEffect = effects[itemObject.id + "Effect"];
-    if (typeof itemEffect === 'function') {
+    if (itemObject.appliesOnlyStats == 'false') {
       itemEffect(player, itemObject);
     }
 

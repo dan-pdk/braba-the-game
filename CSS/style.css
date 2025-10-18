@@ -69,6 +69,13 @@ body {
     pointer-events: none;
 }
 
+.borracha-buffed-popup {
+    font-weight: bold;
+    font-size: larger;
+
+    animation: animateScorePopup 3s forwards ease-out !important;
+}
+
 #score-display {
     position: absolute;
     top: 25px;
@@ -276,6 +283,11 @@ body {
 .item-description span {
     color: blue;
     font-style: normal;
+}
+
+.item-description marker {
+    color: #007c00;
+    font-style: italic;
 }
 
 .item-cost {

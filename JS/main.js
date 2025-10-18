@@ -29,7 +29,11 @@ setInterval(() => {
 }, 500)
 
 
-function onClick() {
+export function onClick() {
+  if (player.bonuses?.borracha?.isActive) {
+    changeScore('add', player.scorePerClick + 2 * player.items.borracha)
+  }
+
   changeScore('add', player.scorePerClick);
   createScorePopup();
 }
@@ -66,7 +70,8 @@ async function loadGameData() {
         rawItem.minScore,
         rawItem.description,
         rawItem.image,
-        rawItem.tier
+        rawItem.tier,
+        rawItem.appliesOnlyStats
       );
       appendShopItem(processedItem);
     });
@@ -157,7 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const title = newest.querySelector('h2');
     if (title && !title.querySelector('.new-badge')) {
       const badge = document.createElement('span');
-      badge.className = 'new-badge';
+      badge.classList.add('new-badge');
       badge.textContent = 'Novo!';
       title.prepend(badge);
     }
@@ -168,7 +173,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   await loadGameData();
   loadPlayerData();
   applyPlayerData();
-  changeScore('add', 0);
   unlockGuiButtons();
+  setTimeout(() => { changeScore('add', 0)}, 100);
 });
 

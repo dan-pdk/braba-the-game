@@ -9,7 +9,23 @@ export function createScorePopup() {
 
   const popup = document.createElement('div');
   popup.classList.add('score-popup');
-  popup.innerHTML = `+${player.scorePerClick}`;
+  
+  if (player.bonuses?.borracha?.isActive) {
+    popup.classList.add('borracha-buffed-popup');
+    popup.textContent = `+${player.scorePerClick + 2 * player.items.borracha}`;
+    popup.style.display = 'flex';
+    popup.style.alignItems = 'center';
+    popup.style.zIndex = '130'
+    player.bonuses.borracha.isActive = false;
+
+    const icon = document.createElement('img');
+    icon.src = 'assets/img/item/borracha.png';
+    icon.classList.add('popup-icon');
+
+    popup.appendChild(icon);
+  } else {
+    popup.innerHTML = `+${player.scorePerClick}`;
+  }
 
   const wrapperWidth = wrapper.clientWidth;
   const wrapperHeight = wrapper.clientHeight;
@@ -93,8 +109,6 @@ unlockableButtons[0].element.addEventListener('click', () => {
   }
 })
 
-// abrir changelog vai ser bem mais simples. Não vejo necessidade de animação num negócio tão... redundante?
-
 let isChangelogOpen = false;
 const changelogButton = document.querySelector('#changelog-button');
 
@@ -107,7 +121,7 @@ changelogButton.addEventListener('click', () => {
 
 export const shopItems = [];
 
-export function createShopItem(id, name, cost, costFactor, minScore, description, image, tier) {
+export function createShopItem(id, name, cost, costFactor, minScore, description, image, tier, appliesOnlyStats) {
   const item = {
     id: id,
     name: name,
@@ -117,6 +131,7 @@ export function createShopItem(id, name, cost, costFactor, minScore, description
     description: description,
     image: image,
     tier: tier,
+    appliesOnlyStats: appliesOnlyStats
   }
   shopItems.push(item);
   return item

@@ -8,6 +8,7 @@ export let player = {
     devMode: false
   },
   items: {},
+  bonuses: {},
   aura: 0
 };
 
@@ -21,5 +22,10 @@ export let defaultPlayer = {
     devMode: false
   },
   items: {},
+  bonuses: {},
   aura: 0
+}
+
+export function getPlayer() {
+  return player;
 }

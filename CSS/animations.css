@@ -1,6 +1,6 @@
 @keyframes animateScorePopup {
     0% { transform: translateY(0px); opacity: 1;}
-    100% {transform: translateY(-15px); opacity: 0px;}
+    100% {transform: translateY(-15px); opacity: 0;}
 }
 
 @keyframes guiButtonPopup {
@@ -42,6 +42,9 @@
 .dark-mode .item-description span {
     color: aqua;
 }
+.dark-mode .item-description marker {
+    color: greenyellow;
+}
 
 .hide {
     display: none !important;
@@ -60,4 +63,16 @@
     animation: animateScorePopup 1s forwards ease-in-out;
 
     position: absolute;
+}
+
+.score-popup .popup-icon {
+    width: 20px;
+}
+
+.red {
+    color: red;
+}
+
+.italic {
+    font-style: italic;
 }

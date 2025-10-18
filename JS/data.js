@@ -1,6 +1,6 @@
 import { openDataDeletionScreen } from "./elements.js";
 import { changeScore, addStatusEffect, } from "./currency.js";
-import { toggleDarkMode, toggleDevMode } from "./main.js";
+import { toggleDarkMode, toggleDevMode, onClick } from "./main.js";
 import { player } from "./player.js";
 
 export let scoreObservers = [];
@@ -13,7 +13,7 @@ export const effects = {
   inspiracaoEffect: (player, item) => {
     player.scorePerSecond += 0.5;
   },
-  borrachaEffect: (player, item) => {
+  /*borrachaEffect: (player, item) => {
     addStatusEffect(player, item, {
       name: "Borrachado",
       image: "assets/img/item/borracha.png",
@@ -30,6 +30,28 @@ export const effects = {
         item.buttonElement.classList.remove('bought');
       },
     });
+  }, */ // esse aqui tá deprecado, mas vou usar futuramente. deixa aí
+  borrachaEffect: (player, item) => {
+    const button = document.getElementById('main-button');
+
+    if (!player.bonuses) player.bonuses = {};
+    if (!player.bonuses.borracha) {
+      player.bonuses.borracha = { clickCounter: 0, isActive: false };
+    }
+
+    function incrementClickBonus() {
+      if (player.bonuses.borracha.clickCounter >= 10) {
+        player.bonuses.borracha.clickCounter = 0;
+        player.bonuses.borracha.isActive = true;
+      }
+
+      player.bonuses.borracha.clickCounter += 1;
+    }
+
+    if (!button.dataset.hasBorrachaEventListener) {
+      button.addEventListener('click', incrementClickBonus);
+      button.dataset.hasBorrachaEventListener = "true";
+    }
   },
   gravadorEffect: (player, item) => {
     player.scorePerSecond += 1;
