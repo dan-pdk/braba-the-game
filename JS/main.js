@@ -17,7 +17,7 @@ const scoreDisplay = document.getElementById('score-display');
 
 function updateScoreDisplay(player) {
   scoreDisplay.textContent = `${abbreviateNumber(player.score)} ${player.settings.currencyName || "brabas"}`;
-  
+
   if (player.scorePerSecond > 0) {
     const scorePerSecondDisplay = document.getElementById('score-ps-display');
     scorePerSecondDisplay.textContent = `${abbreviateNumber(player.scorePerSecond)} por segundo`
@@ -84,6 +84,17 @@ async function loadGameData() {
       appendSetting(processedSetting);
     });
 
+    window.activeStatusEffects = [];
+
+    window.addEventListener('beforeunload', () => {
+      for (const { player, item, statusEffect } of window.activeStatusEffects) {
+        if (statusEffect && typeof statusEffect.onEnd === 'function') {
+          statusEffect.onEnd(player, item);
+        }
+      }
+      window.activeStatusEffects = [];
+    });
+
     console.log("Shop & Settings data loaded succesfully");
   } catch (error) {
     console.error("Error loading game data", error);
@@ -91,37 +102,35 @@ async function loadGameData() {
 }
 
 function devModeTools(event) {
-  console.log('listening!')
-  console.log(event.key)
   if (event.key === "p") {
-      changeScore("add", 100);
-    } else if (event.key === "o") {
-      player.scorePerSecond += 1;
-    } else if (event.key === "l") {
-      changeScore("remove", player.score);
-    } else if (event.key === "[") {
-      addStatusEffect(player, {}, {
-        name: "Macaco",
-        image: "assets/img/item/test.png",
-        description: "tem um macaco na minha tela<br><span>+macaco na tela</span>",
-        duration: 100000,
+    changeScore("add", 100);
+  } else if (event.key === "o") {
+    player.scorePerSecond += 1;
+  } else if (event.key === "l") {
+    changeScore("remove", player.score);
+  } else if (event.key === "[") {
+    addStatusEffect(player, {}, {
+      name: "Macaco",
+      image: "assets/img/item/test.png",
+      description: "tem um macaco na minha tela<br><span>+macaco na tela</span>",
+      duration: 100000,
 
-        onStart: (player, item) => {
-         console.log("oi");
-        },
-        onEnd: (player, item) => {
+      onStart: (player, item) => {
+        console.log("oi");
+      },
+      onEnd: (player, item) => {
         console.log("macaco sumiu kakapa");
-        },
-      })
-    }
+      },
+    })
+  }
 }
 
 export function toggleDevMode() {
   if (player.settings.devMode == true) {
-  const info = document.querySelector('#dev-mode-info');
-  info.innerHTML = "Dev Mode on<br>O: +1 braba/s<br>P: +100 brabas <br> L: Reset brabas<br> [: Teste de Status Effect";
+    const info = document.querySelector('#dev-mode-info');
+    info.innerHTML = "Dev Mode on<br>O: +1 braba/s<br>P: +100 brabas <br> L: Reset brabas<br> [: Teste de Status Effect";
 
-  document.body.addEventListener('keypress', devModeTools)
+    document.body.addEventListener('keypress', devModeTools)
   } else {
     const info = document.getElementById('dev-mode-info');
     info.innerHTML = "";
@@ -138,7 +147,7 @@ export function toggleDarkMode() {
     } else {
       element.classList.remove('dark-mode');
     }
-  }) 
+  })
 }
 
 document.addEventListener('DOMContentLoaded', () => {

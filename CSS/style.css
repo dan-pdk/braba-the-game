@@ -537,6 +537,8 @@ body {
 }
 
 #changelog {
+    z-index: 199;
+    
     width: 30%;
     min-height: 65%;
     max-height: 80%;
@@ -544,6 +546,8 @@ body {
     overflow-y: scroll;
 
     position: absolute;
+
+    color: black !important;
 
     background-color: #bdbdbd;
 

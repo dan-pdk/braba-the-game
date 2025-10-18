@@ -1,5 +1,5 @@
 import { abbreviateNumber, addScoreObserver, buyItem, formatTime } from './currency.js';
-import { effects, scoreObservers, settingEffects} from './data.js';
+import { effects, scoreObservers, settingEffects } from './data.js';
 import { player } from "./player.js";
 import { resetPlayerData } from './storage.js';
 
@@ -29,7 +29,7 @@ export function createScorePopup() {
 const unlockableButtons = [
   { name: "shop", element: document.getElementById('shop-button'), minScore: 40 },
   { name: "settings", element: document.getElementById('settings-button'), minScore: 10 },
-  
+
 ]
 
 export function unlockGuiButtons() {
@@ -171,8 +171,8 @@ export function appendShopItem(item) {
   item.countDisplay = itemCountDisplay;
 
   itemBuyButton.addEventListener('click', () => {
-      buyItem(item, player);
-    }
+    buyItem(item, player);
+  }
   )
 };
 
@@ -224,17 +224,17 @@ export function addHoverTooltip(element, title, description, effectEndTime) {
     intervalID = setInterval(() => {
       const timeLeft = effectEndTime - Date.now();
       tooltipTime.innerHTML = `⏳ ${formatTime(timeLeft)
-    }`;
-    if (timeLeft <= 0) {
-      tooltip.classList.add('hide');
-      clearInterval(intervalID);
-    }
-  }, 50)
+        }`;
+      if (timeLeft <= 0) {
+        tooltip.classList.add('hide');
+        clearInterval(intervalID);
+      }
+    }, 50)
   });
 
   element.addEventListener('mousemove', (event) => {
     tooltip.style.left = `${event.clientX + 15}px`;
-    tooltip.style.top = `${(event.clientY - tooltip.clientHeight) -10}px`;
+    tooltip.style.top = `${(event.clientY - tooltip.clientHeight) - 10}px`;
   });
 
   element.addEventListener('mouseleave', () => {
@@ -266,7 +266,7 @@ export function updateSetting(settingName, value) {
   player.settings[settingName] = value;
   if (settingEffects[settingName]) {
     settingEffects[settingName](value);
-  } 
+  }
 };
 
 export function appendSetting(setting) {
@@ -285,56 +285,59 @@ export function appendSetting(setting) {
   settingDescription.innerHTML = setting.description;
   createdSetting.appendChild(settingDescription);
 
+  const settingButton = document.createElement('input');
+  createdSetting.appendChild(settingButton);
+
   if (setting.type === "number") {
-    const slider = document.createElement('input');
-    slider.type = "range";
-    slider.classList.add('settings-slider');
-    slider.min = setting.minValue;
-    slider.max = setting.maxValue;
-    slider.step = 1;
-    slider.value = setting.defaultValue;
+    settingButton.type = "range";
+    settingButton.classList.add('settings-slider');
+    settingButton.min = setting.minValue;
+    settingButton.max = setting.maxValue;
+    settingButton.step = 1;
+    settingButton.value = setting.defaultValue;
 
     const valueDisplay = document.createElement('label');
     valueDisplay.textContent = setting.defaultValue;
 
     const wrapper = document.createElement('div');
-    wrapper.appendChild(slider);
+    wrapper.appendChild(settingButton);
     wrapper.appendChild(valueDisplay);
     createdSetting.appendChild(wrapper);
 
     updateSetting(setting.defaultValue);
 
-    slider.addEventListener('input', () => {
-      valueDisplay.textContent = slider.value;
-      updateSetting(setting.name, slider.value);
+    setting.numberDisplayElement = valueDisplay;
+
+    settingButton.addEventListener('input', () => {
+      valueDisplay.textContent = settingButton.value;
+      updateSetting(setting.name, settingButton.value);
     });
 
   } else if (setting.type === "checkbox") {
-    const checkbox = document.createElement('input');
-    checkbox.type = "checkbox";
-    checkbox.classList.add('settings-checkbox');
-    checkbox.checked = setting.defaultValue === "true" || setting.defaultValue === true;
-    createdSetting.appendChild(checkbox);
+    settingButton.type = "checkbox";
+    settingButton.classList.add('settings-checkbox');
+    settingButton.checked = setting.defaultValue === "true" || setting.defaultValue === true;
+    createdSetting.appendChild(settingButton);
 
-    updateSetting(setting.name,checkbox.checked);
+    updateSetting(setting.name, settingButton.checked);
 
-    checkbox.addEventListener('change', () => {
-      updateSetting(setting.name,checkbox.checked)
+    settingButton.addEventListener('change', () => {
+      updateSetting(setting.name, settingButton.checked)
     });
 
   } else if (setting.type === "input") {
-    const inputField = document.createElement('input');
-    inputField.type = "text";
-    inputField.classList.add('settings-inputfield');
-    inputField.value = setting.defaultValue;
-    createdSetting.appendChild(inputField);
+    settingButton.type = "text";
+    settingButton.classList.add('settings-inputfield');
+    settingButton.value = setting.defaultValue;
+    createdSetting.appendChild(settingButton);
 
-    inputField.addEventListener('input', () => {
-      updateSetting(setting.name, inputField.value);
+    settingButton.addEventListener('input', () => {
+      updateSetting(setting.name, settingButton.value);
     });
 
   } else if (setting.type === "button") {
-    const button = document.createElement('button');
+    settingButton.classList.add('hide');
+    var button = document.createElement('button');
     button.classList.add('settings-button-setting');
     button.innerHTML = setting.defaultValue; // importante
     createdSetting.appendChild(button);
@@ -344,8 +347,10 @@ export function appendSetting(setting) {
     })
 
   } else {
-    throw new Error(`${setting.name} tem um type inválido (${setting.type})`);
+    throw new Error(`${setting.name} has invalid type (${setting.type})`);
   }
+
+  setting.buttonElement = (setting.type === "button") ? button : settingButton; // odeio ternário mano
 }
 
 export function openDataDeletionScreen() {
@@ -360,11 +365,11 @@ export function openDataDeletionScreen() {
 
   yesButton.addEventListener('click', () => {
     resetPlayerData();
-  }, {once:true})
+  }, { once: true })
 
   noButton.addEventListener('click', () => {
     screen.classList.add('hide');
-  }, {once:true});
+  }, { once: true });
 }
 
 

@@ -97,28 +97,38 @@ export function abbreviateNumber(number) {
   return treatedNumber + suffix;
 }
 
+const activeStatusEffects = [];
+
 export function addStatusEffect(player, item, statusEffect) {
   const wrapper = document.getElementById('status-effects');
 
   const effectElement = document.createElement('img');
   wrapper.appendChild(effectElement);
-
   effectElement.src = statusEffect.image;
   effectElement.classList.add('status-effect-icon');
 
   const effectEndTime = Date.now() + statusEffect.duration;
-
   addHoverTooltip(effectElement, statusEffect.name, statusEffect.description, effectEndTime);
 
   statusEffect.onStart(player, item);
-  setTimeout(() => {
+
+  const endEffect = () => {
     statusEffect.onEnd(player, item);
     effectElement.style.animation = "shrinkAndDissapear 1s forwards";
-    effectElement.addEventListener('animationend', () => {
-      effectElement.remove();
-    })
-  }, statusEffect.duration);
+    effectElement.addEventListener('animationend', () => effectElement.remove());
+  };
+
+  const timeoutId = setTimeout(endEffect, statusEffect.duration);
+
+  const effectObject = { statusEffect, player, item, element: effectElement, endEffect, timeoutId };
+  activeStatusEffects.push(effectObject);
+
+  return effectObject;
 }
+
+window.addEventListener('beforeunload', () => {
+  activeStatusEffects.forEach(effectObj => effectObj.endEffect());
+});
 
 let decimalTracker = 0;
 setInterval(() => {

@@ -1,13 +1,12 @@
 import { player, defaultPlayer } from "./player.js";
-import { shopItems } from "./elements.js";
+import { shopItems, settings } from "./elements.js";
 import { changeScore, abbreviateNumber } from "./currency.js";
-import { effects } from "./data.js";
+import { effects, settingEffects } from "./data.js";
 
 export function savePlayerData() {
   if (player) {
     const savedPlayer = JSON.stringify(player);
     window.localStorage.setItem("playerData", savedPlayer);
-    console.log("Successfully stored player data");
   }
 }
 export function loadPlayerData() {
@@ -19,29 +18,55 @@ export function loadPlayerData() {
   const playerData = JSON.parse(rawRetrievedData);
 
   Object.assign(player, playerData);
-  console.log("Successfully loaded player data:", playerData);
-  console.log(player);
+
 }
 
 export function applyPlayerData() {
+  // itens
   for (const [itemId, itemCount] of Object.entries(player.items)) {
     if (!itemCount) continue;
 
-    const itemObject = shopItems.find((i) => { return i.id === itemId; })
+    const itemObject = shopItems.find(i => i.id === itemId)
     if (!itemObject) continue;
 
     const itemEffect = effects[itemObject.id + "Effect"];
-    if (typeof itemEffect !== 'function') continue;
+    if (typeof itemEffect === 'function') {
+      itemEffect(player, itemObject);
+    }
 
-    itemObject.cost = Math.floor(parseFloat(
-        (itemObject.baseCost * Math.pow(itemObject.costFactor, itemCount)).toFixed(1)
-    ));
+    itemObject.cost = Math.floor(itemObject.baseCost * Math.pow(itemObject.costFactor, itemCount));
     itemObject.count = itemCount;
 
     if (itemObject.costDisplay)
       itemObject.costDisplay.textContent = `B$ ${abbreviateNumber(itemObject.cost)}`;
     if (itemObject.countDisplay)
       itemObject.countDisplay.textContent = `Lvl ${abbreviateNumber(itemCount)}`;
+  }
+
+  // settings
+  if (player.settings) {
+    for (const [settingName, value] of Object.entries(player.settings)) {
+      const settingObject = settings.find(i => i.name === settingName)
+      if (!settingObject) continue;
+
+      if (settingObject.buttonElement.type === "checkbox") {
+        settingObject.buttonElement.checked = value === true || value === "true";
+      } else if (settingObject.buttonElement.type === "range") {
+        settingObject.buttonElement.value = value;
+        if (settingObject.numberDisplayElement) {
+          settingObject.numberDisplayElement.textContent = value;
+        }
+      } else if (settingObject.buttonElement.type === "text") {
+        settingObject.buttonElement.value = value;
+      } else if (settingObject.buttonElement.tagName === "BUTTON") {
+        settingObject.buttonElement.innerHTML = value;
+      }
+
+      const applySetting = settingEffects[settingName];
+      if (typeof applySetting === 'function') {
+        applySetting(value);
+      }
+    }
   }
 }
 
