@@ -68,6 +68,14 @@ export function applyPlayerData() {
       }
     }
   }
+
+  // outros
+  if (player.bonuses?.gravador) {
+  player.scorePerSecond -= player.bonuses.gravador.currentBonus || 0;
+  player.bonuses.gravador.currentBonus = 0;
+  player.bonuses.gravador.isActive = false;
+}
+
 }
 
 export function getSavedPlayer() {

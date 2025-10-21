@@ -6,7 +6,7 @@
         "costFactor": 1.14,
         "minScore": 0,
         "tier": 0,
-        "description": "Você não vai chegar a lugar algum sem um pouco disso. <br> <span>+0.5 B$ por segundo</span>",
+        "description": "Você não vai chegar a lugar algum sem um pouco disso. <br> <span>+0.5 <marker>(+0.5 por nível)</marker> B$ por segundo</span>",
         "image": "assets/img/item/insipracao.png",
         "appliesOnlyStats": "true"
     },
@@ -17,19 +17,19 @@
         "costFactor": 1.1,
         "minScore": 65,
         "tier": 0,
-        "description": "'Olha, eu não acho que esse é o melhor jeito de usar uma borracha, mas...' <span>A cada 10 cliques, ganhe +2 <marker>(+2 por nível)</marker> B$.</span>",
+        "description": "'Olha, eu não acho que esse é o melhor jeito de usar uma borracha, mas...' <span>A cada 10 cliques, ganhe +2 <marker>(+2 por nível)</marker> B$</span>",
         "image": "assets/img/item/borracha.png",
         "appliesOnlyStats": "false"
     },
     {
         "id": "gravador",
         "name": "Microfone",
-        "cost": 450,
+        "cost": 500,
         "costFactor": 1.25,
-        "minScore": 200,
+        "minScore": 250,
         "tier": 0,
-        "description": "Um microfone velho e enferrujado. Definitivamente não dá pro gasto, mas é o que tem pra agora. <br> <span>+1 B$ por segundo</span>",
+        "description": "Um microfone velho e enferrujado. Você não sabe porquê, mas, os sons da braba começam a ecoar na sua cabeça... <br> <span>Enquanto estiver ativamente clicando, cada clique aumenta suas B$ por segundo, até um limite de 5 <marker>(+5 por nível)</marker></span>",
         "image": "assets/img/item/gravador.png",
-        "appliesOnlyStats": "true"
+        "appliesOnlyStats": "false"
     }
 ]

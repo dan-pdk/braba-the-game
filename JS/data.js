@@ -1,5 +1,5 @@
 import { openDataDeletionScreen } from "./elements.js";
-import { changeScore, addStatusEffect, } from "./currency.js";
+import { changeScore, addStatusEffect, abbreviateNumber, } from "./currency.js";
 import { toggleDarkMode, toggleDevMode, onClick } from "./main.js";
 import { player } from "./player.js";
 
@@ -13,24 +13,6 @@ export const effects = {
   inspiracaoEffect: (player, item) => {
     player.scorePerSecond += 0.5;
   },
-  /*borrachaEffect: (player, item) => {
-    addStatusEffect(player, item, {
-      name: "Borrachado",
-      image: "assets/img/item/borracha.png",
-      description: "Você se sente mais... seco? <br><span>+1 B$/clique</span>",
-      duration: 30000,
-
-      onStart: (player, item) => {
-        player.scorePerClick += 1;
-      },
-      onEnd: (player, item) => {
-        player.scorePerClick -= 1;
-        item.bought = false;
-        item.buttonElement.textContent = "Comprar";
-        item.buttonElement.classList.remove('bought');
-      },
-    });
-  }, */ // esse aqui tá deprecado, mas vou usar futuramente. deixa aí
   borrachaEffect: (player, item) => {
     const button = document.getElementById('main-button');
 
@@ -54,10 +36,37 @@ export const effects = {
     }
   },
   gravadorEffect: (player, item) => {
-    player.scorePerSecond += 1;
-    changeScore("add", 0);
+    const button = document.getElementById("main-button");
+    if (!player.bonuses) player.bonuses = {};
+    if (!player.bonuses.gravador) {
+      player.bonuses.gravador = { currentBonus: 0, maxBonus: 0, isActive: false }
+    };
+
+    const bonus = player.bonuses.gravador;
+    bonus.maxBonus = player.items[item.id] * 5;
+
+    let endTimer;
+    function handleClicks() {
+      if (bonus.currentBonus < bonus.maxBonus) {
+        player.scorePerSecond++;
+        bonus.currentBonus++;
+        bonus.isActive = true;
+      }
+
+      clearTimeout(endTimer);
+      endTimer = setTimeout(() => {
+        player.scorePerSecond -= bonus.currentBonus;
+        bonus.currentBonus = 0;
+        bonus.isActive = false;
+      }, 1567);
+    }
+
+    if (!button.dataset.hasMicrofoneListener) {
+      button.addEventListener("click", handleClicks);
+      button.dataset.hasMicrofoneListener = "true";
+    }
   }
-};
+}
 
 export const settingEffects = {
   buttonScale: (value) => {

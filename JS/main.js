@@ -15,18 +15,22 @@ changeScore("add", 0);
 const button = document.getElementById('main-button');
 const scoreDisplay = document.getElementById('score-display');
 
-function updateScoreDisplay(player) {
+export function updateScoreDisplay() {
   scoreDisplay.textContent = `${abbreviateNumber(player.score)} ${player.settings.currencyName || "brabas"}`;
 
   if (player.scorePerSecond > 0) {
     const scorePerSecondDisplay = document.getElementById('score-ps-display');
-    scorePerSecondDisplay.textContent = `${abbreviateNumber(player.scorePerSecond)} por segundo`
+    if (player.bonuses?.gravador?.isActive) {
+      scorePerSecondDisplay.innerHTML = `${abbreviateNumber(player.scorePerSecond - player.bonuses.gravador.currentBonus)} <marker class="green">+${abbreviateNumber(player.bonuses.gravador.currentBonus)}</marker><img src="assets/img/item/gravador.png" width="10px"> por segundo`
+    } else {
+      scorePerSecondDisplay.innerHTML = `${abbreviateNumber(player.scorePerSecond)} por segundo`
+    }
   }
 };
 addScoreObserver(updateScoreDisplay);
 setInterval(() => {
   document.querySelector('title').textContent = `${abbreviateNumber(player.score)} brabas - Braba Simulator`;
-}, 500)
+}, 1000)
 
 
 export function onClick() {
@@ -176,4 +180,3 @@ document.addEventListener('DOMContentLoaded', async () => {
   unlockGuiButtons();
   setTimeout(() => { changeScore('add', 0)}, 100);
 });
-

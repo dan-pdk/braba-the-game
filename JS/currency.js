@@ -50,6 +50,9 @@ export function buyItem(item, player) {
   }
   if (!canBuy(item, player)) return;
 
+  player.items[item.id] += 1;
+  console.log(`Successfully bought item ${item.id}. Count is now ${player.items[item.id]}`);
+
   item.element.classList.remove('item-bought-animation');
   item.element.offsetWidth;
   item.element.classList.add('item-bought-animation');
@@ -59,16 +62,16 @@ export function buyItem(item, player) {
   }, { once: true });
 
   changeScore('remove', item.cost);
+  adjustPrice(item);
 
   const effectFn = effects[item.id + "Effect"];
-  if (typeof effectFn === "function") {
-    effectFn(player, item);
-  } else {
-    console.log(`Efeito ${item.id}Effect não encontrado em effects`);
-  }
-  player.items[item.id] += 1;
 
-  adjustPrice(item);
+  if (typeof effectFn === "function") {
+    queueMicrotask(() => { effectFn(player, item); });
+  } else {
+    console.warn(`[DEBUG] No effect found for ${item.id}`);
+  }
+
 }
 
 
