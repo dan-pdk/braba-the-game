@@ -9,6 +9,9 @@ export let player = {
   },
   items: {},
   bonuses: {},
+  extras: {
+    hasUsedDevMode: false
+  },
   aura: 0
 };
 
@@ -23,6 +26,9 @@ export let defaultPlayer = {
   },
   items: {},
   bonuses: {},
+  extras: {
+    hasUsedDevMode: false
+  },
   aura: 0
 }
 

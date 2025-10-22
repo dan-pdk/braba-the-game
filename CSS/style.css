@@ -21,10 +21,49 @@ body {
 
 #dev-mode-info {
     position: absolute;
+    top: 5px;
+
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+
+    cursor: pointer;
+    user-select: none;
+}
+
+#dev-mode-info:hover {
+    text-decoration: underline;
+}
+
+#dev-mode-details {
+    min-width: 150px;
+
+    border-radius: 15px;
+    border: hsl(0, 0%, 50%) 3px solid;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+
+    padding: 7px;
+
+    background-color: hsl(0, 0%, 60%);
+
+    position: absolute;
     bottom: 5px;
     left: 5px;
 
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+
+    z-index: 1;
+}
+
+#dev-mode-details > #close-button {
+    width: 20px;
+    height: 20px;
+    
+    border-radius: 99px;
+    border: none;
+
+    cursor: pointer;
 }
 
 #main-button {
@@ -384,6 +423,7 @@ body {
 .status-effect-icon {
     width: 50px;
     height: 50px;
+    cursor: help;
 }
 
 .tooltip {

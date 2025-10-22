@@ -31,5 +31,16 @@
         "description": "Um microfone velho e enferrujado. Você não sabe porquê, mas, os sons da braba começam a ecoar na sua cabeça... <br> <span>Enquanto estiver ativamente clicando, cada clique aumenta suas B$ por segundo, até um limite de 5 <marker>(+5 por nível)</marker></span>",
         "image": "assets/img/item/gravador.png",
         "appliesOnlyStats": "false"
+    },
+    {
+        "id": "tijolo",
+        "name": "Tijolo",
+        "cost": 1250,
+        "costFactor": 1.2,
+        "minScore": 700,
+        "tier": 1,
+        "description": "O tijolo nada mais é que o cúmulo da alvenaria humana. A base da civilização. Uma materialização viva da engenhosidade que sustenta a raça humana desde os primórdios. Mas, acho que você tem outros planos...<br> <span>Ao ficar mais de 5 segundos sem clicar, arremesse um tijolo e ganhe +100% <marker>(+100% por nível)</marker> de B$ no próximo clique.</span>",
+        "image": "assets/img/item/tijolo.png",
+        "appliesOnlyStats": "false"
     }
 ]

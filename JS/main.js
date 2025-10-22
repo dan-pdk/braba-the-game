@@ -111,39 +111,41 @@ async function loadGameData() {
 }
 
 function devModeTools(event) {
-  if (event.key === "p") {
+  if (event.key == "p") {
     changeScore("add", 100);
-  } else if (event.key === "o") {
+  } else if (event.key == "o") {
     player.scorePerSecond += 1;
-  } else if (event.key === "l") {
+  } else if (event.key == "l") {
     changeScore("remove", player.score);
-  } else if (event.key === "[") {
-    addStatusEffect(player, {}, {
+  } else if (event.key == "[") {
+    addStatusEffect({}, {
       name: "Macaco",
       image: "assets/img/item/test.png",
       description: "tem um macaco na minha tela<br><span>+macaco na tela</span>",
-      duration: 100000,
-
+      duration: 10000,
       onStart: (player, item) => {
         console.log("oi");
       },
       onEnd: (player, item) => {
         console.log("macaco sumiu kakapa");
       },
-    })
+    },
+  '0');
   }
 }
 
 export function toggleDevMode() {
+  const info = document.getElementById('dev-mode-info');
   if (player.settings.devMode == true) {
-    const info = document.querySelector('#dev-mode-info');
-    info.innerHTML = "Dev Mode on<br>O: +1 braba/s<br>P: +100 brabas <br> L: Reset brabas<br> [: Teste de Status Effect";
-
+    info.classList.remove('hide');
     document.body.addEventListener('keypress', devModeTools)
   } else {
-    const info = document.getElementById('dev-mode-info');
-    info.innerHTML = "";
+    info.classList.add('hide');
     document.body.removeEventListener('keypress', devModeTools)
+  }
+
+  if (!player.extras.hasUsedDevMode) {
+    player.extras.hasUsedDevMode = true;
   }
 }
 

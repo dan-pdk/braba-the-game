@@ -1,5 +1,5 @@
 import { player, defaultPlayer } from "./player.js";
-import { shopItems, settings } from "./elements.js";
+import { shopItems, settings, devModeInfo } from "./elements.js";
 import { changeScore, abbreviateNumber } from "./currency.js";
 import { effects, settingEffects } from "./data.js";
 
@@ -71,10 +71,12 @@ export function applyPlayerData() {
 
   // outros
   if (player.bonuses?.gravador) {
-  player.scorePerSecond -= player.bonuses.gravador.currentBonus || 0;
-  player.bonuses.gravador.currentBonus = 0;
-  player.bonuses.gravador.isActive = false;
-}
+    player.scorePerSecond -= player.bonuses.gravador.currentBonus || 0;
+    player.bonuses.gravador.currentBonus = 0;
+    player.bonuses.gravador.isActive = false;
+  }
+  
+  devModeInfo();
 
 }
 

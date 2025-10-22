@@ -65,6 +65,13 @@ export const effects = {
       button.addEventListener("click", handleClicks);
       button.dataset.hasMicrofoneListener = "true";
     }
+  },
+  tijoloEffect: (player, item) => {
+    const button = document.getElementById('main-button');
+
+    if(!player.bonuses.tijolo) {player.bonuses.tijolo = {isActive: false, multiplier: 2}}
+
+    
   }
 }
 

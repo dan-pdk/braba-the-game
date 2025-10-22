@@ -42,10 +42,18 @@ export function createScorePopup() {
   popup.addEventListener('animationend', () => popup.remove());
 }
 
+export function devModeInfo() {
+  const button = document.getElementById('dev-mode-info');
+  const info = document.getElementById('dev-mode-details');
+  const closeButton = document.querySelector('#dev-mode-details > #close-button');
+
+  closeButton.addEventListener('click', () => info.classList.add('hide'))
+  button.addEventListener('click', () => info.classList.remove('hide'))
+}
+
 const unlockableButtons = [
   { name: "shop", element: document.getElementById('shop-button'), minScore: 40 },
   { name: "settings", element: document.getElementById('settings-button'), minScore: 10 },
-
 ]
 
 export function unlockGuiButtons() {

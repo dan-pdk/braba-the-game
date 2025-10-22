@@ -51,7 +51,6 @@ export function buyItem(item, player) {
   if (!canBuy(item, player)) return;
 
   player.items[item.id] += 1;
-  console.log(`Successfully bought item ${item.id}. Count is now ${player.items[item.id]}`);
 
   item.element.classList.remove('item-bought-animation');
   item.element.offsetWidth;
@@ -100,9 +99,13 @@ export function abbreviateNumber(number) {
   return treatedNumber + suffix;
 }
 
-const activeStatusEffects = [];
+export const activeStatusEffects = [];
 
-export function addStatusEffect(player, item, statusEffect) {
+export function hasStatusEffect(effectName) {
+  return activeStatusEffects.some(obj => obj.statusEffect.name === effectName)
+}
+
+export function addStatusEffect(item, statusEffect, type) {
   const wrapper = document.getElementById('status-effects');
 
   const effectElement = document.createElement('img');
@@ -118,7 +121,8 @@ export function addStatusEffect(player, item, statusEffect) {
   const endEffect = () => {
     statusEffect.onEnd(player, item);
     effectElement.style.animation = "shrinkAndDissapear 1s forwards";
-    effectElement.addEventListener('animationend', () => effectElement.remove());
+    effectElement.addEventListener('animationend', () => effectElement.remove()
+  );
   };
 
   const timeoutId = setTimeout(endEffect, statusEffect.duration);
