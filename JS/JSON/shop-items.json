@@ -3,7 +3,7 @@
         "id": "inspiracao",
         "name": "Inspiração",
         "cost": 50,
-        "costFactor": 1.14,
+        "costFactor": 1.1,
         "minScore": 0,
         "tier": 0,
         "description": "Você não vai chegar a lugar algum sem um pouco disso. <br> <span>+0.5 <marker>(+0.5 por nível)</marker> B$ por segundo</span>",
@@ -13,7 +13,7 @@
     {
         "id": "borracha",
         "name": "Borracha",
-        "cost": 90,
+        "cost": 100,
         "costFactor": 1.1,
         "minScore": 65,
         "tier": 0,
@@ -24,8 +24,8 @@
     {
         "id": "gravador",
         "name": "Microfone",
-        "cost": 500,
-        "costFactor": 1.25,
+        "cost": 450,
+        "costFactor": 1.15,
         "minScore": 250,
         "tier": 0,
         "description": "Um microfone velho e enferrujado. Você não sabe porquê, mas, os sons da braba começam a ecoar na sua cabeça... <br> <span>Enquanto estiver ativamente clicando, cada clique aumenta suas B$ por segundo, até um limite de 5 <marker>(+5 por nível)</marker></span>",
