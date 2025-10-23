@@ -77,7 +77,6 @@ export function applyPlayerData() {
   }
   
   devModeInfo();
-
 }
 
 export function getSavedPlayer() {

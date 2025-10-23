@@ -105,7 +105,7 @@ export function hasStatusEffect(effectName) {
   return activeStatusEffects.some(obj => obj.statusEffect.name === effectName)
 }
 
-export function addStatusEffect(item, statusEffect, type) {
+export function addStatusEffect(item, statusEffect, hasTimer) {
   const wrapper = document.getElementById('status-effects');
 
   const effectElement = document.createElement('img');
@@ -113,7 +113,7 @@ export function addStatusEffect(item, statusEffect, type) {
   effectElement.src = statusEffect.image;
   effectElement.classList.add('status-effect-icon');
 
-  const effectEndTime = Date.now() + statusEffect.duration;
+  const effectEndTime = hasTimer ? Date.now() + statusEffect.duration : null;
   addHoverTooltip(effectElement, statusEffect.name, statusEffect.description, effectEndTime);
 
   statusEffect.onStart(player, item);
@@ -121,16 +121,47 @@ export function addStatusEffect(item, statusEffect, type) {
   const endEffect = () => {
     statusEffect.onEnd(player, item);
     effectElement.style.animation = "shrinkAndDissapear 1s forwards";
-    effectElement.addEventListener('animationend', () => effectElement.remove()
-  );
+    effectElement.addEventListener("animationend", () => effectElement.remove());
   };
 
-  const timeoutId = setTimeout(endEffect, statusEffect.duration);
+  let timeoutId = null;
+  if (hasTimer) {
+    timeoutId = setTimeout(endEffect, statusEffect.duration);
+  }
 
-  const effectObject = { statusEffect, player, item, element: effectElement, endEffect, timeoutId };
+  const effectObject = {
+    statusEffect,
+    player,
+    item,
+    element: effectElement,
+    endEffect,
+    timeoutId,
+    hasTimer
+  };
+
   activeStatusEffects.push(effectObject);
 
   return effectObject;
+}
+
+export function removeStatusEffect(effectName) {
+  const index = activeStatusEffects.findIndex(effectObj => effectObj.statusEffect.name === effectName);
+  if (index === -1) return false;
+
+  const effectObject = activeStatusEffects[index];
+
+  clearTimeout(effectObject.timeoutId);
+
+  effectObject.statusEffect.onEnd(effectObject.player, effectObject.item);
+
+  const element = effectObject.element;
+  if (element && element.isConnected) {
+    element.style.animation = "shrinkAndDissapear 1s forwards";
+    element.addEventListener("animationend", () => element.remove(), { once: true });
+  }
+  activeStatusEffects.splice(index, 1);
+
+  return true;
 }
 
 window.addEventListener('beforeunload', () => {

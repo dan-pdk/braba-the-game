@@ -1,5 +1,5 @@
 import { openDataDeletionScreen } from "./elements.js";
-import { changeScore, addStatusEffect, abbreviateNumber, } from "./currency.js";
+import { changeScore, addStatusEffect, abbreviateNumber, removeStatusEffect, hasStatusEffect, } from "./currency.js";
 import { toggleDarkMode, toggleDevMode, onClick } from "./main.js";
 import { player } from "./player.js";
 
@@ -26,7 +26,8 @@ export const effects = {
         player.bonuses.borracha.clickCounter = 0;
         player.bonuses.borracha.isActive = true;
       }
-
+      
+      console.log(player.bonuses.borracha.clickCounter);
       player.bonuses.borracha.clickCounter += 1;
     }
 
@@ -69,9 +70,50 @@ export const effects = {
   tijoloEffect: (player, item) => {
     const button = document.getElementById('main-button');
 
-    if(!player.bonuses.tijolo) {player.bonuses.tijolo = {isActive: false, multiplier: 2}}
+    if (!player.bonuses.tijolo) { player.bonuses.tijolo = { isActive: false, multiplier: 2, delay: 5000 } }
 
-    
+    const bonus = player.bonuses.tijolo;
+    bonus.multiplier = player.items[item.id] + 1;
+
+    function addTijoloEffect() {
+      addStatusEffect(item, {
+        name: "Tijolado",
+        image: "assets/img/item/tijolo.png",
+        description: `Você está armado até os dentes. Colocar em bolsa, arremessar... qualquer coisa.<br><span>+${player.items[item.id] + 1}x  B$ no próximo clique</span>`,
+        duration: 0,
+        onStart: () => {},
+        onEnd: () => {}
+      }, false);
+    }
+    removeStatusEffect("Tijolado");
+    addTijoloEffect();
+
+    let timeWithoutClicking;
+    function handleTijoloClicks() {
+      if (hasStatusEffect("Tijolado")) {
+
+        if (player.bonuses.borracha?.isActive) {
+          changeScore('add', (((2 * player.items.borracha + player.scorePerClick)) * multiplier));
+        } else {
+          changeScore('add', player.scorePerClick * bonus.multiplier);
+        }
+
+        removeStatusEffect("Tijolado");
+        timeWithoutClicking = setTimeout(() => {
+          addTijoloEffect();
+        }, bonus.delay);
+      } else {
+        clearTimeout(timeWithoutClicking)
+        timeWithoutClicking = setTimeout(() => {
+          addTijoloEffect();
+        }, bonus.delay);
+      }
+    }
+
+    if (!button.dataset.hasTijoloEventListener) {
+      button.addEventListener('click', handleTijoloClicks);
+      button.dataset.hasTijoloEventListener = "true";
+    }
   }
 }
 

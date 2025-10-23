@@ -1,7 +1,7 @@
 import { effects } from './data.js';
 import { player } from "./player.js";
 import { appendSetting, appendShopItem, createScorePopup, createSetting, createShopItem, unlockGuiButtons } from './elements.js';
-import { changeScore, addScoreObserver, addStatusEffect, abbreviateNumber } from './currency.js';
+import { changeScore, addScoreObserver, addStatusEffect, abbreviateNumber, removeStatusEffect } from './currency.js';
 import { applyPlayerData, loadPlayerData, savePlayerData } from './storage.js';
 
 window.addEventListener('beforeunload', () => {
@@ -37,9 +37,8 @@ export function onClick() {
   if (player.bonuses?.borracha?.isActive) {
     changeScore('add', player.scorePerClick + 2 * player.items.borracha)
   }
-
   changeScore('add', player.scorePerClick);
-  createScorePopup();
+  createScorePopup(player.scorePerClick);
 }
 
 button.addEventListener('click', onClick);
@@ -127,10 +126,10 @@ function devModeTools(event) {
         console.log("oi");
       },
       onEnd: (player, item) => {
-        console.log("macaco sumiu kakapa");
+        console.log("macaco sumiu");
       },
     },
-  '0');
+  true);
   }
 }
 

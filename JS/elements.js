@@ -3,13 +3,13 @@ import { effects, scoreObservers, settingEffects } from './data.js';
 import { player } from "./player.js";
 import { resetPlayerData } from './storage.js';
 
-export function createScorePopup() {
+export function createScorePopup(value) {
   if (player.settings.showPopups == false) return;
   const wrapper = document.querySelector('.popup-wrapper');
 
   const popup = document.createElement('div');
   popup.classList.add('score-popup');
-  
+
   if (player.bonuses?.borracha?.isActive) {
     popup.classList.add('borracha-buffed-popup');
     popup.textContent = `+${player.scorePerClick + 2 * player.items.borracha}`;
@@ -24,7 +24,7 @@ export function createScorePopup() {
 
     popup.appendChild(icon);
   } else {
-    popup.innerHTML = `+${player.scorePerClick}`;
+    popup.innerHTML = `+${value}`;
   }
 
   const wrapperWidth = wrapper.clientWidth;
@@ -244,15 +244,20 @@ export function addHoverTooltip(element, title, description, effectEndTime) {
     tooltipTitle.innerHTML = title;
     tooltipDescription.innerHTML = description;
 
-    intervalID = setInterval(() => {
-      const timeLeft = effectEndTime - Date.now();
-      tooltipTime.innerHTML = `⏳ ${formatTime(timeLeft)
-        }`;
-      if (timeLeft <= 0) {
-        tooltip.classList.add('hide');
-        clearInterval(intervalID);
-      }
-    }, 50)
+
+    if (effectEndTime != null) {
+      intervalID = setInterval(() => {
+        const timeLeft = effectEndTime - Date.now();
+        tooltipTime.innerHTML = `⏳ ${formatTime(timeLeft)
+          }`;
+        if (timeLeft <= 0) {
+          tooltip.classList.add('hide');
+          clearInterval(intervalID);
+        }
+      }, 50)
+    } else {
+      tooltipTime.innerHTML = ``;
+    }
   });
 
   element.addEventListener('mousemove', (event) => {
