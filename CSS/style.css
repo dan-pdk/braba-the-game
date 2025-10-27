@@ -115,6 +115,34 @@ body {
     animation: animateScorePopup 3s forwards ease-out !important;
 }
 
+.crit-popup {
+    font-weight: bold;
+    font-size: xx-large;
+
+    animation: animateScorePopup 4s forwards ease-out !important;
+
+    color: rgb(255, 187, 0);
+
+    display: flex;
+}
+
+.crit-popup > img {
+    width: 30px;
+}
+
+.tijolo-popup {
+    font-weight: bold;
+    font-size: larger;
+
+    animation: animateScorePopup 3s forwards ease-out !important;
+
+    display: flex;
+}
+
+.tijolo-popup > img {
+    width: 20px;
+}
+
 #score-display {
     position: absolute;
     top: 25px;

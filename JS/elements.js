@@ -3,16 +3,16 @@ import { effects, scoreObservers, settingEffects } from './data.js';
 import { player } from "./player.js";
 import { resetPlayerData } from './storage.js';
 
-export function createScorePopup(value) {
+export function createScorePopup(value, type) {
   if (player.settings.showPopups == false) return;
   const wrapper = document.querySelector('.popup-wrapper');
 
   const popup = document.createElement('div');
   popup.classList.add('score-popup');
 
-  if (player.bonuses?.borracha?.isActive) {
+  if (type == 'borracha') {
     popup.classList.add('borracha-buffed-popup');
-    popup.textContent = `+${player.scorePerClick + 2 * player.items.borracha}`;
+    popup.textContent = `+${value}`;
     popup.style.display = 'flex';
     popup.style.alignItems = 'center';
     popup.style.zIndex = '130'
@@ -23,8 +23,29 @@ export function createScorePopup(value) {
     icon.classList.add('popup-icon');
 
     popup.appendChild(icon);
+  } else if (type == 'crit') {
+    popup.classList.add('crit-popup');
+
+    popup.textContent = `+${value}!`;
+    const bIcon = document.createElement('img');
+    const tIcon = document.createElement('img');
+
+    bIcon.src = `assets/img/item/borracha.png`;
+    tIcon.src = `assets/img/item/tijolo.png`;
+
+    popup.appendChild(bIcon);
+    popup.appendChild(tIcon);
+
+    player.bonuses.borracha.isActive = false;
+  } else if (type == 'tijolo') {
+    popup.classList.add('tijolo-popup');
+    const icon = document.createElement('img');
+    icon.src = `assets/img/item/tijolo.png`;
+
+    popup.textContent = `+${value}`;
+    popup.appendChild(icon);
   } else {
-    popup.innerHTML = `+${value}`;
+    popup.textContent = `+${value}`;
   }
 
   const wrapperWidth = wrapper.clientWidth;

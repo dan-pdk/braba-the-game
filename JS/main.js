@@ -1,7 +1,7 @@
 import { effects } from './data.js';
 import { player } from "./player.js";
 import { appendSetting, appendShopItem, createScorePopup, createSetting, createShopItem, unlockGuiButtons } from './elements.js';
-import { changeScore, addScoreObserver, addStatusEffect, abbreviateNumber, removeStatusEffect } from './currency.js';
+import { changeScore, addScoreObserver, addStatusEffect, abbreviateNumber, removeStatusEffect, hasStatusEffect } from './currency.js';
 import { applyPlayerData, loadPlayerData, savePlayerData } from './storage.js';
 
 window.addEventListener('beforeunload', () => {
@@ -32,13 +32,28 @@ setInterval(() => {
   document.querySelector('title').textContent = `${abbreviateNumber(player.score)} brabas - Braba Simulator`;
 }, 1000)
 
-
 export function onClick() {
-  if (player.bonuses?.borracha?.isActive) {
-    changeScore('add', player.scorePerClick + 2 * player.items.borracha)
+  const tijoloActive = hasStatusEffect("Tijolado");
+  const borrachaActive = player.bonuses?.borracha?.isActive;
+  const tijoloMultiplier = player.bonuses?.tijolo?.multiplier || 1;
+  const borrachaLvl = player.items?.borracha || 0;
+
+  let value = player.scorePerClick;
+  let type = 'default';
+
+  if (borrachaActive && tijoloActive) {
+    value += 2 * borrachaLvl * tijoloMultiplier;
+    type = 'crit'
+  } else if (borrachaActive) {
+    value += 2 * borrachaLvl;
+    type = 'borracha';
+  } else if (tijoloActive) {
+    value *= tijoloMultiplier;
+    type = 'tijolo';
   }
-  changeScore('add', player.scorePerClick);
-  createScorePopup(player.scorePerClick);
+
+  changeScore('add', value);
+  createScorePopup(value, type);
 }
 
 button.addEventListener('click', onClick);
@@ -115,6 +130,7 @@ function devModeTools(event) {
   } else if (event.key == "o") {
     player.scorePerSecond += 1;
   } else if (event.key == "l") {
+    player.scorePerSecond = 0;
     changeScore("remove", player.score);
   } else if (event.key == "[") {
     addStatusEffect({}, {
