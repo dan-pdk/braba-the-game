@@ -50,8 +50,19 @@
         "costFactor": 1.05,
         "minScore": 1600,
         "tier": 0,
-        "description": "'O pré-treino é o melhor amigo do homem', disse você depois de tomar um de madrugada ao invés de creatina. <span>Ganhe +1 B$ <marker>(+1 por nível)</marker>, mas, após cada compra nova, espere 30 <marker>(-1 por nível)</marker> segundos para o efeito bater.",
+        "description": "'O pré-treino é o melhor amigo do homem', disse você depois de tomar um de madrugada ao invés de creatina. <span>Ganhe +1 B$ <marker>(+1 por nível)</marker> por clique, mas, após cada compra nova, espere 30 <marker>(-1 por nível)</marker> segundos para o efeito bater.",
         "image": "assets/img/item/pretreino.png",
         "appliesOnlyStats": "true"
+    },
+    {
+        "id": "carteira",
+        "name": "Carteira",
+        "cost": 5000,
+        "costFactor": 1.1,
+        "minScore": 3000,
+        "tier": 1,
+        "description": "'O que tu tá estudando?'<br>'Brabonomia.'<span>Todas as brabas ganhas são também armazenadas na carteira. Ao atingir 500 <marker>(+10 por nível)</marker>, ganhe +5% <marker>(+5% por nível)</marker> de B$ sobre o valor armazenado, além do valor original.",
+        "image": "assets/img/item/carteira.png",
+        "appliesOnlyStats": "false"
     }
 ]

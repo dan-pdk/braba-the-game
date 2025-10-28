@@ -1,7 +1,7 @@
-import { openDataDeletionScreen } from "./elements.js";
-import { changeScore, addStatusEffect, abbreviateNumber, removeStatusEffect, hasStatusEffect, } from "./currency.js";
+import { drawProgressBar, openDataDeletionScreen, updateProgressBar } from "./elements.js";
+import { changeScore, addStatusEffect, abbreviateNumber, removeStatusEffect, hasStatusEffect, addScoreObserver } from "./currency.js";
 import { toggleDarkMode, toggleDevMode, onClick } from "./main.js";
-import { player } from "./player.js";
+import { player, log } from "./player.js";
 
 export let scoreObservers = [];
 
@@ -16,18 +16,31 @@ export const effects = {
   borrachaEffect: (player, item) => {
     const button = document.getElementById('main-button');
 
-    if (!player.bonuses) player.bonuses = {};
     if (!player.bonuses.borracha) {
       player.bonuses.borracha = { clickCounter: 0, isActive: false };
     }
 
+    drawProgressBar({
+      id: "borracha-progress",
+      icon: "assets/img/item/borracha.png",
+      color: "#7c8bfc",
+      current: 0,
+      max: 10,
+      label: null
+    })
+
     function incrementClickBonus() {
+      updateProgressBar('borracha-progress', {
+        current: player.bonuses.borracha.clickCounter,
+        max: 10,
+        label: null
+      })
       if (player.bonuses.borracha.clickCounter >= 10) {
         player.bonuses.borracha.clickCounter = 0;
         player.bonuses.borracha.isActive = true;
+      } else {
+        player.bonuses.borracha.clickCounter += 1;
       }
-      player.bonuses.borracha.clickCounter += 1;
-      console.log('is borracha active?' + player.bonuses.borracha.isActive)
     }
 
     if (!button.dataset.hasBorrachaEventListener) {
@@ -80,8 +93,8 @@ export const effects = {
         image: "assets/img/item/tijolo.png",
         description: `Você está armado até os dentes. Colocar em bolsa, arremessar... qualquer coisa.<br><span>+${player.items[item.id] + 1}x mais B$ no próximo clique</span>`,
         duration: 0,
-        onStart: () => {},
-        onEnd: () => {}
+        onStart: () => { },
+        onEnd: () => { }
       }, false);
     }
     removeStatusEffect("Tijolado");
@@ -110,14 +123,79 @@ export const effects = {
       image: "assets/img/effects/cariani.png",
       description: "AGORA VAI! AGORA VAI!!<span><br>+1 B$/clique ao final</span>",
       duration: effectTime,
-      onStart: (player, item) => {},
+      onStart: () => { },
       onEnd: (player, item) => {
         player.scorePerClick++;
       },
     },
-  true);
+      true);
+  },
+  carteiraEffect: (player, item) => {
+    if (!player.bonuses.carteira) {
+      player.bonuses.carteira = {
+        max: 500,
+        collected: 0,
+        multiplier: 0,
+        listenerAdded: false,
+        isApplyingReward: false
+      };
 
+    }
+
+    drawProgressBar({
+      id: "carteira-progress",
+      icon: "assets/img/item/carteira.png",
+      color: "#61f533",
+      current: 0,
+      max: 500 + (player.items[item.id] * 10),
+      label: null
+    });
+    
+    const bonus = player.bonuses.carteira;
+    bonus.multiplier = parseFloat((player.items[item.id] * 0.05).toFixed(2));
+    bonus.max = 490 + (player.items[item.id] * 10);
+    
+    updateProgressBar('carteira-progress', {
+      current: bonus.collected,
+      max: bonus.max,
+      label: null
+    });
+
+    // cria o listener uma vez
+    if (!bonus.handleCarteiraScore) {
+      bonus.handleCarteiraScore = function handleCarteiraScore(newScore, diff) {
+        if (diff <= 0 || bonus.isApplyingReward) return;
+
+        bonus.collected += diff;
+
+        updateProgressBar('carteira-progress', {
+            current: bonus.collected,
+            max: bonus.max,
+            label: null
+          });
+        
+        while (bonus.collected >= bonus.max) {
+          bonus.collected -= bonus.max;
+          const reward = Math.floor(bonus.max * bonus.multiplier);
+
+          updateProgressBar('carteira-progress', {
+            current: bonus.collected,
+            max: bonus.max,
+            label: null
+          });
+
+          bonus.isApplyingReward = true;
+          changeScore('add', reward);
+          bonus.isApplyingReward = false;
+
+          console.log(`bonus carteira: +${reward} (${bonus.multiplier * 100}% de ${bonus.max})`);
+        }
+      };
+
+      addScoreObserver(bonus.handleCarteiraScore);
+    }
   }
+
 }
 
 

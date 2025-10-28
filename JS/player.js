@@ -35,3 +35,14 @@ export let defaultPlayer = {
 export function getPlayer() {
   return player;
 }
+
+// other util functions
+export function log(query) {
+  return console.log(query); // só pra escrever menos
+}
+export function hide(element) {
+  return element.classList.add('hide');
+}
+export function show(element) {
+  return element.classList.remove('hide');
+}

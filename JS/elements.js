@@ -220,7 +220,7 @@ export function appendShopItem(item) {
   )
 };
 
-function revealItemsWithMinScore(player) {
+function revealItemsWithMinScore() {
   shopItems.forEach(item => {
     if (player.score >= item.minScore && item.element.classList.contains('hide')) {
       item.element.classList.remove('hide');
@@ -228,7 +228,7 @@ function revealItemsWithMinScore(player) {
   })
 }
 
-function updateBuyButtonColor(player) {
+function updateBuyButtonColor() {
   shopItems.forEach(item => {
     if (player.score >= item.cost) {
       const buyButton = item.buttonElement;
@@ -421,9 +421,73 @@ export function openDataDeletionScreen() {
   }, { once: true });
 }
 
+export function drawProgressBar({ 
+  id, 
+  icon = null, 
+  color = "#4caf50", 
+  current = 0, 
+  max = 100, 
+  label = "", 
+  containerId = "progress-bars-wrapper" 
+}) {
+  const existing = document.getElementById(id);
+  if (existing) existing.remove();
+
+  const wrapper = document.createElement("div");
+  wrapper.classList.add("progress-wrapper");
+  wrapper.id = id;
+
+  if (icon) {
+    const img = document.createElement("img");
+    img.src = icon;
+    img.classList.add("progress-icon");
+    wrapper.appendChild(img);
+  }
+
+  const text = document.createElement("span");
+  text.classList.add("progress-label");
+  text.innerHTML = label
+    ? `${label}: ${current} / ${max}`
+    : `${current} / ${max}`;
+  wrapper.appendChild(text);
+
+  const bar = document.createElement("div");
+  bar.classList.add("progress-bar");
+  wrapper.appendChild(bar);
+
+  const fill = document.createElement("div");
+  fill.classList.add("progress-fill");
+  fill.style.width = `${Math.min((current / max) * 100, 100)}%`;
+  fill.style.backgroundColor = color;
+  bar.appendChild(fill);
+
+
+  const container = document.getElementById(containerId) || document.body;
+  container.appendChild(wrapper);
+
+  return wrapper;
+}
+
+export function updateProgressBar(id, { current, max, color, label }) {
+  const wrapper = document.getElementById(id);
+  if (!wrapper) return;
+
+  const fill = wrapper.querySelector(".progress-fill");
+  const text = wrapper.querySelector(".progress-label");
+
+  if (fill && typeof current === "number" && typeof max === "number") {
+    const percent = Math.min((current / max) * 100, 100);
+    fill.style.width = `${percent}%`;
+  }
+
+  fill.style.backgroundColor = color;
+
+  if (text && (label || typeof current === "number")) {
+    text.innerHTML = label ? `${label}: ${current} / ${max}` : `${current} / ${max}`;
+  }
+}
 
 // preguiça, mas adiciona os score observers após scoreObservers[] ser inicializado
-
 setTimeout(() => {
   addScoreObserver(revealItemsWithMinScore);
   addScoreObserver(updateBuyButtonColor);

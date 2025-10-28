@@ -3,11 +3,19 @@ import { addHoverTooltip } from "./elements.js";
 import { player } from "./player.js";
 
 
-export function addScoreObserver(fn) {
-  scoreObservers.push(fn);
+export function addScoreObserver(observerFn) {
+  scoreObservers.push(observerFn);
+}
+
+export function notifyScoreObservers(newScore, diff) {
+  for (const observer of scoreObservers) {
+    observer(newScore, diff);
+  }
 }
 
 export function changeScore(operation, amount) {
+  const oldScore = player.score;
+
   switch (operation) {
     case 'add':
       player.score += amount;
@@ -22,9 +30,8 @@ export function changeScore(operation, amount) {
       player.score = amount;
   }
 
-  scoreObservers.forEach(fn => {
-    fn(player);
-  });
+  const diff = player.score - oldScore;
+  notifyScoreObservers(player.score, diff);
 }
 
 export function adjustPrice(item) {
@@ -153,10 +160,10 @@ export function removeStatusEffect(effectName, callEnd) {
 
   clearTimeout(effectObject.timeoutId);
 
-  if (callEnd) effectObject.statusEffect.onEnd(effectObject.player, effectObject.item);
+  effectObject.statusEffect.onEnd(effectObject.player, effectObject.item);
 
   const element = effectObject.element;
-  if (element && element.isConnected) {
+  if (element) {
     element.style.animation = "shrinkAndDissapear 1s forwards";
     element.addEventListener("animationend", () => element.remove(), { once: true });
   }

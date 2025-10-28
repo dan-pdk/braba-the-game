@@ -16,9 +16,7 @@ export function loadPlayerData() {
     return;
   }
   const playerData = JSON.parse(rawRetrievedData);
-
   Object.assign(player, playerData);
-
 }
 
 export function applyPlayerData() {
@@ -74,6 +72,11 @@ export function applyPlayerData() {
     player.scorePerSecond -= player.bonuses.gravador.currentBonus || 0;
     player.bonuses.gravador.currentBonus = 0;
     player.bonuses.gravador.isActive = false;
+  }
+
+  if (player.bonuses?.borracha) {
+    player.bonuses.borracha.clickCounter = 0;
+    player.bonuses.borracha.isActive = false;
   }
   
   devModeInfo();
