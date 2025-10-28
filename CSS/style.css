@@ -505,6 +505,10 @@ body {
     font-weight: bold;
 }
 
+.tooltip marker {
+    color: #d60000;
+}
+
 .settings-main-gui {
     width: 500px;
     min-height: 400px;

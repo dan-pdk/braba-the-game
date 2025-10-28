@@ -59,7 +59,7 @@ export function onClick() {
 button.addEventListener('click', onClick);
 button.addEventListener('keypress', () => {
   if (event.key === "Enter") {
-    event.preventDefault()
+    event.preventDefault();
   }
 })
 

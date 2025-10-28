@@ -42,5 +42,16 @@
         "description": "O tijolo nada mais é que o cúmulo da alvenaria humana. A base da civilização. Uma materialização viva da engenhosidade que sustenta a raça humana desde os primórdios. Mas, acho que você tem outros planos...<br> <span>Ao ficar mais de 5 segundos sem clicar, arremesse um tijolo e ganhe +100% <marker>(+100% por nível)</marker> de B$ no próximo clique.</span>",
         "image": "assets/img/item/tijolo.png",
         "appliesOnlyStats": "false"
+    },
+    {
+        "id": "pretreino",
+        "name": "Pré-Treino",
+        "cost": 2500,
+        "costFactor": 1.05,
+        "minScore": 1600,
+        "tier": 0,
+        "description": "'O pré-treino é o melhor amigo do homem', disse você depois de tomar um de madrugada ao invés de creatina. <span>Ganhe +1 B$ <marker>(+1 por nível)</marker>, mas, após cada compra nova, espere 30 <marker>(-1 por nível)</marker> segundos para o efeito bater.",
+        "image": "assets/img/item/pretreino.png",
+        "appliesOnlyStats": "true"
     }
 ]

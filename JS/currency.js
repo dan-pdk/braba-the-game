@@ -106,6 +106,7 @@ export function hasStatusEffect(effectName) {
 }
 
 export function addStatusEffect(item, statusEffect, hasTimer) {
+  if (statusEffect.duration == null) {statusEffect.onEnd(player, item); return;}
   const wrapper = document.getElementById('status-effects');
 
   const effectElement = document.createElement('img');
@@ -144,7 +145,7 @@ export function addStatusEffect(item, statusEffect, hasTimer) {
   return effectObject;
 }
 
-export function removeStatusEffect(effectName) {
+export function removeStatusEffect(effectName, callEnd) {
   const index = activeStatusEffects.findIndex(effectObj => effectObj.statusEffect.name === effectName);
   if (index === -1) return false;
 
@@ -152,7 +153,7 @@ export function removeStatusEffect(effectName) {
 
   clearTimeout(effectObject.timeoutId);
 
-  effectObject.statusEffect.onEnd(effectObject.player, effectObject.item);
+  if (callEnd) effectObject.statusEffect.onEnd(effectObject.player, effectObject.item);
 
   const element = effectObject.element;
   if (element && element.isConnected) {
@@ -160,13 +161,11 @@ export function removeStatusEffect(effectName) {
     element.addEventListener("animationend", () => element.remove(), { once: true });
   }
   activeStatusEffects.splice(index, 1);
-
-  return true;
 }
 
-window.addEventListener('beforeunload', () => {
-  activeStatusEffects.forEach(effectObj => effectObj.endEffect());
-});
+// window.addEventListener('beforeunload', () => {
+//   activeStatusEffects.forEach(effectObj => effectObj.endEffect());
+// });
 
 let decimalTracker = 0;
 setInterval(() => {

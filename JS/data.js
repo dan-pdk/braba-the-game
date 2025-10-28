@@ -78,10 +78,10 @@ export const effects = {
       addStatusEffect(item, {
         name: "Tijolado",
         image: "assets/img/item/tijolo.png",
-        description: `Você está armado até os dentes. Colocar em bolsa, arremessar... qualquer coisa.<br><span>+${player.items[item.id] + 1}x  B$ no próximo clique</span>`,
+        description: `Você está armado até os dentes. Colocar em bolsa, arremessar... qualquer coisa.<br><span>+${player.items[item.id] + 1}x mais B$ no próximo clique</span>`,
         duration: 0,
-        onStart: () => { },
-        onEnd: () => { }
+        onStart: () => {},
+        onEnd: () => {}
       }, false);
     }
     removeStatusEffect("Tijolado");
@@ -98,12 +98,28 @@ export const effects = {
       }
     }
 
-if (!button.dataset.hasTijoloEventListener) {
-  button.addEventListener('click', handleTijoloClicks);
-  button.dataset.hasTijoloEventListener = "true";
-}
+    if (!button.dataset.hasTijoloEventListener) {
+      button.addEventListener('click', handleTijoloClicks);
+      button.dataset.hasTijoloEventListener = "true";
+    }
+  },
+  pretreinoEffect: (player, item) => {
+    const effectTime = (30 - player.items[item.id] >= 0) ? (30 - player.items[item.id]) * 1000 : null;
+    addStatusEffect({}, {
+      name: "Absorvendo",
+      image: "assets/img/effects/cariani.png",
+      description: "AGORA VAI! AGORA VAI!!<span><br>+1 B$/clique ao final</span>",
+      duration: effectTime,
+      onStart: (player, item) => {},
+      onEnd: (player, item) => {
+        player.scorePerClick++;
+      },
+    },
+  true);
+
   }
 }
+
 
 export const settingEffects = {
   buttonScale: (value) => {
@@ -119,6 +135,12 @@ export const settingEffects = {
   },
   darkMode: (value) => {
     toggleDarkMode();
+    const tooltip = document.querySelector('.tooltip');
+    if (tooltip && value == true) {
+      tooltip.style.backgroundColor = `#252525`;
+    } else {
+      tooltip.style.backgroundColor = `#c0c0c0`;
+    }
   },
   showChangelog: (value) => {
     const changelogButton = document.getElementById('changelog-button');
