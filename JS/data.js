@@ -1,4 +1,4 @@
-import { drawProgressBar, openDataDeletionScreen, updateProgressBar } from "./elements.js";
+import { drawProgressBar, getProgressBar, openDataDeletionScreen, updateProgressBar } from "./elements.js";
 import { changeScore, addStatusEffect, abbreviateNumber, removeStatusEffect, hasStatusEffect, addScoreObserver } from "./currency.js";
 import { toggleDarkMode, toggleDevMode, onClick } from "./main.js";
 import { player, log } from "./player.js";
@@ -160,8 +160,19 @@ export const effects = {
       max: bonus.max,
       label: null
     });
+    
+    function showCarteiraBonus(value) {
+      const bar = getProgressBar('carteira-progress').element;
+      const previous = document.querySelector('.carteira-popup');
+      if (previous) previous.remove();
+      const popup = document.createElement('span');
+      bar.appendChild(popup);
 
-    // cria o listener uma vez
+      popup.textContent = `+${value}`
+      popup.classList.add('carteira-popup');
+      popup.addEventListener('animationend', () => {popup.remove()});
+    }
+
     if (!bonus.handleCarteiraScore) {
       bonus.handleCarteiraScore = function handleCarteiraScore(newScore, diff) {
         if (diff <= 0 || bonus.isApplyingReward) return;
@@ -174,7 +185,9 @@ export const effects = {
             label: null
           });
         
+
         while (bonus.collected >= bonus.max) {
+
           bonus.collected -= bonus.max;
           const reward = Math.floor(bonus.max * bonus.multiplier);
 
@@ -184,11 +197,13 @@ export const effects = {
             label: null
           });
 
+          showCarteiraBonus(reward);
+          console.log(reward);
           bonus.isApplyingReward = true;
           changeScore('add', reward);
           bonus.isApplyingReward = false;
 
-          console.log(`bonus carteira: +${reward} (${bonus.multiplier * 100}% de ${bonus.max})`);
+
         }
       };
 
@@ -230,6 +245,10 @@ export const settingEffects = {
   },
   devMode: (value) => {
     toggleDevMode();
+  },
+  showProgressBars: (value) => {
+    const barContainer = document.getElementById("progress-bars-wrapper");
+    barContainer.classList.toggle('hide');
   },
   resetData: (value) => {
     openDataDeletionScreen();

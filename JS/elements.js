@@ -12,7 +12,7 @@ export function createScorePopup(value, type) {
 
   if (type == 'borracha') {
     popup.classList.add('borracha-buffed-popup');
-    popup.textContent = `+${value}`;
+    popup.textContent = `+${abbreviateNumber(value)}`;
     popup.style.display = 'flex';
     popup.style.alignItems = 'center';
     popup.style.zIndex = '130'
@@ -26,7 +26,7 @@ export function createScorePopup(value, type) {
   } else if (type == 'crit') {
     popup.classList.add('crit-popup');
 
-    popup.textContent = `+${value}!`;
+    popup.textContent = `+${abbreviateNumber(value)}!`;
     const bIcon = document.createElement('img');
     const tIcon = document.createElement('img');
 
@@ -42,10 +42,10 @@ export function createScorePopup(value, type) {
     const icon = document.createElement('img');
     icon.src = `assets/img/item/tijolo.png`;
 
-    popup.textContent = `+${value}`;
+    popup.textContent = `+${abbreviateNumber(value)}`;
     popup.appendChild(icon);
   } else {
-    popup.textContent = `+${value}`;
+    popup.textContent = `+${abbreviateNumber(value)}`;
   }
 
   const wrapperWidth = wrapper.clientWidth;
@@ -86,26 +86,31 @@ export function unlockGuiButtons() {
   })
 }
 
+function forceReflow(element) {
+  element.style.animation = `none`;
+  return element.offsetHeight;
+}
+
 let isSettingsOpen = false;
 unlockableButtons[1].element.addEventListener('click', () => {
   const settingsGui = document.querySelector('.settings-main-gui');
   const button = unlockableButtons[1].element;
 
   if (isSettingsOpen) {
-    settingsGui.style.animation = "none";
-    settingsGui.offsetHeight;// force reflow
+    button.style.pointerEvents = `none`;
+    forceReflow(settingsGui);
     settingsGui.style.animation = "settingsGuiOpen 1s reverse";
     button.classList.remove('selected-gui-button');
 
     settingsGui.addEventListener('animationend', () => {
       settingsGui.classList.add('hide');
+        button.style.pointerEvents = `all`;
     }, { once: true });
 
     isSettingsOpen = false;
   } else {
     settingsGui.classList.remove('hide');
-    settingsGui.style.animation = "none";
-    settingsGui.offsetHeight;// force reflow
+    forceReflow(settingsGui);
     settingsGui.style.animation = "settingsGuiOpen 1s forwards";
 
     button.classList.add('selected-gui-button');
@@ -116,16 +121,18 @@ unlockableButtons[1].element.addEventListener('click', () => {
 let isShopOpen = false;
 unlockableButtons[0].element.addEventListener('click', () => {
   const shopGui = document.querySelector('.shop-main-gui')
+  const button = unlockableButtons[0].element;
 
   if (isShopOpen) {
-    shopGui.style.animation = "none";
-    shopGui.offsetHeight;
+    button.style.pointerEvents = `none`;
+    forceReflow(shopGui);
     shopGui.style.animation = 'shopGuiOpen 0.75s reverse';
     unlockableButtons[0].element.classList.remove('selected-gui-button');
     isShopOpen = false;
     shopGui.addEventListener('animationend', () => {
       if (isShopOpen == false) {
         shopGui.classList.toggle('hide')
+        button.style.pointerEvents = `all`;
       }
     }, { once: true })
   } else {
@@ -421,34 +428,28 @@ export function openDataDeletionScreen() {
   }, { once: true });
 }
 
-export function drawProgressBar({ 
-  id, 
-  icon = null, 
-  color = "#4caf50", 
-  current = 0, 
-  max = 100, 
-  label = "", 
-  containerId = "progress-bars-wrapper" 
-}) {
-  const existing = document.getElementById(id);
-  if (existing) existing.remove();
+export let progressBars = [];
+
+export function drawProgressBar(barObj) {
+  const existing = document.getElementById(barObj.id);
+  if (existing) return;
 
   const wrapper = document.createElement("div");
   wrapper.classList.add("progress-wrapper");
-  wrapper.id = id;
+  wrapper.id = barObj.id;
 
-  if (icon) {
+  if (barObj.icon) {
     const img = document.createElement("img");
-    img.src = icon;
+    img.src = barObj.icon;
     img.classList.add("progress-icon");
     wrapper.appendChild(img);
   }
 
   const text = document.createElement("span");
   text.classList.add("progress-label");
-  text.innerHTML = label
-    ? `${label}: ${current} / ${max}`
-    : `${current} / ${max}`;
+  text.innerHTML = barObj.label
+    ? `${barObj.label}: ${barObj.current} / ${barObj.max}`
+    : `${barObj.current} / ${barObj.max}`;
   wrapper.appendChild(text);
 
   const bar = document.createElement("div");
@@ -457,15 +458,22 @@ export function drawProgressBar({
 
   const fill = document.createElement("div");
   fill.classList.add("progress-fill");
-  fill.style.width = `${Math.min((current / max) * 100, 100)}%`;
-  fill.style.backgroundColor = color;
+  fill.style.width = `${Math.min((barObj.current / barObj.max) * 100, 100)}%`;
+  fill.style.backgroundColor = barObj.color;
   bar.appendChild(fill);
 
 
-  const container = document.getElementById(containerId) || document.body;
+  const container = document.getElementById(barObj.containerId) || document.querySelector('#progress-bars-wrapper');
   container.appendChild(wrapper);
 
+  barObj.element = wrapper;
+  progressBars.push(barObj);
+
   return wrapper;
+}
+
+export function getProgressBar(id) {
+  return progressBars.find(element => id === element.id);
 }
 
 export function updateProgressBar(id, { current, max, color, label }) {
@@ -492,4 +500,4 @@ setTimeout(() => {
   addScoreObserver(revealItemsWithMinScore);
   addScoreObserver(updateBuyButtonColor);
   addScoreObserver(unlockGuiButtons);
-}, 5);
+}, 1);

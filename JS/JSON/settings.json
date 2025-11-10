@@ -63,6 +63,15 @@
         "description": "Texto que aparece ao lado de suas brabas"
     },
     {
+        "name": "showProgressBars",
+        "title": "Barras de Progresso",
+        "type": "checkbox",
+        "defaultValue": "true",
+        "minValue": "",
+        "maxValue": "",
+        "description": "Mostrar as barras de progresso de itens variados"
+    },
+    {
         "name": "devMode",
         "title": "Modo Desenvolvedor",
         "type": "checkbox",

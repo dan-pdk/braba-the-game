@@ -1,0 +1,14 @@
+// tijolos não sendo resetados ao clicar OU adicionar feedback visual de quando o tijolo voltar -> não resetar ao click, mas, diminiur o tempo
+!!importante ^
+
+// configs sfx
+
+// feedback visual: dinheiro do lado da barra de progresso
+
+// ajustar preço - pré-treino ✅
+
+// talvez balancear carteira ❌
+
+// arrumar botões de GUI ✅
+
+// ideia: cadeira;

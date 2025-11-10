@@ -31,6 +31,9 @@ addScoreObserver(updateScoreDisplay);
 setInterval(() => {
   document.querySelector('title').textContent = `${abbreviateNumber(player.score)} brabas - Braba Simulator`;
 }, 1000)
+setInterval(() => {
+  updateScoreDisplay();
+}, 250);
 
 export function onClick() {
   const tijoloActive = hasStatusEffect("Tijolado");
@@ -42,7 +45,7 @@ export function onClick() {
   let type = 'default';
 
   if (borrachaActive && tijoloActive) {
-    value += 2 * borrachaLvl * tijoloMultiplier;
+    value = (player.scorePerClick * 2 * borrachaLvl) * tijoloMultiplier;
     type = 'crit'
   } else if (borrachaActive) {
     value += 2 * borrachaLvl;
