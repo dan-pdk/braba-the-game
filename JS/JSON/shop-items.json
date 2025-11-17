@@ -64,5 +64,16 @@
         "description": "'O que tu tá estudando?'<br>'Brabonomia.'<span>Todas as brabas ganhas são também armazenadas na carteira. Ao atingir 500 <marker>(+10 por nível)</marker>, ganhe +5% <marker>(+5% por nível)</marker> de B$ sobre o valor armazenado, além do valor original.",
         "image": "assets/img/item/carteira.png",
         "appliesOnlyStats": "false"
+    },
+    {
+        "id": "Procopio",
+        "name": "Velho Desgraçado",
+        "cost": 5000,
+        "costFactor": 1.16,
+        "minScore": 1,
+        "tier": 1,
+        "description": "Procopio <br> Me molesta",
+        "image": "https://br.web.img2.acsta.net/c_300_300/pictures/22/07/19/20/19/1114567.jpg",
+        "appliesOnlyStats": "false"
     }
 ]
