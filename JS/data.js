@@ -256,49 +256,82 @@ export const settingEffects = {
 
 export const itemTooltipInfo = {
   inspiracao: (player, item) => {
-    const sps = player.items[item.id] / 2;
-    const contribution = ((sps / player.scorePerSecond) * 100).toFixed(1)
+    const level = Number(player?.items?.[item.id]) || 0;
+    const sps = level / 2;
+    const totalSps = Number(player?.scorePerSecond) || 0;
+
+    const contribution = totalSps > 0
+      ? ((sps / totalSps) * 100).toFixed(1)
+      : 0;
 
     return `
-      <b>${abbreviateNumber(player.items[item.id])}</b> níveis de Inspiração geram <b>${abbreviateNumber(sps)}</b> brabas por segundo,<br>
-      ou <b>${abbreviateNumber(contribution)}%</b> de um total de <b>${abbreviateNumber(player.scorePerSecond)}</b> BpS
+      <b>${abbreviateNumber(level)}</b> níveis de Inspiração geram
+      <b>${abbreviateNumber(sps)}</b> brabas por segundo,
+      ou <b>${abbreviateNumber(contribution)}%</b> de um total de
+      <b>${abbreviateNumber(totalSps)}</b> BpS
     `;
   },
+
   borracha: (player, item) => {
-    const bonus = 2 * player.items[item.id];
+    const level = Number(player?.items?.[item.id]) || 0;
+    const bonus = 2 * level;
+    const clicksBase = Number(player?.scorePerClick) || 0;
     const BORRACHA_MAX = 10;
 
     return `
-      <b>${abbreviateNumber(player.items[item.id])}</b> níveis de Borracha concedem <b>+${abbreviateNumber(bonus)}</b> B$ a cada <b>${BORRACHA_MAX}</b> cliques, ou <b>+${bonus + player.scorePerClick}</b> B$ com o clique base
-    `
-  },
-  gravador: (player, item) => {
-    const bonus = 5 * player.items[item.id];
-
-    return `
-    <b>${abbreviateNumber(player.items[item.id])}</b> níveis de Microfone concedem um bônus máximo de <b>+${abbreviateNumber(bonus)}</b> BpS
-    `
-  },
-  tijolo: (player, item) => {
-    const multi = player.items[item.id] * 100;
-
-    return `
-    <b>${abbreviateNumber(player.items[item.id])}</b> níveis de Tijolo concedem <b>+${abbreviateNumber(multi)}%</b><br> (ou <b>${abbreviateNumber(player.items[item.id] + 1)}x</b>) B$ ao clicar, quando carregado
-    `
-  },
-  pretreino: (player, item) => {
-    const time = player.items[item.id] <= 30 ? 30 - player.items[item.id] : 0;
-    console.log(time);
-    
-    
-    return `<b>${player.items[item.id]}</b> níveis de Pré-treino concedem <b>+${player.items[item.id]}</b> B$/clique, demorando <br> <b>${time}s</b> para bater`;
-  },
-  carteira: (player, item) => {
-    const max = player.bonuses.carteira?.max;
-    const percent = (player.bonuses.carteira?.multiplier) * 100;
-
-    return `
-    <b>${abbreviateNumber(player.items[item.id])}</b> níveis de Carteira concedem um armazenamento máximo de <b>${abbreviateNumber(max)}</b> B$,<br> que recebe um bônus de <b>+${abbreviateNumber(percent)}%</b>,<br> ou <b>+${abbreviateNumber(max * player.bonuses.carteira?.multiplier)}</b> B$ ao encher
+      <b>${abbreviateNumber(level)}</b> níveis de Borracha concedem
+      <b>+${abbreviateNumber(bonus)}</b> B$ a cada <b>${BORRACHA_MAX}</b>
+      cliques, ou <b>+${abbreviateNumber(bonus + clicksBase)}</b> B$
+      com o clique base
     `;
   },
-}
+
+  gravador: (player, item) => {
+    const level = Number(player?.items?.[item.id]) || 0;
+    const bonus = 5 * level;
+
+    return `
+      <b>${abbreviateNumber(level)}</b> níveis de Microfone concedem
+      um bônus máximo de <b>+${abbreviateNumber(bonus)}</b> BpS
+    `;
+  },
+
+  tijolo: (player, item) => {
+    const level = Number(player?.items?.[item.id]) || 0;
+    const multi = level * 100;
+
+    return `
+      <b>${abbreviateNumber(level)}</b> níveis de Tijolo concedem
+      <b>+${abbreviateNumber(multi)}%</b>
+      (ou <b>${abbreviateNumber(level + 1)}x</b>) B$ ao clicar,
+      quando carregado
+    `;
+  },
+
+  pretreino: (player, item) => {
+    const level = Number(player.items[item.id]) || 0;
+    const time = level < 30 ? 30 - level : 0;
+
+    return `
+      <b>${level}</b> níveis de Pré-treino concedem
+      <b>+${level}</b> B$/clique, demorando
+      <b>${time}s</b> para bater
+    `;
+  },
+
+  carteira: (player, item) => {
+    const level = Number(player?.items?.[item.id]) || 0;
+
+    const max = Number(player?.bonuses?.carteira?.max) || 0;
+    const mult = Number(player?.bonuses?.carteira?.multiplier) || 0;
+    const percent = mult * 100;
+    const reward = max * mult;
+
+    return `
+      <b>${abbreviateNumber(level)}</b> níveis de Carteira concedem
+      um armazenamento máximo de <b>${abbreviateNumber(max)}</b> B$,
+      que recebe um bônus de <b>+${abbreviateNumber(percent)}%</b>,
+      ou <b>+${abbreviateNumber(reward)}</b> B$ ao encher
+    `;
+  },
+};
