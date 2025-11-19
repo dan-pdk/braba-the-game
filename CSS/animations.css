@@ -105,7 +105,7 @@
 
     font-size: larger;
 
-    animation: animateScorePopup 1s forwards ease-in-out;
+    animation: animateScorePopup 1.067s forwards ease-in-out;
 
     position: absolute;
 
@@ -126,9 +126,11 @@
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     color: hsl(120, 100%, 42%);
 
-    animation: animateScorePopup 3s forwards ease-in;
+    animation: animateScorePopup 2.2s forwards ease-out;
 
     pointer-events: none;
+
+    text-shadow: 0 0 5px #61f533, 0 0 10px #61f533;
 }
 
 /* misc */

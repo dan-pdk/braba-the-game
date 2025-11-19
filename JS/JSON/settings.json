@@ -36,6 +36,15 @@
         "description": "Números são abreviados <br> (10520 => 10.52k)"
     },
     {
+        "name": "monospaceFont",
+        "title": "Fonte Monospace",
+        "type": "checkbox",
+        "defaultValue": "false",
+        "minValue": "",
+        "maxValue": "",
+        "description": "Usa uma fonte alternativa para o número de brabas"
+    },
+    {
         "name": "showPopups",
         "title": "Mostrar Popups",
         "type": "checkbox",

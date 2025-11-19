@@ -1,6 +1,6 @@
 import { abbreviateNumber, addScoreObserver, buyItem, formatTime } from './currency.js';
-import { effects, scoreObservers, settingEffects } from './data.js';
-import { player } from "./player.js";
+import { effects, itemTooltipInfo, scoreObservers, settingEffects } from './data.js';
+import { log, player } from "./player.js";
 import { resetPlayerData } from './storage.js';
 
 export function createScorePopup(value, type) {
@@ -102,9 +102,10 @@ unlockableButtons[1].element.addEventListener('click', () => {
     settingsGui.style.animation = "settingsGuiOpen 1s reverse";
     button.classList.remove('selected-gui-button');
 
+    backdropToClose.classList.add('hide');
     settingsGui.addEventListener('animationend', () => {
       settingsGui.classList.add('hide');
-        button.style.pointerEvents = `all`;
+      button.style.pointerEvents = `all`;
     }, { once: true });
 
     isSettingsOpen = false;
@@ -115,6 +116,7 @@ unlockableButtons[1].element.addEventListener('click', () => {
 
     button.classList.add('selected-gui-button');
     isSettingsOpen = true;
+    backdropToClose.classList.remove('hide');
   }
 });
 
@@ -129,6 +131,7 @@ unlockableButtons[0].element.addEventListener('click', () => {
     shopGui.style.animation = 'shopGuiOpen 0.75s reverse';
     unlockableButtons[0].element.classList.remove('selected-gui-button');
     isShopOpen = false;
+    backdropToClose.classList.add('hide');
     shopGui.addEventListener('animationend', () => {
       if (isShopOpen == false) {
         shopGui.classList.toggle('hide')
@@ -142,8 +145,20 @@ unlockableButtons[0].element.addEventListener('click', () => {
     unlockableButtons[0].element.classList.add('selected-gui-button');
     isShopOpen = true;
     shopGui.classList.toggle('hide');
+    backdropToClose.classList.remove('hide');
   }
 })
+
+function closeAllGUIs() {
+  if (isShopOpen) {
+    unlockableButtons[0].element.click();
+  }
+  if (isSettingsOpen) {
+    unlockableButtons[1].element.click();
+  }
+}
+const backdropToClose = document.querySelector('.backdrop-closeable');
+backdropToClose.addEventListener('click', closeAllGUIs);
 
 let isChangelogOpen = false;
 const changelogButton = document.querySelector('#changelog-button');
@@ -179,7 +194,7 @@ export function appendShopItem(item) {
 
   shopElement.appendChild(createdItem);
   createdItem.classList.add('item', 'hide');
-  createdItem.id = `${item.name}-div`
+  createdItem.id = `${item.id}-div`
 
   const itemName = document.createElement('h1');
   itemName.innerHTML = `${item.name}`;
@@ -201,6 +216,10 @@ export function appendShopItem(item) {
     throw new Error(`${item.name}'s tier is not in range (${item.tier})`);
   }
 
+  setTimeout(() => {
+    addHoverTooltip('default', itemImage, "", () => itemTooltipInfo[item.id](player, item), null);
+  }, 5);
+
   const itemCost = document.createElement('div');
   itemCost.innerHTML = `B$ ${abbreviateNumber(item.cost)}`;
   itemCost.classList.add('item-cost');
@@ -213,7 +232,7 @@ export function appendShopItem(item) {
 
   const itemCountDisplay = document.createElement('span');
   itemCountDisplay.classList.add('item-count-display');
-  itemName.appendChild(itemCountDisplay)
+  itemName.appendChild(itemCountDisplay);
 
   item.element = createdItem;
   item.baseCost = item.cost;
@@ -265,13 +284,22 @@ tooltipComponentsWrapper.appendChild(tooltipTitle);
 tooltipComponentsWrapper.appendChild(tooltipDescription);
 tooltipComponentsWrapper.appendChild(tooltipTime);
 
-export function addHoverTooltip(element, title, description, effectEndTime) {
+export function addHoverTooltip(type, element, title, description, effectEndTime) {
   let intervalID;
   element.addEventListener('mouseenter', () => {
     tooltip.classList.remove('hide');
-    tooltipTitle.innerHTML = title;
-    tooltipDescription.innerHTML = description;
+    
+    if (typeof title === 'function') {
+      tooltipTitle.innerHTML = title();
+    } else {
+      tooltipTitle.innerHTML = title;
+    }
 
+    if (typeof description === 'function') {
+      tooltipDescription.innerHTML = description();
+    } else {
+      tooltipDescription.innerHTML = description;
+    }
 
     if (effectEndTime != null) {
       intervalID = setInterval(() => {
@@ -288,6 +316,7 @@ export function addHoverTooltip(element, title, description, effectEndTime) {
     }
   });
 
+  
   element.addEventListener('mousemove', (event) => {
     tooltip.style.left = `${event.clientX + 15}px`;
     tooltip.style.top = `${(event.clientY - tooltip.clientHeight) - 10}px`;
@@ -300,6 +329,7 @@ export function addHoverTooltip(element, title, description, effectEndTime) {
     clearInterval(intervalID);
   })
 }
+
 
 export const settings = [];
 

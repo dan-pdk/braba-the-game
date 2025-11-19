@@ -11,7 +11,7 @@ export default function getPlayer() {
 
 export const effects = {
   inspiracaoEffect: (player, item) => {
-    player.scorePerSecond += 0.5;
+    player.scorePerSecond += 1;
   },
   borrachaEffect: (player, item) => {
     const button = document.getElementById('main-button');
@@ -163,8 +163,6 @@ export const effects = {
     
     function showCarteiraBonus(value) {
       const bar = getProgressBar('carteira-progress').element;
-      const previous = document.querySelector('.carteira-popup');
-      if (previous) previous.remove();
       const popup = document.createElement('span');
       bar.appendChild(popup);
 
@@ -176,7 +174,6 @@ export const effects = {
     if (!bonus.handleCarteiraScore) {
       bonus.handleCarteiraScore = function handleCarteiraScore(newScore, diff) {
         if (diff <= 0 || bonus.isApplyingReward) return;
-
         bonus.collected += diff;
 
         updateProgressBar('carteira-progress', {
@@ -187,7 +184,6 @@ export const effects = {
         
 
         while (bonus.collected >= bonus.max) {
-
           bonus.collected -= bonus.max;
           const reward = Math.floor(bonus.max * bonus.multiplier);
 
@@ -198,12 +194,9 @@ export const effects = {
           });
 
           showCarteiraBonus(reward);
-          console.log(reward);
           bonus.isApplyingReward = true;
           changeScore('add', reward);
           bonus.isApplyingReward = false;
-
-
         }
       };
 
@@ -248,9 +241,64 @@ export const settingEffects = {
   },
   showProgressBars: (value) => {
     const barContainer = document.getElementById("progress-bars-wrapper");
-    barContainer.classList.toggle('hide');
+    if (value === true) barContainer.classList.remove('hide');
+    else barContainer.classList.add('hide');
+  },
+  monospaceFont: (value) => {
+    const scoreDisplay = document.getElementById('score-display');
+    if (!value) scoreDisplay.style.fontFamily = `Trebuchet MS, Lucida Sans Unicode`;
+    else scoreDisplay.style.fontFamily = `monospace`;
   },
   resetData: (value) => {
     openDataDeletionScreen();
   }
+}
+
+export const itemTooltipInfo = {
+  inspiracao: (player, item) => {
+    const sps = player.items[item.id] / 2;
+    const contribution = ((sps / player.scorePerSecond) * 100).toFixed(1)
+
+    return `
+      <b>${abbreviateNumber(player.items[item.id])}</b> níveis de Inspiração geram <b>${abbreviateNumber(sps)}</b> brabas por segundo,<br>
+      ou <b>${abbreviateNumber(contribution)}%</b> de um total de <b>${abbreviateNumber(player.scorePerSecond)}</b> BpS
+    `;
+  },
+  borracha: (player, item) => {
+    const bonus = 2 * player.items[item.id];
+    const BORRACHA_MAX = 10;
+
+    return `
+      <b>${abbreviateNumber(player.items[item.id])}</b> níveis de Borracha concedem <b>+${abbreviateNumber(bonus)}</b> B$ a cada <b>${BORRACHA_MAX}</b> cliques, ou <b>+${bonus + player.scorePerClick}</b> B$ com o clique base
+    `
+  },
+  gravador: (player, item) => {
+    const bonus = 5 * player.items[item.id];
+
+    return `
+    <b>${abbreviateNumber(player.items[item.id])}</b> níveis de Microfone concedem um bônus máximo de <b>+${abbreviateNumber(bonus)}</b> BpS
+    `
+  },
+  tijolo: (player, item) => {
+    const multi = player.items[item.id] * 100;
+
+    return `
+    <b>${abbreviateNumber(player.items[item.id])}</b> níveis de Tijolo concedem <b>+${abbreviateNumber(multi)}%</b><br> (ou <b>${abbreviateNumber(player.items[item.id] + 1)}x</b>) B$ ao clicar, quando carregado
+    `
+  },
+  pretreino: (player, item) => {
+    const time = player.items[item.id] <= 30 ? 30 - player.items[item.id] : 0;
+    console.log(time);
+    
+    
+    return `<b>${player.items[item.id]}</b> níveis de Pré-treino concedem <b>+${player.items[item.id]}</b> B$/clique, demorando <br> <b>${time}s</b> para bater`;
+  },
+  carteira: (player, item) => {
+    const max = player.bonuses.carteira?.max;
+    const percent = (player.bonuses.carteira?.multiplier) * 100;
+
+    return `
+    <b>${abbreviateNumber(player.items[item.id])}</b> níveis de Carteira concedem um armazenamento máximo de <b>${abbreviateNumber(max)}</b> B$,<br> que recebe um bônus de <b>+${abbreviateNumber(percent)}%</b>,<br> ou <b>+${abbreviateNumber(max * player.bonuses.carteira?.multiplier)}</b> B$ ao encher
+    `;
+  },
 }

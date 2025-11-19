@@ -5,6 +5,7 @@
 }
 
 body {
+  z-index: -3;
   width: 100vw;
   min-height: 100vh;
 
@@ -124,8 +125,17 @@ body {
   animation: animateScorePopup 4s forwards ease-out !important;
 
   color: rgb(255, 187, 0);
+  text-shadow: 0 0 5px rgb(182, 133, 0), 0 0 10px rgb(170, 125, 0);
 
   display: flex;
+}
+
+.tooltip-wrapper b {
+  color: blue;
+}
+
+.dark-mode .tooltip-wrapper b {
+  color: aqua;
 }
 
 .crit-popup > img {
@@ -154,7 +164,7 @@ body {
 
   text-align: center;
 
-  font-family: "Trebuchet MS", sans-serif;
+  font-family: monospace;
 
   background-color: rgb(41, 41, 41);
   color: white;
@@ -196,6 +206,8 @@ body {
   border-radius: 3px;
 
   cursor: pointer;
+
+  z-index: 5;
 }
 
 .selected-gui-button {
@@ -218,6 +230,8 @@ body {
   border-radius: 3px;
 
   cursor: pointer;
+
+  z-index: 5;
 }
 
 #changelog-button {
@@ -252,6 +266,16 @@ body {
   padding: 5px;
 
   z-index: 9;
+}
+
+.backdrop-closeable {
+  width: 100vw;
+  height: 100vh;
+
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 0;
 }
 
 .gui-title {
@@ -304,6 +328,8 @@ body {
   position: absolute;
   top: 50px;
   left: 5px;
+
+  cursor: help;
 }
 
 .tier-0 {
@@ -422,6 +448,24 @@ body {
   transition: 0.2s ease-out;
 }
 
+.item-info {
+  background: none;
+  border: none;
+
+  cursor: help;
+  transition: 0.1s;
+
+  font-size: large;
+
+  margin-left: 30px;
+
+  display: block;
+}
+
+.item-info:hover {
+  transform: scale(1.1);
+}
+
 .item-buy-button:hover {
   transform: scale(1.05);
   background-color: rgb(1, 71, 112);
@@ -483,7 +527,7 @@ body {
 
 .tooltip {
   max-width: 500px;
-  min-width: 300px;
+  min-width: 290px;
   height: 140px;
 
   position: fixed;
@@ -499,6 +543,7 @@ body {
     "Lucida Sans", Arial, sans-serif;
 
   padding: 5px;
+  z-index: 999999;
 }
 
 .tooltip-wrapper > h1 {
@@ -563,6 +608,8 @@ body {
   display: flex;
   flex-direction: column;
   gap: 20px;
+
+  z-index: 8;
 }
 
 .setting-div {
@@ -819,6 +866,10 @@ body {
   height: 25px;
 }
 
+.progress-wrapper {
+  position: relative;
+}
+
 .progress-bar {
   height: 12px;
   background-color: rgba(255, 255, 255, 0.2);
@@ -829,7 +880,7 @@ body {
 .progress-fill {
   height: 100%;
   border-radius: 5px;
-  transition: width 0.25s ease-out;
+  transition: 0.20s ease-out;
 }
 
 .progress-label {

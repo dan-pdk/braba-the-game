@@ -69,14 +69,14 @@ export function buyItem(item, player) {
   changeScore('remove', item.cost);
   adjustPrice(item);
 
+  
   const effectFn = effects[item.id + "Effect"];
-
+  
   if (typeof effectFn === "function") {
     queueMicrotask(() => { effectFn(player, item); });
   } else {
-    console.warn(`[DEBUG] No effect found for ${item.id}`);
+    console.warn(`No effect found for ${item.id}`);
   }
-
 }
 
 
@@ -121,7 +121,7 @@ export function addStatusEffect(item, statusEffect, hasTimer) {
   effectElement.classList.add('status-effect-icon');
 
   const effectEndTime = hasTimer ? Date.now() + statusEffect.duration : null;
-  addHoverTooltip(effectElement, statusEffect.name, statusEffect.description, effectEndTime);
+  addHoverTooltip(null, effectElement, statusEffect.name, statusEffect.description, effectEndTime);
 
   statusEffect.onStart(player, item);
 

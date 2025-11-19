@@ -3,10 +3,10 @@
         "id": "inspiracao",
         "name": "Inspiração",
         "cost": 50,
-        "costFactor": 1.04,
+        "costFactor": 1.05,
         "minScore": 0,
         "tier": 0,
-        "description": "Você não vai chegar a lugar algum sem um pouco disso. <br> <span>+0.5 <marker>(+0.5 por nível)</marker> B$ por segundo</span>",
+        "description": "Você não vai chegar a lugar algum sem um pouco disso. <br> <span>+1 <marker>(+1 por nível)</marker> B$ por segundo</span>",
         "image": "assets/img/item/insipracao.png",
         "appliesOnlyStats": "true"
     },

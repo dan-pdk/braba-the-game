@@ -1,4 +1,3 @@
-import { effects } from './data.js';
 import { player } from "./player.js";
 import { appendSetting, appendShopItem, createScorePopup, createSetting, createShopItem, unlockGuiButtons } from './elements.js';
 import { changeScore, addScoreObserver, addStatusEffect, abbreviateNumber, removeStatusEffect, hasStatusEffect } from './currency.js';
@@ -29,7 +28,7 @@ export function updateScoreDisplay() {
 };
 addScoreObserver(updateScoreDisplay);
 setInterval(() => {
-  document.querySelector('title').textContent = `${abbreviateNumber(player.score)} brabas - Braba Simulator`;
+  document.querySelector('title').textContent = `${abbreviateNumber(player.score)} brabas - Braba the Game`;
 }, 1000)
 setInterval(() => {
   updateScoreDisplay();
@@ -45,7 +44,7 @@ export function onClick() {
   let type = 'default';
 
   if (borrachaActive && tijoloActive) {
-    value = (player.scorePerClick * 2 * borrachaLvl) * tijoloMultiplier;
+    value = (player.scorePerClick + 2 * borrachaLvl) * tijoloMultiplier;
     type = 'crit'
   } else if (borrachaActive) {
     value += 2 * borrachaLvl;
@@ -61,7 +60,7 @@ export function onClick() {
 
 button.addEventListener('click', onClick);
 button.addEventListener('keypress', () => {
-  if (event.key === "Enter") {
+  if (event.key === "Enter" || event.key === " ") {
     event.preventDefault();
   }
 })
@@ -198,5 +197,5 @@ document.addEventListener('DOMContentLoaded', async () => {
   loadPlayerData();
   applyPlayerData();
   unlockGuiButtons();
-  setTimeout(() => { changeScore('add', 0)}, 100);
+  setTimeout(() => { changeScore('add', 0)}, 50);
 });

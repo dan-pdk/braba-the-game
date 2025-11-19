@@ -3,7 +3,7 @@
 
 // configs sfx
 
-// feedback visual: dinheiro do lado da barra de progresso
+// feedback visual: dinheiro do lado da barra de progresso ✅
 
 // ajustar preço - pré-treino ✅
 
@@ -12,3 +12,14 @@
 // arrumar botões de GUI ✅
 
 // ideia: cadeira;
+
+
+-> update 0.0.7:
+// QoL update
+- clicar fora fecha a tela ✅
+- item info 
+- tijolo rework
+- botão evoluir
+- botão resize
+- braba sfx
+- responsividade
