@@ -890,3 +890,66 @@ body {
   vertical-align: super;
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
+
+#set-score {
+  position: absolute;
+  left: calc(50% - width);
+  top: calc(50% - height);
+
+  background-color: #bebebe;
+
+  padding: 30px;
+  border: 3px solid #aaaaaa;
+  border-radius: 10px;
+
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 10px;
+
+  color: black !important;
+}
+
+#set-score > input {
+  outline: none;
+  border: 2px solid #aaaaaa;
+
+  text-align: center;
+  font-family: monospace;
+}
+
+#set-score > p {
+  font-size: large;
+}
+
+#set-score > div > button {
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+
+  padding: 7px 5px 7px 5px;
+  width: 70px;
+  cursor: pointer;
+
+  text-align: center;
+  transition: 0.2s;
+}
+
+#set-score > div > button:hover {
+  transform: scale(1.05);
+}
+
+#set-score-confirm {
+  color: rgb(0, 247, 0);
+
+  background-color: #007c00;
+  border: #005a00 solid 2px;
+}
+
+#set-score-cancel {
+  color: rgb(247, 29, 0);
+
+  background-color: #7c0000;
+  border: #5a0000 solid 2px;
+}

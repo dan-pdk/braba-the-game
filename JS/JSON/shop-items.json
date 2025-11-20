@@ -58,7 +58,7 @@
         "id": "carteira",
         "name": "Carteira",
         "cost": 5000,
-        "costFactor": 1.16,
+        "costFactor": 1.2,
         "minScore": 3000,
         "tier": 1,
         "description": "'O que tu tá estudando?'<br>'Brabonomia.'<span>Todas as brabas ganhas são também armazenadas na carteira. Ao atingir 500 <marker>(+10 por nível)</marker>, ganhe +5% <marker>(+5% por nível)</marker> de B$ sobre o valor armazenado, além do valor original.",

@@ -17,7 +17,9 @@
 -> update 0.0.7:
 // QoL update
 - clicar fora fecha a tela ✅
-- item info 
+- set brabas ✅
+- bug com apagar dados ❌
+- item info ✅
 - tijolo rework
 - botão evoluir
 - botão resize

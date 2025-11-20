@@ -1,6 +1,6 @@
-import { abbreviateNumber, addScoreObserver, buyItem, formatTime } from './currency.js';
+import { abbreviateNumber, addScoreObserver, buyItem, changeScore, formatTime } from './currency.js';
 import { effects, itemTooltipInfo, scoreObservers, settingEffects } from './data.js';
-import { log, player } from "./player.js";
+import { hide, log, player } from "./player.js";
 import { resetPlayerData } from './storage.js';
 
 export function createScorePopup(value, type) {
@@ -525,6 +525,41 @@ export function updateProgressBar(id, { current, max, color, label }) {
   }
 }
 
+export function devModeSetScore() {
+  const div = document.querySelector('#set-score');
+  const input = document.querySelector('#set-score > input');
+  const button = document.querySelector('#set-score-confirm');
+  const otherButton = document.querySelector('#set-score-cancel');
+  div.classList.remove('hide');
+
+  function setChosenScore(n) {
+    log(n)
+    const toAdd = Number(n || 0);
+    if (toAdd >= 1e60) {
+      input.value = "";
+      input.placeholder = "número muito grande!";
+      setTimeout(() => {input.placeholder = ""; hide(div)}, 1000);
+      return;
+    }
+    hide(div);
+    input.value = '';
+    player.score = toAdd;
+  }
+
+  function getValue() {
+    return Math.floor(Number(input.value));
+  }
+
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      setChosenScore(getValue());
+    }
+  }, {once:true});
+
+  button.addEventListener('click', () => setChosenScore(getValue()), {once: true});
+
+  otherButton.addEventListener('click', () => {input.value = "", hide(div)});
+}
 // preguiça, mas adiciona os score observers após scoreObservers[] ser inicializado
 setTimeout(() => {
   addScoreObserver(revealItemsWithMinScore);

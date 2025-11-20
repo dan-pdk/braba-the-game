@@ -181,7 +181,6 @@ export const effects = {
             max: bonus.max,
             label: null
           });
-        
 
         while (bonus.collected >= bonus.max) {
           bonus.collected -= bonus.max;
@@ -257,16 +256,13 @@ export const settingEffects = {
 export const itemTooltipInfo = {
   inspiracao: (player, item) => {
     const level = Number(player?.items?.[item.id]) || 0;
-    const sps = level / 2;
     const totalSps = Number(player?.scorePerSecond) || 0;
 
-    const contribution = totalSps > 0
-      ? ((sps / totalSps) * 100).toFixed(1)
-      : 0;
+    const contribution = totalSps > 0 ? ((level / totalSps) * 100).toFixed(1) : 0;
 
     return `
       <b>${abbreviateNumber(level)}</b> níveis de Inspiração geram
-      <b>${abbreviateNumber(sps)}</b> brabas por segundo,
+      <b>${abbreviateNumber(level)}</b> brabas por segundo,
       ou <b>${abbreviateNumber(contribution)}%</b> de um total de
       <b>${abbreviateNumber(totalSps)}</b> BpS
     `;
@@ -322,10 +318,10 @@ export const itemTooltipInfo = {
   carteira: (player, item) => {
     const level = Number(player?.items?.[item.id]) || 0;
 
-    const max = Number(player?.bonuses?.carteira?.max) || 0;
-    const mult = Number(player?.bonuses?.carteira?.multiplier) || 0;
-    const percent = mult * 100;
-    const reward = max * mult;
+    const max = (Number(player?.bonuses?.carteira?.max)).toFixed(0) || 0;
+    const mult = (Number(player?.bonuses?.carteira?.multiplier)).toFixed(0) || 0;
+    const percent = (mult * 100).toFixed(0);
+    const reward = (max * mult).toFixed(0);
 
     return `
       <b>${abbreviateNumber(level)}</b> níveis de Carteira concedem

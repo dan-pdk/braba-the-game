@@ -1,5 +1,5 @@
 import { player } from "./player.js";
-import { appendSetting, appendShopItem, createScorePopup, createSetting, createShopItem, unlockGuiButtons } from './elements.js';
+import { appendSetting, appendShopItem, createScorePopup, createSetting, createShopItem, devModeSetScore, unlockGuiButtons } from './elements.js';
 import { changeScore, addScoreObserver, addStatusEffect, abbreviateNumber, removeStatusEffect, hasStatusEffect } from './currency.js';
 import { applyPlayerData, loadPlayerData, savePlayerData } from './storage.js';
 
@@ -129,12 +129,12 @@ async function loadGameData() {
 function devModeTools(event) {
   if (event.key == "p") {
     changeScore("add", 100);
-  } else if (event.key == "o") {
+  } else if (event.key === "o" || event.key === "O") {
     player.scorePerSecond += 1;
-  } else if (event.key == "l") {
+  } else if (event.key === "l" || event.key === "L") {
     player.scorePerSecond = 0;
     changeScore("remove", player.score);
-  } else if (event.key == "[") {
+  } else if (event.key === "[") {
     addStatusEffect({}, {
       name: "Macaco",
       image: "assets/img/item/test.png",
@@ -148,6 +148,8 @@ function devModeTools(event) {
       },
     },
   true);
+  } else if (event.key === "i" || event.key === "I") {
+    devModeSetScore();
   }
 }
 
