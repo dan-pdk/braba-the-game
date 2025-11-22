@@ -9,6 +9,15 @@
         "description": "Apertar o botão central emite sons"
     },
     {
+        "name": "buttonScale",
+        "title": "Tamanho do Botão",
+        "type": "number",
+        "defaultValue": "10",
+        "minValue": "1",
+        "maxValue": "20",
+        "description": "Tamanho aproximado do botão central"
+    },
+    {
         "name": "buttonText",
         "title": "Texto do Botão",
         "type": "input",

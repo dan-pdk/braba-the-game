@@ -544,6 +544,7 @@ export function devModeSetScore() {
     hide(div);
     input.value = '';
     player.score = toAdd;
+    changeScore('add', 0)
   }
 
   function getValue() {

@@ -1,3 +1,8 @@
+:root {
+  --scale: 1;
+  --scale-override: 1;
+}
+
 * {
   margin: 0px;
   padding: 0px;
@@ -69,36 +74,43 @@ body {
   cursor: pointer;
 }
 
-#main-button {
-  border: 5px solid rgb(24, 134, 24);
-  background-color: rgb(109, 255, 109);
-
-  /* box-shadow: 0px 5px 5px 5px rgba(0, 0, 0, 0.55); */
-
-  cursor: pointer;
-
-  width: 100px;
-  height: 100px;
-
-  border-radius: 50px;
-
-  transition: 0.1s ease-out;
-  user-select: none;
-
+.main-button-wrapper {
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+  
+  width: 100px;
+  height: 100px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#main-button {
+  border: 5px solid rgb(24, 134, 24);
+  background-color: rgb(109, 255, 109);
+
+  cursor: pointer;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+
+  user-select: none;
+  transform-origin: center center;
+
+  transform: scale(calc(var(--scale-base, 1) * var(--scale-override, 1)));
+  transition: transform 0.1s ease-out;
 }
 
 #main-button:hover {
-  transform: translate(-50%, -50%) scale(1.1);
-  transition: 0.1s ease-out;
+  --scale-base: 1.1;
 }
 
 #main-button:active {
-  transform: translate(-50%, -50%) scale(0.95);
-  transition: 0.05s ease;
+  --scale-base: 0.95;
+  transition: transform 0.055s ease;
 }
 
 .popup-wrapper {
@@ -849,16 +861,18 @@ body {
 }
 
 #progress-bars-wrapper {
-  width: 12%;
+  width: 13%;
   min-height: 20px;
   max-height: 40%;
 
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 5px;
 
   position: absolute;
-  left: calc(50% + 80px);
+  left: calc(50% + 70px);
+  transform: translateX(calc(10% * var(--scale-override)));
 }
 
 .progress-icon {

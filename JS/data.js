@@ -208,8 +208,7 @@ export const effects = {
 
 export const settingEffects = {
   buttonScale: (value) => {
-    const button = document.getElementById('main-button');
-    button.style.transform = `scale(${value / 10})`;
+    document.documentElement.style.setProperty('--scale-override', (value / 10).toString());
   },
   buttonText: (value) => {
     const button = document.getElementById('main-button');
