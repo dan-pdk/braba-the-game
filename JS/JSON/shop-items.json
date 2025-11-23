@@ -17,7 +17,7 @@
         "costFactor": 1.11,
         "minScore": 65,
         "tier": 0,
-        "description": "'Olha, eu não acho que esse é o melhor jeito de usar uma borracha, mas...' <span>A cada 10 cliques, ganhe +2 <marker>(+2 por nível)</marker> B$</span>",
+        "description": "'Hã? Você precisa da minha borracha emprestado? Ah, toma. Só me devolve, tá?' <span>A cada 10 cliques, ganhe +2 <marker>(+2 por nível)</marker> B$</span>",
         "image": "assets/img/item/borracha.png",
         "appliesOnlyStats": "false"
     },
@@ -41,6 +41,17 @@
         "tier": 1,
         "description": "O tijolo nada mais é que o cúmulo da alvenaria humana. A base da civilização. Uma materialização viva da engenhosidade que sustenta a raça humana desde os primórdios. Mas, acho que você tem outros planos...<br> <span>Ao ficar mais de 5 segundos sem clicar, arremesse um tijolo e ganhe +100% <marker>(+100% por nível)</marker> de B$ no próximo clique.</span>",
         "image": "assets/img/item/tijolo.png",
+        "appliesOnlyStats": "false"
+    },
+    {
+        "id": "cadeira",
+        "name": "Cadeira",
+        "cost": 1250,
+        "costFactor": 1.13,
+        "minScore": 700,
+        "tier": 1,
+        "description": "I am the storm that is approaching... Provoking...<br><span>Ao ficar mais de 5 segundos sem clicar, ganhe +2 <marker>(+2 por nível)</marker> B$ por segundo para cada segundo sem clicar, até um limite de 50 <marker>(+50 por nível)</marker>",
+        "image": "assets/img/item/cadeira.png",
         "appliesOnlyStats": "false"
     },
     {

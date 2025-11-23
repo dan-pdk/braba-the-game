@@ -79,6 +79,80 @@ export const effects = {
       button.dataset.hasMicrofoneListener = "true";
     }
   },
+
+  cadeiraEffect: (player, item) => {
+    removeStatusEffect('Sentado');
+    const button = document.querySelector('#main-button');
+
+    if (!player.bonuses.cadeira) {
+      player.bonuses.cadeira = {
+        isActive: false,
+        currentBonus: 0,
+        stepBonus: 0,
+        maxBonus: 0,
+        delay: 5000
+      }
+    }
+
+    const bonus = player.bonuses.cadeira;
+    bonus.stepBonus = player.items[item.id] * 2;
+    bonus.maxBonus = player.items[item.id] * 50;
+
+    function addCadeiraEffect() {
+      removeStatusEffect('Sentado');
+      addStatusEffect(item, {
+        name: "Sentado",
+        image: "assets/img/item/cadeira.png",
+        description:
+          `Tô bem... Tô zen...<br><span>+${bonus.stepBonus} BpS por segundo sem clicar até um limite de ${bonus.maxBonus}</span>`,
+        duration: 0,
+        onStart: () => {},
+        onEnd: () => {}
+      });
+    }
+
+    function applyBonus() {
+      if (!hasStatusEffect("Sentado")) return;
+
+      if (bonus.currentBonus < bonus.maxBonus) {
+        bonus.currentBonus += bonus.stepBonus;
+        if (bonus.currentBonus > bonus.maxBonus) {
+          bonus.currentBonus = bonus.maxBonus;
+        }
+        player.scorePerSecond += bonus.stepBonus;
+      }
+    }
+
+    let timeNoClick;
+    let loop;
+
+    function handleCadeiraClicks() {
+      removeStatusEffect("Sentado");
+      clearTimeout(timeNoClick);
+      clearInterval(loop);
+
+      player.scorePerSecond -= bonus.currentBonus;
+      bonus.currentBonus = 0;
+
+      timeNoClick = setTimeout(() => {
+        addCadeiraEffect();
+        loop = setInterval(() => {
+          applyBonus();
+        }, 1000);
+
+      }, bonus.delay);
+    }
+
+    if (!button.dataset.hasCadeiraEventListener) {
+      button.addEventListener('click', handleCadeiraClicks);
+      button.dataset.hasCadeiraEventListener = "true";
+
+      
+      handleCadeiraClicks();
+    }
+    handleCadeiraClicks();
+  },
+
   tijoloEffect: (player, item) => {
     const button = document.getElementById('main-button');
 
@@ -150,17 +224,17 @@ export const effects = {
       max: 500 + (player.items[item.id] * 10),
       label: null
     });
-    
+
     const bonus = player.bonuses.carteira;
     bonus.multiplier = parseFloat((player.items[item.id] * 0.05).toFixed(2));
     bonus.max = 490 + (player.items[item.id] * 10);
-    
+
     updateProgressBar('carteira-progress', {
       current: bonus.collected,
       max: bonus.max,
       label: null
     });
-    
+
     function showCarteiraBonus(value) {
       const bar = getProgressBar('carteira-progress').element;
       const popup = document.createElement('span');
@@ -168,7 +242,7 @@ export const effects = {
 
       popup.textContent = `+${value}`
       popup.classList.add('carteira-popup');
-      popup.addEventListener('animationend', () => {popup.remove()});
+      popup.addEventListener('animationend', () => { popup.remove() });
     }
 
     if (!bonus.handleCarteiraScore) {
@@ -177,10 +251,10 @@ export const effects = {
         bonus.collected += diff;
 
         updateProgressBar('carteira-progress', {
-            current: bonus.collected,
-            max: bonus.max,
-            label: null
-          });
+          current: bonus.collected,
+          max: bonus.max,
+          label: null
+        });
 
         while (bonus.collected >= bonus.max) {
           bonus.collected -= bonus.max;
@@ -289,6 +363,16 @@ export const itemTooltipInfo = {
       <b>${abbreviateNumber(level)}</b> níveis de Microfone concedem
       um bônus máximo de <b>+${abbreviateNumber(bonus)}</b> BpS
     `;
+  },
+
+  cadeira: (player, item) => {
+    const level = Number(player.items?.[item.id] || 0);
+    const bonus = 2 * level;
+    const max = 100 * level;
+
+    return `
+      <b>${abbreviateNumber(level)}</b> níveis de Cadeira concedem <b>+${abbreviateNumber(bonus)}</b> BpS por tique, até um máximo de <b>+${abbreviateNumber(max)}</b> BpS.
+    `
   },
 
   tijolo: (player, item) => {

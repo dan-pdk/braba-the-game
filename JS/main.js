@@ -1,4 +1,4 @@
-import { player } from "./player.js";
+import { hide, player, show } from "./player.js";
 import { appendSetting, appendShopItem, createScorePopup, createSetting, createShopItem, devModeSetScore, unlockGuiButtons } from './elements.js';
 import { changeScore, addScoreObserver, addStatusEffect, abbreviateNumber, removeStatusEffect, hasStatusEffect } from './currency.js';
 import { applyPlayerData, loadPlayerData, savePlayerData } from './storage.js';
@@ -17,22 +17,37 @@ const scoreDisplay = document.getElementById('score-display');
 export function updateScoreDisplay() {
   scoreDisplay.textContent = `${abbreviateNumber(player.score)} ${player.settings.currencyName || "brabas"}`;
 
-  if (player.scorePerSecond > 0) {
-    const scorePerSecondDisplay = document.getElementById('score-ps-display');
-    if (player.bonuses?.gravador?.isActive) {
-      scorePerSecondDisplay.innerHTML = `${abbreviateNumber(player.scorePerSecond - player.bonuses.gravador.currentBonus)} <marker class="green">+${abbreviateNumber(player.bonuses.gravador.currentBonus)}</marker><img src="assets/img/item/gravador.png" width="10px"> por segundo`
-    } else {
-      scorePerSecondDisplay.innerHTML = `${abbreviateNumber(player.scorePerSecond)} por segundo`
-    }
-  }
+  const microfonePS = player.bonuses?.gravador?.currentBonus || 0;
+  const cadeiraPS = player.bonuses?.cadeira?.currentBonus || 0;
+  
+  const totalPS = player.scorePerSecond;
+  const hasAnyBonus = microfonePS > 0 || cadeiraPS > 0;
+
+  if (totalPS > 0 || hasAnyBonus) show(document.querySelector('#score-ps-display'));
+  else hide(document.querySelector('#score-ps-display'));
+  document.querySelector('#score-ps').textContent = `${abbreviateNumber(player.scorePerSecond - microfonePS - cadeiraPS)} `;
+
+  if (microfonePS > 0) {
+    const display = document.querySelector('#microfone-ps > span');
+    display.textContent = `+${abbreviateNumber(microfonePS)} `;
+    show(display.parentElement);
+  } else hide(document.querySelector('#microfone-ps'));
+
+  if (cadeiraPS > 0) {
+    const display = document.querySelector('#cadeira-ps > span');
+    display.textContent = `+${abbreviateNumber(cadeiraPS)} `;
+    show(display.parentElement);
+  } else hide(document.querySelector('#cadeira-ps'));
 };
+
 addScoreObserver(updateScoreDisplay);
+
 setInterval(() => {
   document.querySelector('title').textContent = `${abbreviateNumber(player.score)} brabas - Braba the Game`;
 }, 1000)
 setInterval(() => {
   updateScoreDisplay();
-}, 250);
+}, 500);
 
 export function onClick() {
   const tijoloActive = hasStatusEffect("Tijolado");

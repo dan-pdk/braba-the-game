@@ -20,8 +20,9 @@
 - set brabas ✅
 - bug com apagar dados ❌
 - item info ✅
+- cadeira
 - tijolo rework
 - botão evoluir
-- botão resize
+- botão resize ✅
 - braba sfx
 - responsividade
