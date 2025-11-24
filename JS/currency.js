@@ -174,12 +174,15 @@ export function removeStatusEffect(effectName, callEnd) {
 // });
 
 let decimalTracker = 0;
+
 setInterval(() => {
-  if (player.scorePerSecond > 0) {
-    decimalTracker += player.scorePerSecond / 10;
-    while (decimalTracker >= 1) {
-      changeScore("add", 1);
-      decimalTracker -= 1;
+  const sps = player.scorePerSecond;
+  if (sps > 0) {
+    decimalTracker += sps / 10;
+    const whole = Math.floor(decimalTracker);
+    if (whole > 0) {
+      changeScore("add", whole);
+      decimalTracker -= whole;
     }
   }
 }, 100);

@@ -551,7 +551,7 @@ export function devModeSetScore() {
     return Math.floor(Number(input.value));
   }
 
-  input.addEventListener('keydown', (e) => {
+  div.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
       setChosenScore(getValue());
     }

@@ -52,17 +52,18 @@ export const effects = {
     const button = document.getElementById("main-button");
     if (!player.bonuses) player.bonuses = {};
     if (!player.bonuses.gravador) {
-      player.bonuses.gravador = { currentBonus: 0, maxBonus: 0, isActive: false }
+      player.bonuses.gravador = { currentBonus: 0, clickBonus: 0, maxBonus: 0, isActive: false }
     };
 
     const bonus = player.bonuses.gravador;
+    bonus.clickBonus = player.items[item.id];
     bonus.maxBonus = player.items[item.id] * 5;
 
     let endTimer;
     function handleClicks() {
       if (bonus.currentBonus < bonus.maxBonus) {
-        player.scorePerSecond++;
-        bonus.currentBonus++;
+        player.scorePerSecond += bonus.clickBonus;
+        bonus.currentBonus += bonus.clickBonus;
         bonus.isActive = true;
       }
 
@@ -79,7 +80,6 @@ export const effects = {
       button.dataset.hasMicrofoneListener = "true";
     }
   },
-
   cadeiraEffect: (player, item) => {
     removeStatusEffect('Sentado');
     const button = document.querySelector('#main-button');
@@ -90,13 +90,16 @@ export const effects = {
         currentBonus: 0,
         stepBonus: 0,
         maxBonus: 0,
-        delay: 5000
+        delay: 5000,
+        loop: null,
+        timeNoClick: null
       }
-    }
+    };
 
     const bonus = player.bonuses.cadeira;
-    bonus.stepBonus = player.items[item.id] * 2;
-    bonus.maxBonus = player.items[item.id] * 50;
+    const count = player.items[item.id];
+    bonus.stepBonus = count >= 5 ? 5 : count;
+    bonus.maxBonus = player.items[item.id] * 20;
 
     function addCadeiraEffect() {
       removeStatusEffect('Sentado');
@@ -104,7 +107,7 @@ export const effects = {
         name: "Sentado",
         image: "assets/img/item/cadeira.png",
         description:
-          `Tô bem... Tô zen...<br><span>+${bonus.stepBonus} BpS por segundo sem clicar até um limite de ${bonus.maxBonus}</span>`,
+          `Tô bem... Tô zen...<br><span>+${bonus.stepBonus} BpS por segundo sem clicar até um limite de ${abbreviateNumber(bonus.maxBonus)}</span>`,
         duration: 0,
         onStart: () => {},
         onEnd: () => {}
@@ -123,20 +126,17 @@ export const effects = {
       }
     }
 
-    let timeNoClick;
-    let loop;
-
     function handleCadeiraClicks() {
       removeStatusEffect("Sentado");
-      clearTimeout(timeNoClick);
-      clearInterval(loop);
+      clearTimeout(bonus.timeNoClick);
+      clearInterval(bonus.loop);
 
       player.scorePerSecond -= bonus.currentBonus;
       bonus.currentBonus = 0;
 
-      timeNoClick = setTimeout(() => {
+      bonus.timeNoClick = setTimeout(() => {
         addCadeiraEffect();
-        loop = setInterval(() => {
+        bonus.loop = setInterval(() => {
           applyBonus();
         }, 1000);
 
@@ -146,9 +146,6 @@ export const effects = {
     if (!button.dataset.hasCadeiraEventListener) {
       button.addEventListener('click', handleCadeiraClicks);
       button.dataset.hasCadeiraEventListener = "true";
-
-      
-      handleCadeiraClicks();
     }
     handleCadeiraClicks();
   },
@@ -367,8 +364,8 @@ export const itemTooltipInfo = {
 
   cadeira: (player, item) => {
     const level = Number(player.items?.[item.id] || 0);
-    const bonus = 2 * level;
-    const max = 100 * level;
+    const bonus = level >= 5 ? 5 : level;
+    const max = 20 * level;
 
     return `
       <b>${abbreviateNumber(level)}</b> níveis de Cadeira concedem <b>+${abbreviateNumber(bonus)}</b> BpS por tique, até um máximo de <b>+${abbreviateNumber(max)}</b> BpS.

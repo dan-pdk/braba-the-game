@@ -20,9 +20,12 @@
 - set brabas ✅
 - bug com apagar dados ❌
 - item info ✅
-- cadeira
+- cadeira 
 - tijolo rework
 - botão evoluir
 - botão resize ✅
 - braba sfx
 - responsividade
+
+-> 0.0.8:
+- megafone (frenzy)
