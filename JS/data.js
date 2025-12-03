@@ -109,8 +109,8 @@ export const effects = {
         description:
           `Tô bem... Tô zen...<br><span>+${bonus.stepBonus} BpS por segundo sem clicar até um limite de ${abbreviateNumber(bonus.maxBonus)}</span>`,
         duration: 0,
-        onStart: () => {},
-        onEnd: () => {}
+        onStart: () => { },
+        onEnd: () => { }
       });
     }
 
@@ -153,10 +153,19 @@ export const effects = {
   tijoloEffect: (player, item) => {
     const button = document.getElementById('main-button');
 
-    if (!player.bonuses.tijolo) { player.bonuses.tijolo = { isActive: false, multiplier: 2, delay: 5000 } }
+    if (!player.bonuses.tijolo) { player.bonuses.tijolo = { isActive: false, multiplier: 2, delay: 5000, timer: null, timeNoClick: 0 } }
 
     const bonus = player.bonuses.tijolo;
     bonus.multiplier = player.items[item.id] + 1;
+
+    drawProgressBar({
+      id: "tijolo-timer",
+      icon: "assets/img/item/tijolo.png",
+      color: "#ff9100ff",
+      current: 5,
+      max: 0,
+      label: "timer"
+    })
 
     function addTijoloEffect() {
       addStatusEffect(item, {
@@ -171,14 +180,51 @@ export const effects = {
     removeStatusEffect("Tijolado");
     addTijoloEffect();
 
-    let timeWithoutClicking;
+    function createTijoloController() {
+      const tijoloController = {}
+      tijoloController.count = 0;
+
+      function addCount() {
+        if (tijoloController.count < 5) {tijoloController.count++}
+      }
+      tijoloController = addCount;
+
+      function resetCount() {
+        tijoloController.count = 0;
+      }
+      tijoloController = resetCount;
+
+      return tijoloController;
+    }
+    const tijoloController = createTijoloController();
+
+    function handleBarUpdates() {
+      if (bonus.isActive) return;
+
+      if (time > 5) {
+        updateProgressBar('tijolo-timer', {
+          current: time,
+          max: 5,
+          color: "#ff9100ff",
+          label: "timer"
+        })
+      } else {
+        bonus.isActive = true;
+        addTijoloEffect();
+      }
+    }
+
+    let bonusControl;
+    clearInterval(bonus.timer);
+    bonus.timer = setInterval(() => {
+      bonusControl++;
+      handleBarUpdates();
+    }, 1000);
+
     function handleTijoloClicks() {
       if (hasStatusEffect("Tijolado")) {
         removeStatusEffect("Tijolado");
-        timeWithoutClicking = setTimeout(addTijoloEffect, bonus.delay);
-      } else {
-        clearTimeout(timeWithoutClicking);
-        timeWithoutClicking = setTimeout(addTijoloEffect, bonus.delay);
+        bonusControl = 0;
       }
     }
 
@@ -364,8 +410,8 @@ export const itemTooltipInfo = {
 
   cadeira: (player, item) => {
     const level = Number(player.items?.[item.id] || 0);
-    const bonus = level >= 5 ? 5 : level;
-    const max = 20 * level;
+    const bonus = level;
+    const max = 25 * level;
 
     return `
       <b>${abbreviateNumber(level)}</b> níveis de Cadeira concedem <b>+${abbreviateNumber(bonus)}</b> BpS por tique, até um máximo de <b>+${abbreviateNumber(max)}</b> BpS.

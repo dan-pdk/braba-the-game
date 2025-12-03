@@ -477,9 +477,13 @@ export function drawProgressBar(barObj) {
 
   const text = document.createElement("span");
   text.classList.add("progress-label");
-  text.innerHTML = barObj.label
+  if (barObj.label == "timer") {
+    text.innerHTML = `${barObj.current}s`;
+  } else {
+    text.innerHTML = barObj.label
     ? `${barObj.label}: ${barObj.current} / ${barObj.max}`
     : `${barObj.current} / ${barObj.max}`;
+  }
   wrapper.appendChild(text);
 
   const bar = document.createElement("div");
